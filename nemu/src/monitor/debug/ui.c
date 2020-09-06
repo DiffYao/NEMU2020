@@ -60,6 +60,13 @@ static struct {
 
 #define NR_CMD (sizeof(cmd_table) / sizeof(cmd_table[0]))
 static int cmd_info(char *args){
+	char* arg = strtok(NULL, " ");
+	if (arg == NULL || strlen(arg) != 1 || (arg[0] != 'r' && arg[0] != 'w')){
+	printf("Invalid Input\n"); 
+	}
+	if(strcmp(arg, "r") == 0){
+		printf("cpu.eax : %x\n", cpu.eax);
+	}
 	return 0;
 }
 static int cmd_x(char *args){
