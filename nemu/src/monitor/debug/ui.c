@@ -96,7 +96,7 @@ static int cmd_p(char *args){
 	if (is) {
 		printf("%d\n", num);
 	}	
-	printf("%s\n", args);
+	//printf("%s\n", args);
 	return 0;
 }
 static int cmd_d(char *args){
