@@ -82,8 +82,8 @@ static int cmd_x(char *args){
 	sscanf(arg, "%d", &num);
 	char *str = strtok(NULL, " ");
 	uint32_t result;
-	printf("%s\n", str);
-	sscanf(str, "%x", &result);	
+	sscanf(str, "%x", &result);
+	printf("%0x\n", result );	
 	int digit = swaddr_read(result, 1);
 	printf("%d\n", digit);
 	return 0;
