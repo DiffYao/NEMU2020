@@ -87,7 +87,7 @@ static int cmd_x(char *args){
 	int digit;
 	int i = 0;
 	for (; num > 0; num--){
-		digit = swaddr_read(result+i, 1);
+		digit = swaddr_read(result+i, 4);
 		printf("%x\n", digit);
 		i++;
 	}	
