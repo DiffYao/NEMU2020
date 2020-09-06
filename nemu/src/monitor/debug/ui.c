@@ -91,7 +91,11 @@ static int cmd_p(char *args){
 		printf("Invalid Input\n");
 		return 0;
 	}
-	
+	bool is;
+	uint32_t num = expr(args, &is);
+	if (is) {
+		printf("%d\n", num);
+	}	
 	printf("%s\n", args);
 	return 0;
 }
