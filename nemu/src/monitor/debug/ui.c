@@ -68,6 +68,10 @@ static int cmd_x(char *args){
 static int cmd_si(char *args){
 	char *arg = strtok(NULL, " ");
 	int i;
+	if (arg == NULL) {
+		cpu_exec(1);
+		return 0;
+	}
   	sscanf(arg, "%d", &i);
 	cpu_exec(i);
 	return 0;
