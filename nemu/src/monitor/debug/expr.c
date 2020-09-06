@@ -26,7 +26,7 @@ static struct rule {
 	{"\\+", '+'},					// plus
 	{"==", EQ},					// equal
 	{"\\-", '-'},					// sub
-	{"\\",'\\' },					// div
+	{"\\\\",'\\' },					// div
 	{"[0-9]+", NUM}					// number
 };
 
