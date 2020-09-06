@@ -78,13 +78,12 @@ static int cmd_info(char *args){
 }
 static int cmd_x(char *args){
 	char *arg = strtok(NULL, " ");
-	printf("%s\n", arg);
 	int num; 
 	sscanf(arg, "%d", &num);
 	char *str = strtok(NULL, " ");
-	printf("%s\n", str);
 	uint32_t result;
-	sscanf(str, "%I32u", &result);	
+	sscanf(str, "%I32u", &result);
+	printf("%x\n", result);	
 	swaddr_read(result, 1);
 	printf("%x\n", result);
 	return 0;
