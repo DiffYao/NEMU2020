@@ -85,7 +85,7 @@ static int cmd_x(char *args){
 	sscanf(str, "%x", &result);
 	printf("%0x\n", result );	
 	int digit = swaddr_read(result, 4);
-	printf("%d\n", digit);
+	printf("%0x\n", digit);
 	return 0;
 }
 static int cmd_si(char *args){
