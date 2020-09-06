@@ -83,7 +83,6 @@ static int cmd_x(char *args){
 	char *str = strtok(NULL, " ");
 	uint32_t result;
 	sscanf(str, "%x", &result);
-	printf("%0x\n", result );
 	int digit;
 	int i = 0;
 	for (; num > 0; num--){
