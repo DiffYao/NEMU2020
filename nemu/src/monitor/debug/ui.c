@@ -38,6 +38,11 @@ static int cmd_q(char *args) {
 
 static int cmd_help(char *args);
 
+static int cmd_si(char *args);
+
+static int cmd_x(char *args);
+
+static int cmd_info(char *args);
 static struct {
 	char *name;
 	char *description;
@@ -46,13 +51,27 @@ static struct {
 	{ "help", "Display informations about all supported commands", cmd_help },
 	{ "c", "Continue the execution of the program", cmd_c },
 	{ "q", "Exit NEMU", cmd_q },
-
+	{ "si", "Execute N instructions in a single step and then pause, the default is 1", cmd_si},
+	{ "info ", "r for  Disply info about register \n w for print watchpoint infomation", cmd_info},
+	{ "x", "Scanf memory, Disply N Byte", cmd_x}
 	/* TODO: Add more commands */
 
 };
 
 #define NR_CMD (sizeof(cmd_table) / sizeof(cmd_table[0]))
-
+static int cmd_info(char *args){
+	return 0;
+}
+static int cmd_x(char *args){
+	return 0;
+}
+static int cmd_si(char *args){
+	char *arg = strtok(NULL, " ");
+	int i;
+  	sscanf(arg, "%d", &i);
+	cpu_exec(i);
+	return 0;
+}
 static int cmd_help(char *args) {
 	/* extract the first argument */
 	char *arg = strtok(NULL, " ");
