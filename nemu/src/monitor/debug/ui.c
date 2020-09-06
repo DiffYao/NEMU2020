@@ -87,8 +87,12 @@ static int cmd_info(char *args){
 	return 0;
 }
 static int cmd_p(char *args){
-	char *arg = strtok(NULL, " ");
-	printf("%s\n", arg);
+	if (args == NULL) {
+		printf("Invalid Input\n");
+		return 0;
+	}
+	
+	printf("%s\n", args);
 	return 0;
 }
 static int cmd_d(char *args){
@@ -98,6 +102,10 @@ static int cmd_w(char *args){
 	return 0;
 }
 static int cmd_x(char *args){
+	if (args == NULL){
+		printf("Invalid Input\n");
+		return 0;
+	}
 	char *arg = strtok(NULL, " ");
 	int num; 
 	sscanf(arg, "%d", &num);
