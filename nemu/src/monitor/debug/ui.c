@@ -83,7 +83,7 @@ static int cmd_x(char *args){
 	char *str = strtok(NULL, " ");
 	uint32_t result;
 	printf("%s\n", str);
-	sscanf(str, "%I32u", &result);
+	sscanf(str, "%x", &result);
 	//printf("%x\n", result);	
 	swaddr_read(result, 1);
 	printf("%x\n", result);
