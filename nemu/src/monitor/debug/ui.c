@@ -79,9 +79,10 @@ static int cmd_info(char *args){
 static int cmd_x(char *args){
 	char *arg = strtok(NULL, " ");
 	printf("%s\n", arg);
-
-	uint32_t result = swaddr_read(0x10000, 1);
-	printf("%x\n", result);
+	char *str = strtok(args, " ");
+	printf("%s\n", str);
+//	uint32_t result = swaddr_read(0x10000, 1);
+//	printf("%x\n", result);
 	return 0;
 }
 static int cmd_si(char *args){
