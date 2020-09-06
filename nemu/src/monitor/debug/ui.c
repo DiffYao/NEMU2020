@@ -43,6 +43,13 @@ static int cmd_si(char *args);
 static int cmd_x(char *args);
 
 static int cmd_info(char *args);
+
+static int cmd_p(char *args);
+
+static int cmd_w(char *args);
+
+static int cmd_d(char *args);
+
 static struct {
 	char *name;
 	char *description;
@@ -53,7 +60,10 @@ static struct {
 	{ "q", "Exit NEMU", cmd_q },
 	{ "si", "Execute N instructions in a single step and then pause, the default is 1", cmd_si},
 	{ "info", "r for  Disply info about register \n w for print watchpoint infomation", cmd_info},
-	{ "x", "Scanf memory, Disply N Byte", cmd_x}
+	{ "x", "Scanf memory, Disply N Byte", cmd_x},
+	{ "p", "Calculate the value of EXPR", cmd_p},
+	{ "w", "Set watchpoint for EXPR", cmd_w},
+	{ "d", "Delete No.N watchpoint", cmd_d},
 	/* TODO: Add more commands */
 
 };
@@ -76,6 +86,17 @@ static int cmd_info(char *args){
 	}
 	return 0;
 }
+static int cmd_p(char *args){
+	char *arg = strtok(NULL, " ");
+	printf("%s\n", arg);
+	return 0;
+}
+static int cmd_d(char *args){
+	return 0;
+}
+static int cmd_w(char *args){
+	return 0;
+}
 static int cmd_x(char *args){
 	char *arg = strtok(NULL, " ");
 	int num; 
@@ -87,7 +108,7 @@ static int cmd_x(char *args){
 	int i = 0;
 	for (; num > 0; num--){
 		digit = swaddr_read(result+i, 4);
-		printf("%08x\n", digit);
+		printf("0x%08x\n", digit);
 		i+=4;
 	}	
 	return 0;
