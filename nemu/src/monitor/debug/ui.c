@@ -86,7 +86,7 @@ static int cmd_x(char *args){
 	uint32_t result;
 	sscanf(str, "%I32u", &result);	
 	swaddr_read(result, 1);
-//	printf("%x\n", result);
+	printf("%x\n", result);
 	return 0;
 }
 static int cmd_si(char *args){
