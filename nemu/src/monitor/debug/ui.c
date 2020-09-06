@@ -83,9 +83,14 @@ static int cmd_x(char *args){
 	char *str = strtok(NULL, " ");
 	uint32_t result;
 	sscanf(str, "%x", &result);
-	printf("%0x\n", result );	
-	int digit = swaddr_read(result, 4);
-	printf("%0x\n", digit);
+	printf("%0x\n", result );
+	int digit;
+	int i = 0;
+	for (; num > 0; num--){
+		digit = swaddr_read(result+i, 1);
+		printf("%x\n", digit);
+		i++;
+	}	
 	return 0;
 }
 static int cmd_si(char *args){
