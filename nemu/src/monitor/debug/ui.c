@@ -67,12 +67,12 @@ static int cmd_info(char *args){
 	if(strcmp(arg, "r") == 0){
 		printf("%%cpu.eax : %#08x\n", cpu.eax);
 		printf("%%cpu.ecx : %#08x\n", cpu.ecx);
-		printf("%%cpu.edx : %#x\n", cpu.edx);
-		printf("%%cpu.ebx : %#x\n", cpu.ebx);
-		printf("%%cpu.esp : %#x\n", cpu.esp);
-		printf("%%cpu.ebp : %#x\n", cpu.ebp);
-		printf("%%cpu.esi : %#x\n", cpu.esi);
-		printf("%%cpu.edi : %#x\n", cpu.edi);
+		printf("%%cpu.edx : %#08x\n", cpu.edx);
+		printf("%%cpu.ebx : %#08x\n", cpu.ebx);
+		printf("%%cpu.esp : %#08x\n", cpu.esp);
+		printf("%%cpu.ebp : %#08x\n", cpu.ebp);
+		printf("%%cpu.esi : %#08x\n", cpu.esi);
+		printf("%%cpu.edi : %#08x\n", cpu.edi);
 	}
 	return 0;
 }
