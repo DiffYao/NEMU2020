@@ -73,7 +73,9 @@ static int cmd_si(char *args){
 		return 0;
 	}
   	sscanf(arg, "%d", &i);
-	cpu_exec(i);
+	for (; i > 0; i--){
+		cpu_exec(1);
+	}
 	return 0;
 }
 static int cmd_help(char *args) {
