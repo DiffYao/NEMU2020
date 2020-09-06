@@ -88,8 +88,8 @@ static int cmd_x(char *args){
 	int i = 0;
 	for (; num > 0; num--){
 		digit = swaddr_read(result+i, 4);
-		printf("%x\n", digit);
-		i++;
+		printf("%08x\n", digit);
+		i+=4;
 	}	
 	return 0;
 }
