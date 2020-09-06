@@ -52,7 +52,7 @@ static struct {
 	{ "c", "Continue the execution of the program", cmd_c },
 	{ "q", "Exit NEMU", cmd_q },
 	{ "si", "Execute N instructions in a single step and then pause, the default is 1", cmd_si},
-	{ "info ", "r for  Disply info about register \n w for print watchpoint infomation", cmd_info},
+	{ "info", "r for  Disply info about register \n w for print watchpoint infomation", cmd_info},
 	{ "x", "Scanf memory, Disply N Byte", cmd_x}
 	/* TODO: Add more commands */
 
@@ -66,6 +66,13 @@ static int cmd_info(char *args){
 	}
 	if(strcmp(arg, "r") == 0){
 		printf("cpu.eax : %x\n", cpu.eax);
+		printf("cpu.ecx : %x\n", cpu.ecx);
+		printf("cpu.edx : %x\n", cpu.edx);
+		printf("cpu.ebx : %x\n", cpu.ebx);
+		printf("cpu.esp : %x\n", cpu.esp);
+		printf("cpu.ebp : %x\n", cpu.ebp);
+		printf("cpu.esi : %x\n", cpu.esi);
+		printf("cpu.edi : %x\n", cpu.edi);
 	}
 	return 0;
 }
