@@ -65,14 +65,14 @@ static int cmd_info(char *args){
 	printf("Invalid Input\n"); 
 	}
 	if(strcmp(arg, "r") == 0){
-		printf("cpu.eax : %x\n", cpu.eax);
-		printf("cpu.ecx : %x\n", cpu.ecx);
-		printf("cpu.edx : %x\n", cpu.edx);
-		printf("cpu.ebx : %x\n", cpu.ebx);
-		printf("cpu.esp : %x\n", cpu.esp);
-		printf("cpu.ebp : %x\n", cpu.ebp);
-		printf("cpu.esi : %x\n", cpu.esi);
-		printf("cpu.edi : %x\n", cpu.edi);
+		printf("%%cpu.eax : %X\n", cpu.eax);
+		printf("%%cpu.ecx : %X\n", cpu.ecx);
+		printf("%%cpu.edx : %X\n", cpu.edx);
+		printf("%%cpu.ebx : %X\n", cpu.ebx);
+		printf("%%cpu.esp : %X\n", cpu.esp);
+		printf("%%cpu.ebp : %X\n", cpu.ebp);
+		printf("%%cpu.esi : %X\n", cpu.esi);
+		printf("%%cpu.edi : %X\n", cpu.edi);
 	}
 	return 0;
 }
