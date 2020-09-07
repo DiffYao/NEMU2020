@@ -145,6 +145,7 @@ int dominant_operator(int p, int q)
 // evaluate expression
 uint32_t eval (int p, int q)
 {
+	Log("P = %d, q = %d\n", p, q);
 	if (p > q) 
 	{
 		Log("Wrong expression\n");
