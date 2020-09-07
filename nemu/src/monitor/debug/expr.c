@@ -127,10 +127,10 @@ bool check_parentheses(int p, int q)
 
 int dominant_operator(int p, int q)
 {
-	int i = q-1;
+	int i;
 	int is = 0;
 	int result = p;
-	for (; i >= p; i-- )
+	for (i = q-1; i >= p; i--)
 	{
 		if (tokens[i].type == ')') is++;
 		if (tokens[i].type == '(') is--;
