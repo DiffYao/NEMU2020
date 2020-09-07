@@ -133,7 +133,7 @@ int dominant_operator(int p, int q)
 	int result = p;
 	for (i = q; i >= p; i--)
 	{
-		Log("i is %d, type is %c\n", i, tokens[i].type);
+		//Log("i is %d, type is %c\n", i, tokens[i].type);
 		if (tokens[i].type == ')') is++;
 		if (tokens[i].type == '(') is--;
 		if (tokens[i].type == NUM || is != 0) continue;
@@ -146,7 +146,7 @@ int dominant_operator(int p, int q)
 // evaluate expression
 uint32_t eval (int p, int q)
 {
-	Log("P = %d, q = %d\n", p, q);
+	
 	if (p > q) 
 	{
 		Log("Wrong expression\n");
@@ -165,10 +165,10 @@ uint32_t eval (int p, int q)
 
 		return eval (p+1, q-1);
 	}else {
-		Log("p = %d, q= %d\n", p, q);
+		//Log("p = %d, q= %d\n", p, q);
 		int op = dominant_operator(p, q);
 		
-		Log("Op is %d\n", op);
+		//Log("Op is %d\n", op);
 		int val1 = eval(p, op-1);
 		int val2 = eval(op+1, q);
 	
@@ -195,7 +195,7 @@ uint32_t expr(char *e, bool *success) {
 	//	printf("%s + %d\n", tokens[i].str, tokens[i].type);
 	//}
 	/* TODO: Insert codes to evaluate the expression. */
-	Log("q = %d\n", nr_token-1);	
+//	Log("q = %d\n", nr_token-1);	
 	return eval(0, nr_token-1);
 }
 
