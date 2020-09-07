@@ -191,7 +191,7 @@ uint32_t expr(char *e, bool *success) {
 	//	printf("%s + %d\n", tokens[i].str, tokens[i].type);
 	//}
 	/* TODO: Insert codes to evaluate the expression. */
-		
+	printf("q = %d\n", nr_token-1);		
 	return eval(0, nr_token-1);
 }
 
