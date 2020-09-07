@@ -132,7 +132,7 @@ int dominant_operator(int p, int q)
 	int result = p;
 	for (i = q; i >= p; i--)
 	{
-		//Log("i is %d, type is %d\n", i, tokens[i].type);
+		Log("i is %d, type is %c\n", i, tokens[i].type);
 		if (tokens[i].type == ')') is++;
 		if (tokens[i].type == '(') is--;
 		if (tokens[i].type == NUM || is != 0) continue;
