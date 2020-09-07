@@ -130,7 +130,7 @@ int dominant_operator(int p, int q)
 	int i;
 	int is = 0;
 	int result = p;
-	for (i = q-1; i >= p; i--)
+	for (i = q; i >= p; i--)
 	{
 		Log("i is %d, type is %d\n", i, tokens[i].type);
 		if (tokens[i].type == ')') is++;
@@ -165,7 +165,7 @@ uint32_t eval (int p, int q)
 	}else {
 		int op = dominant_operator(p, q);
 		Log("Op is %d\n", op);
-		int val1 = eval(p, op);
+		int val1 = eval(p, op-1);
 		int val2 = eval(op+1, q);
 	
 		switch (tokens[op].type){
@@ -192,6 +192,6 @@ uint32_t expr(char *e, bool *success) {
 	}
 	/* TODO: Insert codes to evaluate the expression. */
 		
-	return eval(0, nr_token);
+	return eval(0, nr_token-1);
 }
 
