@@ -114,7 +114,7 @@ uint32_t expr(char *e, bool *success) {
 		return 0;
 	}
 	*success = true;
-	printf("%s + %d", e, nr_token);
+	printf("%s + %d\n", e, nr_token);
 	int i = 0;
 	for (; i < nr_token; i++){
 		printf("%s + %d\n", tokens[i].str, tokens[i].type);
