@@ -185,11 +185,11 @@ uint32_t expr(char *e, bool *success) {
 		return 0;
 	}
 	*success = true;
-	printf("%s + %d\n", e, nr_token);
-	int i = 0;
-	for (; i < nr_token; i++){
-		printf("%s + %d\n", tokens[i].str, tokens[i].type);
-	}
+	//printf("%s + %d\n", e, nr_token);
+	//int i = 0;
+	//for (; i < nr_token; i++){
+	//	printf("%s + %d\n", tokens[i].str, tokens[i].type);
+	//}
 	/* TODO: Insert codes to evaluate the expression. */
 		
 	return eval(0, nr_token-1);
