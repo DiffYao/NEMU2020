@@ -109,7 +109,7 @@ static bool make_token(char *e) {
 
 	return true; 
 }
-
+// check parentheses matching
 bool check_parentheses(int p, int q)
 {
 	int i;
@@ -123,6 +123,56 @@ bool check_parentheses(int p, int q)
 		if (count == 0) return true;
 	}
 	return false;
+}
+
+int dominant_operator(int p, int q)
+{
+	int i = q-1;
+	int is = 0;
+	int result = p;
+	for (; i >= p; i-- )
+	{
+		if (tokens[i].type == ')') is++;
+		if (tokens[i].type == '(') is--;
+		if (tokens[i].type == NUM || is != 0) continue;
+		if (tokens[i].type == '+' || tokens[i].type == '-') return i;
+		if ((tokens[i].type == '*' || tokens[i].type == '/') && result <=  i) result = i;
+	}
+	return result;
+}
+// evaluate expression
+uint32_t eval (int p, int q)
+{
+	if (p > q) 
+	{
+		Log("Wrong expression\n");
+		return -1;
+	} 
+	else if (p == q)
+	{
+		if (tokens[p].type == NUM) {
+			uint32_t i;
+			sscanf(tokens[p].str, "%u", &i);
+			return i;
+		}
+		return -1;
+	}
+	else if (check_parentheses(p, q) == true){
+
+		return eval (p+1, q-1);
+	}else {
+		int op = dominant_operator(p, q);
+		int val1 = eval(p, op-1);
+		int val2 = eval(op+1, q);
+		switch (tokens[op].type){
+			case '+' : return val1 + val2;
+			case '-' : return val1 - val2;
+			case '*' : return val1 * val2;
+			case '/' : return val1 / val2;
+			default : assert(0);
+		}
+	
+	}
 }
 uint32_t expr(char *e, bool *success) {
 	if(!make_token(e)) {
