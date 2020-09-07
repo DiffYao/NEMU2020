@@ -136,7 +136,8 @@ int dominant_operator(int p, int q)
 		if (tokens[i].type == ')') is++;
 		if (tokens[i].type == '(') is--;
 		if (tokens[i].type == NUM || is != 0) continue;
-		if (tokens[i].type == '+' || tokens[i].type == '-') return i;
+		if (tokens[i].type == '+' || tokens[i].type == '-') 
+			{ Log("%d\n", i); return i;}
 		if ((tokens[i].type == '*' || tokens[i].type == '/') && result <=  i) result = i;
 	}
 	Log("result is %d\n", result);
