@@ -164,9 +164,10 @@ uint32_t eval (int p, int q)
 		return eval (p+1, q-1);
 	}else {
 		int op = dominant_operator(p, q);
+		Log("Op is %d\n", op);
 		int val1 = eval(p, op-1);
 		int val2 = eval(op+1, q);
-		printf("op = %d\n", op);
+	
 		switch (tokens[op].type){
 			case '+' : return val1 + val2;
 			case '-' : return val1 - val2;
