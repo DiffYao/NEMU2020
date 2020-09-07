@@ -22,12 +22,12 @@ static struct rule {
 	 * Pay attention to the precedence level of different rules.
 	 */
 
-	{" +",	NOTYPE},				// spaces
-	{"\\+", '+'},					// plus
-	{"==", EQ},					// equal
-	{"\\-", '-'},					// sub
-	{"\\\\",'\\' },					// div
-	{"[0-9]+", NUM}					// number
+	{" +",	NOTYPE},				// spaces 256
+	{"\\+", '+'},					// plus 43 
+	{"==", EQ},					// equal 257
+	{"\\-", '-'},					// sub  45
+	{"\\\\",'\\' },					// div  
+	{"[0-9]+", NUM}					// number 258
 };
 
 #define NR_REGEX (sizeof(rules) / sizeof(rules[0]) )

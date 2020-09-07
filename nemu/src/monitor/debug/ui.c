@@ -94,7 +94,7 @@ static int cmd_p(char *args){
 	bool is;
 	uint32_t num = expr(args, &is);
 	if (is) {
-		printf("%d\n", num);
+		printf("result is %d\n", num);
 	}	
 	
 	return 0;
