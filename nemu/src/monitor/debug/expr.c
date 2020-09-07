@@ -112,6 +112,7 @@ uint32_t expr(char *e, bool *success) {
 		Log("False \n");
 		return 0;
 	}
+	*success = true;
 	int i = 0;
 	for (; i < nr_token; i++){
 		printf("%s + %d\n", tokens[i].str, tokens[i].type);
