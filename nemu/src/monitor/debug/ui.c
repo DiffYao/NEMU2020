@@ -97,7 +97,7 @@ static int cmd_p(char *args){
 		printf("result is %d\n", num);
 	}	
 	
-	return 0;
+	return num;
 }
 static int cmd_d(char *args){
 	return 0;
