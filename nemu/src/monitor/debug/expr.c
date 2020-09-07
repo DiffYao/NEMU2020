@@ -27,7 +27,8 @@ static struct rule {
 	{"==", EQ},					// equal 257
 	{"\\-", '-'},					// sub  45
 	{"\\\\",'\\' },					// div  
-	{"[0-9]+", NUM}					// number 258
+	{"[0-9]+", NUM},				// number 258
+	{"\\*", '*'},					// multi 42
 };
 
 #define NR_REGEX (sizeof(rules) / sizeof(rules[0]) )
