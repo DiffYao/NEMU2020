@@ -138,6 +138,7 @@ int dominant_operator(int p, int q)
 		if (tokens[i].type == '+' || tokens[i].type == '-') return i;
 		if ((tokens[i].type == '*' || tokens[i].type == '/') && result <=  i) result = i;
 	}
+	Log("result is %d\n", result);
 	return result;
 }
 // evaluate expression
