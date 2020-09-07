@@ -120,7 +120,6 @@ bool check_parentheses(int p, int q)
 			if (tokens[i].type == '(') count++;
 			if (tokens[i].type == ')') count--;
 			if (count < 0) {
-				panic("Parentheses No Matching\n");
 				return false;
 			}
 		}
