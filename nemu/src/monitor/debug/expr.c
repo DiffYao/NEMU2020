@@ -132,7 +132,7 @@ int dominant_operator(int p, int q)
 	int result = p;
 	for (i = q; i >= p; i--)
 	{
-		Log("i is %d, type is %d\n", i, tokens[i].type);
+		//Log("i is %d, type is %d\n", i, tokens[i].type);
 		if (tokens[i].type == ')') is++;
 		if (tokens[i].type == '(') is--;
 		if (tokens[i].type == NUM || is != 0) continue;
@@ -164,7 +164,7 @@ uint32_t eval (int p, int q)
 		return eval (p+1, q-1);
 	}else {
 		int op = dominant_operator(p, q);
-		Log("Op is %d\n", op);
+		//Log("Op is %d\n", op);
 		int val1 = eval(p, op-1);
 		int val2 = eval(op+1, q);
 	
