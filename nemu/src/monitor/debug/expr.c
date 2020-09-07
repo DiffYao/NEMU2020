@@ -163,7 +163,9 @@ uint32_t eval (int p, int q)
 
 		return eval (p+1, q-1);
 	}else {
+		Log("p = %d, q= %d\n", p, q);
 		int op = dominant_operator(p, q);
+		
 		Log("Op is %d\n", op);
 		int val1 = eval(p, op-1);
 		int val2 = eval(op+1, q);
@@ -191,7 +193,7 @@ uint32_t expr(char *e, bool *success) {
 	//	printf("%s + %d\n", tokens[i].str, tokens[i].type);
 	//}
 	/* TODO: Insert codes to evaluate the expression. */
-	printf("q = %d\n", nr_token-1);		
+	
 	return eval(0, nr_token-1);
 }
 
