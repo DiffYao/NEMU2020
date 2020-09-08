@@ -201,6 +201,7 @@ uint32_t eval (int p, int q)
 	}else {
 		//Log("p = %d, q= %d\n", p, q);
 		int op = dominant_operator(p, q);
+		Log("op is %d\n", op);
 		if (p == op){
 			uint32_t val = eval(p+1, q);
 			switch (tokens[op].type) {
