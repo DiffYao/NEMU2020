@@ -175,6 +175,7 @@ uint32_t eval (int p, int q)
 		uint32_t i;
 		if (tokens[p].type == HEXNUM) sscanf(tokens[p].str, "%x", &i);
 		if (tokens[p].type == NUM)  sscanf(tokens[p].str, "%u", &i);
+		return i;
 		if (tokens[p].type == REGISTER) {
 			int k;
 			char * check = tokens[k].str;
@@ -192,7 +193,7 @@ uint32_t eval (int p, int q)
 			}
 			Assert(0, "Register Not Found\n");
 		}
-		return i;
+		Assert(0,"tokens[p].type is %s", tokens[p].str);
 	}
 	else if (check_parentheses(p, q) == true){
 
