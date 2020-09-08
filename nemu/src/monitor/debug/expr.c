@@ -95,6 +95,7 @@ static bool make_token(char *e) {
 						tokens[nr_token].type = rules[i].token_type;
 						strncpy (tokens[nr_token].str, substr_start, substr_len);
 						Log("str is %s\n", tokens[nr_token].str);
+						if (strcmp (tokens[nr_token].str, "$eax") == 0) printf("ok\n");
 						nr_token++;
 						break;
 					}
