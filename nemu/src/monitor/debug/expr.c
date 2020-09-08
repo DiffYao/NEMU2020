@@ -146,15 +146,17 @@ int dominant_operator(int p, int q)
 	int i;
 	int is = 0;
 	int result = p;
+	int priority = 100;
 	for (i = q; i >= p; i--)
 	{
 		//Log("i is %d, type is %c\n", i, tokens[i].type);
 		if (tokens[i].type == ')') is++;
 		if (tokens[i].type == '(') is--;
 		if (tokens[i].type == NUM || tokens[i].type == HEXNUM || tokens[i].type == REGISTER||is != 0) continue;
-		if (tokens[i].type == EQ  || tokens[i].type == NEQ ) return i;
-		if (tokens[i].type == '+' || tokens[i].type == '-') result = i;
-		if ((tokens[i].type == '*' || tokens[i].type == '/') && result <=  i) result = i;
+		if (tokens[i].type == AND || tokens[i].type == OR ) return i;
+		if ((tokens[i].type == EQ  || tokens[i].type == NEQ) && priority > 1) { priority = 1; result = i;}
+		if ((tokens[i].type == '+' || tokens[i].type == '-') && priority > 2) { priority = 2; result = i;}
+		if ((tokens[i].type == '*' || tokens[i].type == '/') && priority > 3) { priority = 3; result = i;}
 	}
 	
 	return result;
