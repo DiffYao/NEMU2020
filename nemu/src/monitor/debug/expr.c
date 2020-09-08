@@ -91,6 +91,13 @@ static bool make_token(char *e) {
 
 				switch(rules[i].token_type) {
 					case NOTYPE : break;
+					case REGISTER: {
+						tokens[nr_token].type = rules[i].token_type;
+						strncpy (tokens[nr_token].str, substr_start, substr_len);
+						Log("str is %s\n", tokens[nr_token].str);
+						nr_token++;
+						break;
+					}
 					default: {
 						tokens[nr_token].type = rules[i].token_type;
 						strncpy (tokens[nr_token].str, substr_start, substr_len);
