@@ -175,7 +175,7 @@ uint32_t eval (int p, int q)
 			int k;
 			char * check = tokens[k].str;
 			Log("Register is %s\n", check);
-			assert(0);			
+						
 			for (k = R_EAX; k <= R_EDI; k++){
 				if (strcmp (check, regsl[k]) == 1) return reg_l(k); 	
 			}
@@ -186,7 +186,7 @@ uint32_t eval (int p, int q)
 			for (k = R_AL; k <= R_AH; k++) {
 				if (strcmp (check, regsb[k]) == 1) return reg_b(k);
 			}
-			Assert(1, "Register Not Found\n");
+			Assert(0, "Register Not Found\n");
 		}
 		return i;
 	}
