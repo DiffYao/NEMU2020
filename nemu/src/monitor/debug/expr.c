@@ -93,9 +93,9 @@ static bool make_token(char *e) {
 					case NOTYPE : break;
 					case REGISTER: {
 						tokens[nr_token].type = rules[i].token_type;
-						strncpy (tokens[nr_token].str, substr_start, substr_len);
+						strncpy (tokens[nr_token].str, substr_start+1, substr_len-1);
 						Log("str is %s\n", tokens[nr_token].str);
-						if (strcmp (tokens[nr_token].str, "$eax") == 0) printf("ok\n");
+						if (strcmp (tokens[nr_token].str, "eax") == 0) printf("ok\n");
 						nr_token++;
 						break;
 					}
