@@ -142,7 +142,7 @@ int dominant_operator(int p, int q)
 		//Log("i is %d, type is %c\n", i, tokens[i].type);
 		if (tokens[i].type == ')') is++;
 		if (tokens[i].type == '(') is--;
-		if (tokens[i].type == NUM || is != 0) continue;
+		if (tokens[i].type == NUM || tokens[i].type == HEXNUM || is != 0) continue;
 		if (tokens[i].type == EQ  || tokens[i].type == NEQ ) return i;
 		if (tokens[i].type == '+' || tokens[i].type == '-') result = i;
 		if ((tokens[i].type == '*' || tokens[i].type == '/') && result <=  i) result = i;
@@ -160,9 +160,14 @@ uint32_t eval (int p, int q)
 		return 0;
 	} 
 	else if (p == q)
-	{
+	{	
+		uint32_t i;
+		if (tokens[p].type == HEXNUM){
+			Log("STR is %s\n", tokens[p].str);
+			sscanf(tokens[p].str, "%u", &i);
+			return i;
+		}
 		if (tokens[p].type == NUM) {
-			uint32_t i;
 			sscanf(tokens[p].str, "%u", &i);
 			return i;
 		}
