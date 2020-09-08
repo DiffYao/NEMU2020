@@ -200,10 +200,18 @@ uint32_t eval (int p, int q)
 	}else {
 		//Log("p = %d, q= %d\n", p, q);
 		int op = dominant_operator(p, q);
+		if (p == op){
+			uint32_t val = eval(p+1, q);
+			switch (tokens[op].type) {
+				case MINUS : return -val;
+				case STAR  : return swaddr_read(val, 4);
+				case '!'   : return !val;
+				default:  Assert(0, "Wrong Token Type\n"); 
+			} 
+		}
 		
-		//Log("Op is %d\n", op);
-		int val1 = eval(p, op-1);
-		int val2 = eval(op+1, q);
+		uint32_t val1 = eval(p, op-1);
+		uint32_t val2 = eval(op+1, q);
 	
 		switch (tokens[op].type){
 			case '+' : return val1 + val2;
