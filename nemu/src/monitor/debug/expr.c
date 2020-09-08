@@ -7,7 +7,7 @@
 #include <regex.h>
 
 enum {
-	NOTYPE = 256, EQ, NUM, HEXNUM, NEQ, REGISTER, AND, OR
+	NOTYPE = 256, EQ, NUM, HEXNUM, NEQ, REGISTER, AND, OR, MINUS, STAR
 
 	/* TODO: Add more token types */
 
@@ -96,7 +96,6 @@ static bool make_token(char *e) {
 					case REGISTER: {
 						tokens[nr_token].type = rules[i].token_type;
 						strncpy (tokens[nr_token].str, substr_start+1, substr_len-1);
-						//Log("str is %s\n", tokens[nr_token].str);
 						nr_token++;
 						break;
 					}
@@ -157,6 +156,7 @@ int dominant_operator(int p, int q)
 		if ((tokens[i].type == EQ  || tokens[i].type == NEQ) && priority > 1) { priority = 1; result = i;}
 		if ((tokens[i].type == '+' || tokens[i].type == '-') && priority > 2) { priority = 2; result = i;}
 		if ((tokens[i].type == '*' || tokens[i].type == '/') && priority > 3) { priority = 3; result = i;}
+		if ((tokens[i].type == STAR || tokens[i].type == MINUS || tokens[i].type == '!') && priority > 4) { priority = 4; result = i; }
 	}
 	
 	return result;
@@ -226,13 +226,15 @@ uint32_t expr(char *e, bool *success) {
 		return 0;
 	}
 	*success = true;
-	//printf("%s + %d\n", e, nr_token);
-	//int i = 0;
-	//for (; i < nr_token; i++){
-	//	printf("%s + %d\n", tokens[i].str, tokens[i].type);
-	//}
-	/* TODO: Insert codes to evaluate the expression. */
-//	Log("q = %d\n", nr_token-1);	
+	int i = 0;
+	for (; i < nr_token; i++){
+		int check = i > 0? tokens[i-1].type: 0;
+		if (check == '*' && (i == 0 || (check != NUM && check != HEXNUM && check != REGISTER && check != ')')))	tokens[i].type = STAR;
+		if (check == '-' && (i == 0 || (check != NUM && check != HEXNUM && check != REGISTER && check != ')')))   tokens[i].type = MINUS;
+
+	}
+	
+	
 	return eval(0, nr_token-1);
 }
 
