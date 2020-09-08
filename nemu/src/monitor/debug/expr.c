@@ -94,7 +94,7 @@ static bool make_token(char *e) {
 					case REGISTER: {
 						tokens[nr_token].type = rules[i].token_type;
 						strncpy (tokens[nr_token].str, substr_start+1, substr_len-1);
-						Log("str is %s\n", tokens[nr_token].str);
+						//Log("str is %s\n", tokens[nr_token].str);
 						nr_token++;
 						break;
 					}
@@ -174,6 +174,7 @@ uint32_t eval (int p, int q)
 		if (tokens[p].type == REGISTER) {
 			int k;
 			char * check = tokens[k].str;
+			Log("Register is %s\n", check);
 			for (k = R_EAX; k <= R_EDI; k++){
 				if (strcmp (check, regsl[k]) == 1) return reg_l(k); 	
 			}
