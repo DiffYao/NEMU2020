@@ -182,7 +182,7 @@ uint32_t eval (int p, int q)
 					return reg_l(k); 	
 				}
 			}
-			if (strcmp (check, "eip") == 1) return cpu.eip;
+			if (strcmp (check, "eip") == 0) return cpu.eip;
 			for (k = R_AX; k <= R_DI; k++) {
 				if (strcmp (check, regsw[k]) == 0) return reg_w(k);
 			}	
