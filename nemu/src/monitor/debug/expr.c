@@ -239,8 +239,8 @@ uint32_t expr(char *e, bool *success) {
 	int i = 0;
 	for (; i < nr_token; i++){
 		int check = i > 0?  tokens[i-1].type : 0;
-		if (check == '*' && (i == 0 || (check != NUM && check != HEXNUM && check != REGISTER && check != ')')))	tokens[i].type = STAR;
-		if (check == '-' && (i == 0 || (check != NUM && check != HEXNUM && check != REGISTER && check != ')')))   tokens[i].type = MINUS;
+		if (tokens[i].type == '*' && (i == 0 || (check != NUM && check != HEXNUM && check != REGISTER && check != ')')))	tokens[i].type = STAR;
+		if (tokens[i].type == '-' && (i == 0 || (check != NUM && check != HEXNUM && check != REGISTER && check != ')')))   tokens[i].type = MINUS;
 		printf("i = %d, str = %s, type is %d\n", i, tokens[i].str, tokens[i].type);
 	}
 	
