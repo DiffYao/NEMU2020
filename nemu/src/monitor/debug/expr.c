@@ -95,7 +95,6 @@ static bool make_token(char *e) {
 						tokens[nr_token].type = rules[i].token_type;
 						strncpy (tokens[nr_token].str, substr_start+1, substr_len-1);
 						Log("str is %s\n", tokens[nr_token].str);
-						if (strcmp (tokens[nr_token].str, "eax") == 0) printf("ok\n");
 						nr_token++;
 						break;
 					}
@@ -150,7 +149,7 @@ int dominant_operator(int p, int q)
 		//Log("i is %d, type is %c\n", i, tokens[i].type);
 		if (tokens[i].type == ')') is++;
 		if (tokens[i].type == '(') is--;
-		if (tokens[i].type == NUM || tokens[i].type == HEXNUM || is != 0) continue;
+		if (tokens[i].type == NUM || tokens[i].type == HEXNUM || tokens[i].type == REGISTER||is != 0) continue;
 		if (tokens[i].type == EQ  || tokens[i].type == NEQ ) return i;
 		if (tokens[i].type == '+' || tokens[i].type == '-') result = i;
 		if ((tokens[i].type == '*' || tokens[i].type == '/') && result <=  i) result = i;
@@ -170,15 +169,24 @@ uint32_t eval (int p, int q)
 	else if (p == q)
 	{	
 		uint32_t i;
-		if (tokens[p].type == HEXNUM){
-			sscanf(tokens[p].str, "%x", &i);
-			return i;
+		if (tokens[p].type == HEXNUM) sscanf(tokens[p].str, "%x", &i);
+		if (tokens[p].type == NUM)  sscanf(tokens[p].str, "%u", &i);
+		if (tokens[p].type == REGISTER) {
+			int k;
+			char * check = tokens[k].str;
+			for (k = R_EAX; k <= R_EDI; k++){
+				if (strcmp (check, regsl[k]) == 1) return reg_l(k); 	
+			}
+			if (strcmp (check, "eip") == 1) return cpu.eip;
+			for (k = R_AX; k <= R_DI; k++) {
+				if (strcmp (check, regsw[k]) == 1) return reg_w(k);
+			}	
+			for (k = R_AL; k <= R_AH; k++) {
+				if (strcmp (check, regsb[k]) == 1) return reg_b(k);
+			}
+			Assert(1, "Register Not Found\n");
 		}
-		if (tokens[p].type == NUM) {
-			sscanf(tokens[p].str, "%u", &i);
-			return i;
-		}
-		return -1;
+		return i;
 	}
 	else if (check_parentheses(p, q) == true){
 
