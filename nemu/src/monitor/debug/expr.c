@@ -162,8 +162,9 @@ uint32_t eval (int p, int q)
 	{	
 		uint32_t i;
 		if (tokens[p].type == HEXNUM){
-			Log("STR is %s\n", tokens[p].str);
+			Log("str is %s\n", tokens[p].str);
 			sscanf(tokens[p].str, "%u", &i);
+			printf("i = %u\n", i);
 			return i;
 		}
 		if (tokens[p].type == NUM) {
