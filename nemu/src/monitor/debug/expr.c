@@ -201,7 +201,7 @@ uint32_t eval (int p, int q)
 	}else {
 		//Log("p = %d, q= %d\n", p, q);
 		int op = dominant_operator(p, q);
-		Log("op is %d\n", op);
+		//Log("op is %d\n", op);
 		if (p == op){
 			uint32_t val = eval(p+1, q);
 			switch (tokens[op].type) {
@@ -241,7 +241,7 @@ uint32_t expr(char *e, bool *success) {
 		int check = i > 0?  tokens[i-1].type : 0;
 		if (tokens[i].type == '*' && (i == 0 || (check != NUM && check != HEXNUM && check != REGISTER && check != ')')))	tokens[i].type = STAR;
 		if (tokens[i].type == '-' && (i == 0 || (check != NUM && check != HEXNUM && check != REGISTER && check != ')')))   tokens[i].type = MINUS;
-		printf("i = %d, str = %s, type is %d\n", i, tokens[i].str, tokens[i].type);
+		//printf("i = %d, str = %s, type is %d\n", i, tokens[i].str, tokens[i].type);
 	}
 	
 	
