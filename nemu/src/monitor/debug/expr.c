@@ -25,6 +25,7 @@ static struct rule {
 	{" +",	NOTYPE},				// spaces 256
 	{"\\+", '+'},					// plus 43 
 	{"==", EQ},					// equal 257
+	{"!=", NEQ},					// not equal 259
 	{"\\-", '-'},					// sub  45
 	{"/",'/' },					// div  
 	{"[0-9]+", NUM},				// number 258
