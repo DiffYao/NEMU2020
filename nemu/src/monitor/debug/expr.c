@@ -156,7 +156,7 @@ uint32_t eval (int p, int q)
 	
 	if (p > q) 
 	{
-		Log("Wrong expression\n");
+		panic("Wrong expression\n");
 		return 0;
 	} 
 	else if (p == q)
