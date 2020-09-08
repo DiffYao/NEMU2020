@@ -177,7 +177,10 @@ uint32_t eval (int p, int q)
 			Log("Register is %s\n", check);
 						
 			for (k = R_EAX; k <= R_EDI; k++){
-				if (strcmp (check, regsl[k]) == 1) return reg_l(k); 	
+				if (strcmp (check, regsl[k]) == 1) {
+					Log("k = %d\n", k);	
+					return reg_l(k); 	
+				}
 			}
 			if (strcmp (check, "eip") == 1) return cpu.eip;
 			for (k = R_AX; k <= R_DI; k++) {
