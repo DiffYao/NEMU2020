@@ -25,7 +25,7 @@ static struct rule {
         {"\\(", '('},                                   // leftpa 40
         {"\\)", ')'},                                   // rightpa 41
 	{"0x[0-9a-fA-F]+", HEXNUM},			// hexadecimal number 259
-	{"\\$[a-zA-Z]", REGISTER},
+	{"\\$[a-zA-Z]+", REGISTER},
 	{"[0-9]+", NUM},                                // number 258
 	{" +",	NOTYPE},				// spaces 256
 	{"\\+", '+'},					// plus 43 
