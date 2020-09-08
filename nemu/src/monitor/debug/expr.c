@@ -36,7 +36,7 @@ static struct rule {
 	{"\\*", '*'},					// multi 42
 	{"!", '!'}, 					// not
 	{"&&", AND},					// and
-	{"||", OR}					// or	
+	{"\\|\\|", OR}					// or	
 };
 
 #define NR_REGEX (sizeof(rules) / sizeof(rules[0]) )
