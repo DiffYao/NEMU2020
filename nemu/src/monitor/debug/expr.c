@@ -7,7 +7,7 @@
 #include <regex.h>
 
 enum {
-	NOTYPE = 256, EQ, NUM, HEXNUM, NEQ, REGISTER
+	NOTYPE = 256, EQ, NUM, HEXNUM, NEQ, REGISTER, AND, OR
 
 	/* TODO: Add more token types */
 
@@ -34,7 +34,9 @@ static struct rule {
 	{"\\-", '-'},					// sub  45
 	{"/", '/'},					// div  
 	{"\\*", '*'},					// multi 42
-	
+	{"!", '!'}, 					// not
+	{"&&", AND},					// and
+	{"||", OR}					// or	
 };
 
 #define NR_REGEX (sizeof(rules) / sizeof(rules[0]) )
@@ -177,10 +179,7 @@ uint32_t eval (int p, int q)
 			Log("Register is %s\n", check);
 						
 			for (k = R_EAX; k <= R_EDI; k++){
-				if (strcmp (check, regsl[k]) == 0) {
-					Log("k = %d\n", k);	
-					return reg_l(k); 	
-				}
+				if (strcmp (check, regsl[k]) == 0) return reg_l(k); 	
 			}
 			if (strcmp (check, "eip") == 0) return cpu.eip;
 			for (k = R_AX; k <= R_DI; k++) {
@@ -211,6 +210,8 @@ uint32_t eval (int p, int q)
 			case '/' : return val1 / val2;
 			case EQ  : return val1 == val2;
 			case NEQ : return val1 != val2;
+			case AND : return val1 && val2;
+			case OR  : return val1 || val2;
 			default : assert(0);
 		}
 	
