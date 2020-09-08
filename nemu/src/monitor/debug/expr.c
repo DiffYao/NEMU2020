@@ -7,7 +7,7 @@
 #include <regex.h>
 
 enum {
-	NOTYPE = 256, EQ, NUM, HEXNUM, NEQ
+	NOTYPE = 256, EQ, NUM, HEXNUM, NEQ, REGISTER
 
 	/* TODO: Add more token types */
 
@@ -25,6 +25,7 @@ static struct rule {
         {"\\(", '('},                                   // leftpa 40
         {"\\)", ')'},                                   // rightpa 41
 	{"0x[0-9a-fA-F]+", HEXNUM},			// hexadecimal number 259
+	{"$[a-zA-Z]", REGISTER},
 	{"[0-9]+", NUM},                                // number 258
 	{" +",	NOTYPE},				// spaces 256
 	{"\\+", '+'},					// plus 43 
@@ -162,9 +163,7 @@ uint32_t eval (int p, int q)
 	{	
 		uint32_t i;
 		if (tokens[p].type == HEXNUM){
-			Log("str is %s\n", tokens[p].str);
 			sscanf(tokens[p].str, "%x", &i);
-			printf("i = %u\n", i);
 			return i;
 		}
 		if (tokens[p].type == NUM) {
