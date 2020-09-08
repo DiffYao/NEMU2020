@@ -177,17 +177,17 @@ uint32_t eval (int p, int q)
 			Log("Register is %s\n", check);
 						
 			for (k = R_EAX; k <= R_EDI; k++){
-				if (strcmp (check, regsl[k]) == 1) {
+				if (strcmp (check, regsl[k]) == 0) {
 					Log("k = %d\n", k);	
 					return reg_l(k); 	
 				}
 			}
 			if (strcmp (check, "eip") == 1) return cpu.eip;
 			for (k = R_AX; k <= R_DI; k++) {
-				if (strcmp (check, regsw[k]) == 1) return reg_w(k);
+				if (strcmp (check, regsw[k]) == 0) return reg_w(k);
 			}	
 			for (k = R_AL; k <= R_AH; k++) {
-				if (strcmp (check, regsb[k]) == 1) return reg_b(k);
+				if (strcmp (check, regsb[k]) == 0) return reg_b(k);
 			}
 			Assert(0, "Register Not Found\n");
 		}
