@@ -7,7 +7,7 @@
 #include <regex.h>
 
 enum {
-	NOTYPE = 256, EQ, NUM
+	NOTYPE = 256, EQ, NUM, NEQ
 
 	/* TODO: Add more token types */
 
@@ -139,6 +139,7 @@ int dominant_operator(int p, int q)
 		if (tokens[i].type == ')') is++;
 		if (tokens[i].type == '(') is--;
 		if (tokens[i].type == NUM || is != 0) continue;
+		if (tokens[i].type == EQ  || tokens[i].type == NEQ ) return i;
 		if (tokens[i].type == '+' || tokens[i].type == '-')  return i;
 		if ((tokens[i].type == '*' || tokens[i].type == '/') && result <=  i) result = i;
 	}
@@ -179,6 +180,8 @@ uint32_t eval (int p, int q)
 			case '-' : return val1 - val2;
 			case '*' : return val1 * val2;
 			case '/' : return val1 / val2;
+			case EQ  : return val1 == val2;
+			case NEQ : return val1 != val2;
 			default : assert(0);
 		}
 	
