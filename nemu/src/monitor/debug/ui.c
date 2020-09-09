@@ -85,7 +85,7 @@ static int cmd_info(char *args){
 		printf("%%cpu.edi : %#08x\n", cpu.edi);
 	}
 	else if (strcmp(arg, "w") == 0){
-		printf("NUM\tEXPR\tVAL\n"); 
+		printf("NUM\t\tEXPR\t\tVAL\n"); 
 		print_wp();
 	}
 	return 0;
