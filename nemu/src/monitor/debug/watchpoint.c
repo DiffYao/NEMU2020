@@ -38,7 +38,7 @@ void free_WP(WP* wp){
 
 	h = head;
 	if (head == NULL) { printf("No Using WP\n"); return; }
-	if (h->NO == wp->NO) {head = head->next; return;}
+	if (h->NO == wp->NO) {head = head->next;  printf("Success Delete WatchPoint No.%d\n", wp->NO);return;}
 	while (h->next != NULL && h->next->NO != wp->NO) h = h->next; 
 	if (h->next == NULL) {printf( "No Found This WP\n"); return;}
 	
