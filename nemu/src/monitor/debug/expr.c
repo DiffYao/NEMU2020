@@ -180,7 +180,7 @@ uint32_t eval (int p, int q)
 			int k;
 			char * check = tokens[p].str;
 			
-			Log("register is %s\n", check);
+			//Log("register is %s\n", check);
 			for (k = R_EAX; k <= R_EDI; k++){
 				if (strcmp (check, regsl[k]) == 0) return reg_l(k); 	
 			}
