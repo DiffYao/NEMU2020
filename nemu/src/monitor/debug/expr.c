@@ -175,7 +175,7 @@ uint32_t eval (int p, int q)
 	{	
 		uint32_t i;
 		char* check = tokens[p].str;
-		printf("check is %s\n", check);
+		
 		if (tokens[p].type == HEXNUM) { sscanf(check, "%x", &i); return i;}
 		if (tokens[p].type == NUM)    { sscanf(check, "%u", &i); return i;}
 		if (tokens[p].type == REGISTER) {
@@ -230,6 +230,7 @@ uint32_t eval (int p, int q)
 	}
 }
 uint32_t expr(char *e, bool *success) {
+	if (strlen(e) > 32) panic("EXPR is too long\n");
 	if(!make_token(e)) {
 		*success = false;
 		Log("False \n");
