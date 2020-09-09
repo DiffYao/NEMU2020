@@ -174,7 +174,7 @@ uint32_t eval (int p, int q)
 	else if (p == q)
 	{	
 		uint32_t i;
-		if (tokens[p].type == HEXNUM) { sscanf(tokens[p].str, "%x", &i); return i;}
+		if (tokens[p].type == HEXNUM) { sscanf(tokens[p].str, "%u", &i); return i;}
 		if (tokens[p].type == NUM)    { sscanf(tokens[p].str, "%u", &i); return i;}
 		if (tokens[p].type == REGISTER) {
 			int k;
