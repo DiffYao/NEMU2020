@@ -83,7 +83,7 @@ static bool make_token(char *e) {
 				int substr_len = pmatch.rm_eo;
 			//	printf("s = %s\n", substr_start);
 			//	printf("len = %d\n", substr_len);
-				Log("match rules[%d] = \"%s\" at position %d with len %d: %.*s", i, rules[i].regex, position, substr_len, substr_len, substr_start);
+			//	Log("match rules[%d] = \"%s\" at position %d with len %d: %.*s", i, rules[i].regex, position, substr_len, substr_len, substr_start);
 				position += substr_len;
 
 				/* TODO: Now a new token is recognized with rules[i]. Add codes
@@ -97,7 +97,7 @@ static bool make_token(char *e) {
 						tokens[nr_token].type = rules[i].token_type;
 						strncpy (tokens[nr_token].str, substr_start+1, substr_len-1);
 						nr_token++;
-						printf("dai %s\n", tokens[nr_token-1].str);
+					
 						break;
 					}
 					default: {
