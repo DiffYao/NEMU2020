@@ -174,12 +174,12 @@ uint32_t eval (int p, int q)
 	else if (p == q)
 	{	
 		uint32_t i;
-		if (tokens[p].type == HEXNUM) { sscanf(tokens[p].str, "%u", &i); return i;}
-		if (tokens[p].type == NUM)    { sscanf(tokens[p].str, "%u", &i); return i;}
+		char* check = tokens[p].str;
+		printf("check is %s\n", check);
+		if (tokens[p].type == HEXNUM) { sscanf(check, "%x", &i); return i;}
+		if (tokens[p].type == NUM)    { sscanf(check, "%u", &i); return i;}
 		if (tokens[p].type == REGISTER) {
 			int k;
-			char * check = tokens[p].str;
-			
 			//Log("register is %s\n", check);
 			for (k = R_EAX; k <= R_EDI; k++){
 				if (strcmp (check, regsl[k]) == 0) return reg_l(k); 	
