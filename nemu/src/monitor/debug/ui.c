@@ -72,9 +72,9 @@ static struct {
 static int cmd_info(char *args){
 	char* arg = strtok(NULL, " ");
 	if (arg == NULL || strlen(arg) != 1 || (arg[0] != 'r' && arg[0] != 'w')){
-	printf("Invalid Input\n"); 
+		printf("Invalid Input\n");
 	}
-	if(strcmp(arg, "r") == 0){
+	else if(strcmp(arg, "r") == 0){
 		printf("%%cpu.eax : %#08x\n", cpu.eax);
 		printf("%%cpu.ecx : %#08x\n", cpu.ecx);
 		printf("%%cpu.edx : %#08x\n", cpu.edx);
@@ -83,6 +83,10 @@ static int cmd_info(char *args){
 		printf("%%cpu.ebp : %#08x\n", cpu.ebp);
 		printf("%%cpu.esi : %#08x\n", cpu.esi);
 		printf("%%cpu.edi : %#08x\n", cpu.edi);
+	}
+	else if (strcmp(arg, "w") == 0){
+		printf("NUM     EXPR   VAL\n"); 
+		print_wp();
 	}
 	return 0;
 }

@@ -18,7 +18,6 @@ void init_wp_pool() {
 	free_ = wp_pool;
 }
 
-/* TODO: Implement the functionality of watchpoint */
 WP* new_wp(){
 	WP *w,*h;
 	w = free_;
@@ -81,5 +80,13 @@ bool check_WP(){
 	}
 	return key;
 }
+void print_wp(){
+	WP *h = head;
+	while (h != NULL)
+	{
+		printf("%d for %s %d\n", h->NO, h->str, h->val);	
+	}
+}
+
 
 

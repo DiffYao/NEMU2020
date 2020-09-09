@@ -17,4 +17,5 @@ WP* new_wp();
 void free_wp(WP* wp);
 bool check_WP();
 int delete_wp(int num);
+void print_wp();
 #endif
