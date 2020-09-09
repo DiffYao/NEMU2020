@@ -119,7 +119,7 @@ static int cmd_w(char *args){
 	bool is;
 	w->val = expr(args, &is);
 	if (!is) Assert(0, "Wroing EXPR\n");
-	printf("Set WatchPoint NO.%d for %s, Now val is %d", w->NO, w->str, w->val);
+	printf("Set WatchPoint NO.%d for %s, Now val is %d\n", w->NO, w->str, w->val);
 	return 0;
 }
 static int cmd_x(char *args){
