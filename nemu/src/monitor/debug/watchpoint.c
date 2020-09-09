@@ -51,7 +51,7 @@ void free_WP(WP* wp){
                 while (p->next != NULL) p = p->next;
                 p->next = wp;
         }
-
+	printf("Success Delete WatchPoint No.%d", wp->NO);
 }
 int delete_wp(int num){
 	if (num >= 0 && num < NR_WP){
