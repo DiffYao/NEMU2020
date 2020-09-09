@@ -85,6 +85,7 @@ void print_wp(){
 	while (h != NULL)
 	{
 		printf("%d for %s %d\n", h->NO, h->str, h->val);	
+		h = h->next;	
 	}
 }
 
