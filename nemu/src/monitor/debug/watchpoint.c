@@ -38,10 +38,10 @@ void free_WP(WP* wp){
 	WP *p, *h;
 
 	h = head;
-	if (head == NULL) Assert(0, "No Using WP\n");
+	if (head == NULL) { printf("No Using WP\n"); return; }
 	if (h->NO == wp->NO) {head = head->next; return;}
 	while (h->next != NULL && h->next->NO != wp->NO) h = h->next; 
-	if (h->next == NULL) Assert(0, "No Found This WP\n");
+	if (h->next == NULL) {printf( "No Found This WP\n"); return;}
 	
 	h->next = wp->next;
 	p = free_;
