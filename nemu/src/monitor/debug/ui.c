@@ -95,14 +95,29 @@ static int cmd_p(char *args){
 	uint32_t num = expr(args, &is);
 	if (is) {
 		printf("result is %d\n", num);
-	}	
-	
-	return num;
+	}		
+	return 0;
 }
 static int cmd_d(char *args){
+	char *arg = strtok(NULL, " ");
+	int num;
+	int suc;
+	sscanf(arg,"%d", &num);
+	suc = delete_wp(num);
+	if (suc == 0) Assert(0, "Invalid Num"); 
 	return 0;
 }
 static int cmd_w(char *args){
+	if (args == NULL) {
+		printf("Invalid Input\n");
+		return 0;
+	}
+	WP *w = new_wp();
+	strcpy (w->str, args);
+	bool is;
+	w->val = expr(args, &is);
+	if (!is) Assert(0, "Wroing EXPR\n");
+	printf("Set WatchPoint NO.%d for %s\n", w->NO, w->str);
 	return 0;
 }
 static int cmd_x(char *args){

@@ -38,8 +38,8 @@ void free_WP(WP* wp){
 	WP *p, *h;
 
 	h = head;
-	if (h == wp) {head = head->next; return;}
-	while (h->next != NULL && h->next != wp) h = h->next; 
+	if (h->NO == wp->NO) {head = head->next; return;}
+	while (h->next != NULL && h->next->NO != wp->NO) h = h->next; 
 	if (h->next == NULL) Assert(0, "No Found This WP\n");
 	
 	h->next = wp->next;
@@ -52,7 +52,33 @@ void free_WP(WP* wp){
         }
 
 }
-
-
+int delete_wp(int num){
+	if (num >= 0 && num < NR_WP){
+		WP tmp = wp_pool[num-1];
+		free_WP(&tmp);
+		return 1;
+	}	
+	return 0;
+}
+bool check_WP(){		
+	
+	WP *h;
+	h = head;
+	bool is;
+	bool key = true;
+	uint32_t NewValue;
+	while (h != NULL) {
+		NewValue = expr(h->str, &is);
+		if (!is) Assert(0, "Calculate EXPR Wrong\n");
+		if (NewValue != h->val){
+			key = false;
+			printf("Hit WatchPoint %d\n", h->NO);
+			printf("Old Value Is %d, New Value is %d\n", h->val, NewValue);
+			h->val = NewValue;
+		}
+		h = h->next;	
+	}
+	return key;
+}
 
 
