@@ -59,7 +59,7 @@ static struct {
 	{ "c", "Continue the execution of the program", cmd_c },
 	{ "q", "Exit NEMU", cmd_q },
 	{ "si", "Execute N instructions in a single step and then pause, the default is 1", cmd_si},
-	{ "info", "r for  Disply info about register \n\tw for print watchpoint infomation", cmd_info},
+	{ "info", " r for  Disply info about register \n\tw for print watchpoint infomation", cmd_info},
 	{ "x", "Scanf memory, Disply N Byte", cmd_x},
 	{ "p", "Calculate the value of EXPR", cmd_p},
 	{ "w", "Set watchpoint for EXPR", cmd_w},
