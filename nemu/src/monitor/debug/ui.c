@@ -95,7 +95,9 @@ static int cmd_p(char *args){
 	uint32_t num = expr(args, &is);
 	if (is) {
 		printf("result is %d\n", num);
-	}		
+	}else{
+		printf("EXPR IS WRONG\n");
+	}			
 	return 0;
 }
 static int cmd_d(char *args){
