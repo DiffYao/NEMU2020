@@ -84,7 +84,7 @@ void print_wp(){
 	WP *h = head;
 	while (h != NULL)
 	{
-		printf("%d \t%s \t%d\n", h->NO, h->str, h->val);	
+		printf("%d\t\t%s\t\t%d\n", h->NO, h->str, h->val);	
 		h = h->next;	
 	}
 }
