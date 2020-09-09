@@ -54,7 +54,7 @@ void free_WP(WP* wp){
 }
 int delete_wp(int num){
 	if (num >= 0 && num < NR_WP){
-		WP tmp = wp_pool[num-1];
+		WP tmp = wp_pool[num];
 		free_WP(&tmp);
 		return 1;
 	}	
