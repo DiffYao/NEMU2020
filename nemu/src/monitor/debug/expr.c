@@ -16,7 +16,6 @@ enum {
 static struct rule {
 	char *regex;
 	int token_type;
-//	int priority;	 		//prioritize from small to large
 } rules[] = {
 
 	/* TODO: Add more rules.
@@ -206,7 +205,7 @@ uint32_t eval (int p, int q)
 			uint32_t val = eval(p+1, q);
 			switch (tokens[op].type) {
 				case MINUS : return -val;
-				case STAR  : return swaddr_read(val, 4);
+				case STAR  : return swaddr_read(val, 1);
 				case '!'   : return !val;
 				default:  Assert(0, "Wrong Token Type\n"); 
 			} 
@@ -241,7 +240,7 @@ uint32_t expr(char *e, bool *success) {
 	for (; i < nr_token; i++){
 		int check = i > 0?  tokens[i-1].type : 0;
 		if (tokens[i].type == '*' && (i == 0 || (check != NUM && check != HEXNUM && check != REGISTER && check != ')')))	tokens[i].type = STAR;
-		if (tokens[i].type == '-' && (i == 0 || (check != NUM && check != HEXNUM && check != REGISTER && check != ')')))   tokens[i].type = MINUS;
+		if (tokens[i].type == '-' && (i == 0 || (check != NUM && check != HEXNUM && check != REGISTER && check != ')')))   	tokens[i].type = MINUS;
 		//printf("i = %d, str = %s, type is %d\n", i, tokens[i].str, tokens[i].type);
 	}
 	
