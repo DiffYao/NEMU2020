@@ -136,7 +136,9 @@ static int cmd_x(char *args){
 	sscanf(arg, "%d", &num);
 	char *str = strtok(NULL, " ");
 	uint32_t result;
-	sscanf(str, "%x", &result);
+	bool is;
+	result = expr(str, &is);
+	if (!is) {printf("EXPR WRONG\n"); return 0;}
 	int digit;
 	int i = 0;
 	for (; num > 0; num--){
