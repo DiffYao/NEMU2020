@@ -71,5 +71,8 @@ test: $(nemu_BIN) $(testcase_BIN) entry
 	$(call git_commit, "test")
 	bash test.sh $(testcase_BIN)
 
+count:  
+	find ~/NEMU2020/nemu/ -name "*.c" -or -name "*.h"| xargs cat| grep '^.' | wc -l
+
 submit: clean
 	cd .. && zip -r $(STU_ID).zip $(shell pwd | grep -o '[^/]*$$')
