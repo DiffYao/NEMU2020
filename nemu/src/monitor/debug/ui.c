@@ -141,7 +141,7 @@ static int cmd_x(char *args){
 	int i = 0;
 	for (; num > 0; num--){
 		digit = swaddr_read(result+i, 4);
-		printf("add:%x \t0x%08x\n",result+i,digit);
+		printf("address:%x  \t0x%08x\n",result+i,digit);
 		i+=4;
 	}	
 	return 0;
