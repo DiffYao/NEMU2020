@@ -38,6 +38,18 @@ static int cmd_q(char *args) {
 
 static int cmd_help(char *args);
 
+static int cmd_si(char *args);
+
+static int cmd_x(char *args);
+
+static int cmd_info(char *args);
+
+static int cmd_p(char *args);
+
+static int cmd_w(char *args);
+
+static int cmd_d(char *args);
+
 static struct {
 	char *name;
 	char *description;
@@ -46,13 +58,110 @@ static struct {
 	{ "help", "Display informations about all supported commands", cmd_help },
 	{ "c", "Continue the execution of the program", cmd_c },
 	{ "q", "Exit NEMU", cmd_q },
-
+	{ "si", "Execute N instructions in a single step and then pause, the default is 1", cmd_si},
+	{ "info", " r for  Disply info about register \n\tw for print watchpoint infomation", cmd_info},
+	{ "x", "Scanf memory, Disply N 4 Byte", cmd_x},
+	{ "p", "Calculate the value of EXPR", cmd_p},
+	{ "w", "Set watchpoint for EXPR", cmd_w},
+	{ "d", "Delete No.N watchpoint", cmd_d},
 	/* TODO: Add more commands */
 
 };
 
 #define NR_CMD (sizeof(cmd_table) / sizeof(cmd_table[0]))
-
+static int cmd_info(char *args){
+	char* arg = strtok(NULL, " ");
+	if (arg == NULL || strlen(arg) != 1 || (arg[0] != 'r' && arg[0] != 'w')){
+		printf("Invalid Input\n");
+	}
+	else if(strcmp(arg, "r") == 0){
+		printf("%%cpu.eax : %#08x\n", cpu.eax);
+		printf("%%cpu.ecx : %#08x\n", cpu.ecx);
+		printf("%%cpu.edx : %#08x\n", cpu.edx);
+		printf("%%cpu.ebx : %#08x\n", cpu.ebx);
+		printf("%%cpu.esp : %#08x\n", cpu.esp);
+		printf("%%cpu.ebp : %#08x\n", cpu.ebp);
+		printf("%%cpu.esi : %#08x\n", cpu.esi);
+		printf("%%cpu.edi : %#08x\n", cpu.edi);
+	}
+	else if (strcmp(arg, "w") == 0){
+		printf("NUM\t\tEXPR\t\tVAL\n"); 
+		print_wp();
+	}
+	return 0;
+}
+static int cmd_p(char *args){
+	if (args == NULL) {
+		printf("Invalid Input\n");
+		return 0;
+	}
+	bool is;
+	uint32_t num = expr(args, &is);
+	if (is) {
+		printf("result is %d\n", num);
+	}else{
+		printf("EXPR IS WRONG\n");
+	}			
+	return 0;
+}
+static int cmd_d(char *args){
+	char *arg = strtok(NULL, " ");
+	int num;
+	int suc;
+	sscanf(arg,"%d", &num);
+	suc = delete_wp(num);
+	if (suc == 0) Assert(0, "Invalid Num"); 
+	return 0;
+}
+static int cmd_w(char *args){
+	if (args == NULL) {
+		printf("Invalid Input\n");
+		return 0;
+	}
+	WP *w = new_wp();
+	strcpy (w->str, args);
+	bool is;
+	w->val = expr(args, &is);
+	if (!is) Assert(0, "Wroing EXPR\n");
+	printf("Set WatchPoint NO.%d for %s, Now val is %d\n", w->NO, w->str, w->val);
+	return 0;
+}
+static int cmd_x(char *args){
+	if (args == NULL){
+		printf("Invalid Input\n");
+		return 0;
+	}
+	char *arg = strtok(NULL, " ");
+	int num; 
+	sscanf(arg, "%d", &num);
+	char *str = strtok(NULL, " ");
+	uint32_t result;
+	bool is;
+	result = expr(str, &is);
+	if (!is) {printf("EXPR WRONG\n"); return 0;}
+	int digit;
+	int i = 0;
+	for (; num > 0; num--){
+		digit = swaddr_read(result+i, 4);
+		printf("address:0x%x  \t%08x\n",result+i,digit);
+		i+=4;
+	}	
+	return 0;
+}
+static int cmd_si(char *args){
+	char *arg = strtok(NULL, " ");
+	int i;
+	if (arg == NULL) {
+		cpu_exec(1);
+		return 0;
+	}
+  	sscanf(arg, "%d", &i);
+	
+	for (; i > 0; i--){
+		cpu_exec(1);
+	}
+	return 0;
+}
 static int cmd_help(char *args) {
 	/* extract the first argument */
 	char *arg = strtok(NULL, " ");
