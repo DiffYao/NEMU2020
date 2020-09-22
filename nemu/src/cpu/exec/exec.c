@@ -30,7 +30,7 @@ make_group(group1_v,
 /* 0x83 */
 make_group(group1_sx_v,
 	inv, inv, inv, inv, 
-	inv, inv, inv, cmp_si2rm_v)
+	inv, sub_si2rm_v, inv, cmp_si2rm_v)
 
 /* 0xc0 */
 make_group(group2_i_b,
@@ -114,8 +114,8 @@ helper_fun opcode_table [256] = {
 /* 0x44 */	inv, inv, inv, inv,
 /* 0x48 */	inv, inv, inv, inv,
 /* 0x4c */	inv, inv, inv, inv,
-/* 0x50 */	inv, inv, inv, inv,
-/* 0x54 */	inv, push_r_v, inv, inv,
+/* 0x50 */	push_r_v, push_r_v, push_r_v, push_r_v,
+/* 0x54 */	push_r_v, push_r_v, push_r_v, push_r_v,
 /* 0x58 */	inv, inv, inv, inv,
 /* 0x5c */	inv, pop_r_v, inv, inv,
 /* 0x60 */	inv, inv, inv, inv,

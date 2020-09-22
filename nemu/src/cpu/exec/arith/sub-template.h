@@ -1,6 +1,6 @@
 #include "cpu/exec/template-start.h"
 
-#define instr cmp
+#define instr sub
 
 static void do_execute(){
 	DATA_TYPE result = op_dest->val - op_src->val;
@@ -15,8 +15,10 @@ static void do_execute(){
 	result ^= result >> 2;
 	result ^= result >> 1;
 	cpu.PF = !(result & 1);
+	OPERAND_W(op_dest, result);
 	
 	print_asm_template2();
+	
 }
 
 make_instr_helper(i2rm)
