@@ -4,6 +4,7 @@
 
 static void do_execute(){
 	DATA_TYPE result = op_dest->val - op_src->val;
+	OPERAND_W(op_dest, result);
 	int len = (result << 3) - 1;
 	cpu.CF = op_dest->val < op_src->val;
 	cpu.SF = result >> len;
@@ -15,7 +16,7 @@ static void do_execute(){
 	result ^= result >> 2;
 	result ^= result >> 1;
 	cpu.PF = !(result & 1);
-	OPERAND_W(op_dest, result);
+	
 	
 	print_asm_template2();
 	
