@@ -8,6 +8,7 @@
 #include "con-tran/call.h"
 #include "con-tran/ret.h"
 #include "con-tran/je.h"
+#include "con-tran/jmp.h"
 
 #include "arith/dec.h"
 #include "arith/add.h"
