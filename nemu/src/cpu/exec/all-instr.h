@@ -6,6 +6,7 @@
 #include "data-mov/pop.h"
 
 #include "con-tran/call.h"
+#include "con-tran/ret.h"
 #include "con-tran/je.h"
 
 #include "arith/dec.h"
