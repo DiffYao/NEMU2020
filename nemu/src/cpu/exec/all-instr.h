@@ -9,6 +9,7 @@
 #include "con-tran/ret.h"
 #include "con-tran/je.h"
 #include "con-tran/jmp.h"
+#include "con-tran/jbe.h"
 
 #include "arith/dec.h"
 #include "arith/add.h"
