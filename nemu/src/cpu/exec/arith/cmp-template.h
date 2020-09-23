@@ -4,12 +4,11 @@
 
 static void do_execute(){
 	DATA_TYPE result = op_dest->val - op_src->val;
-	int len = (result << 3) - 1;
 	cpu.CF = op_dest->val < op_src->val;
-	cpu.SF = result >> len;
+	cpu.SF = MSB(result);
 	cpu.ZF = !result;
-	int r1 = op_dest->val >> len;
-	int r2 = op_src->val >> len;
+	int r1 = MSB(op_dest->val);
+	int r2 = MSB(op_src->val);
 	cpu.OF = (r1 != r2) && (cpu.SF == r1);
 	result ^= result >> 4;
 	result ^= result >> 2;
