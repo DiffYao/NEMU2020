@@ -11,6 +11,7 @@
 #include "con-tran/jmp.h"
 #include "con-tran/jbe.h"
 #include "con-tran/jle.h"
+#include "con-tran/jne.h"
 #include "con-tran/leave.h"
 
 #include "arith/dec.h"
