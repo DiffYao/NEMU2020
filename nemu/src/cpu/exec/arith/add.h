@@ -2,10 +2,12 @@
 #define __SUB_H__
 
 
-make_helper(sub_i2rm_b);
-make_helper(sub_si2rm_b);
+make_helper(add_i2rm_b);
+make_helper(add_si2rm_b);
+make_helper(add_r2rm_b);
 
-make_helper(sub_i2rm_v);
-make_helper(sub_si2rm_v);
+make_helper(add_r2rm_v);
+make_helper(add_i2rm_v);
+make_helper(add_si2rm_v);
 
 #endif
