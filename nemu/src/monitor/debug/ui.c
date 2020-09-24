@@ -71,7 +71,7 @@ static struct {
 #define NR_CMD (sizeof(cmd_table) / sizeof(cmd_table[0]))
 static int cmd_info(char *args){
 	char* arg = strtok(NULL, " ");
-	if (arg == NULL || strlen(arg) != 1 || (arg[0] != 'r' && arg[0] != 'w')){
+	if (arg == NULL || strlen(arg) > 2 || (arg[0] != 'r' && arg[0] != 'w')){
 		printf("Invalid Input\n");
 	}
 	else if(strcmp(arg, "r") == 0){
