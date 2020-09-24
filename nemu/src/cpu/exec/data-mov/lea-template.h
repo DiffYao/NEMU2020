@@ -3,7 +3,7 @@
 #define instr lea
 
 static void do_execute() {
-	op_dest->val = op_src->val;
+	op_dest->addr = op_src->addr;
 	print_asm_template2();
 }
 
