@@ -14,15 +14,15 @@
 #include "con-tran/leave.h"
 
 #include "arith/dec.h"
-#include "arith/add.h"
-#include "arith/sub.h"
 #include "arith/inc.h"
 #include "arith/neg.h"
 #include "arith/imul.h"
 #include "arith/mul.h"
 #include "arith/idiv.h"
 #include "arith/div.h"
+#include "arith/sub.h"
 #include "arith/cmp.h"
+#include "arith/add.h"
 
 #include "logic/and.h"
 #include "logic/or.h"
