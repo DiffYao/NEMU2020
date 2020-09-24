@@ -84,6 +84,13 @@ static int cmd_info(char *args){
 		printf("%%cpu.esi : %#08x\n", cpu.esi);
 		printf("%%cpu.edi : %#08x\n", cpu.edi);
 	}
+	else if(strcmp(arg, "rf") == 0){
+		printf("%%cpu.CF : %x\n", cpu.CF);
+                printf("%%cpu.OF : %x\n", cpu.OF);
+                printf("%%cpu.ZF : %x\n", cpu.ZF);
+                printf("%%cpu.PF : %x\n", cpu.PF);
+	
+	}
 	else if (strcmp(arg, "w") == 0){
 		printf("NUM\t\tEXPR\t\tVAL\n"); 
 		print_wp();
