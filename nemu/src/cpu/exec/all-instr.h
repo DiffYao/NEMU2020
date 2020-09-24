@@ -4,7 +4,6 @@
 #include "data-mov/xchg.h"
 #include "data-mov/push.h"
 #include "data-mov/pop.h"
-#include "data-mov/lea.h"
 
 #include "con-tran/call.h"
 #include "con-tran/ret.h"
