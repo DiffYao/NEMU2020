@@ -19,6 +19,7 @@ make_helper(concat(jmp_rmm_, SUFFIX)){
 	int len = concat(decode_i_, SUFFIX)(eip+1);
 	swaddr_t temp_addr = op_src->val;
 	DATA_TYPE_S displacement = MEM_R(temp_addr);	
+	cpu.eip += displacement;
 	print_asm("jmp %x", cpu.eip + displacement + 1);
 	return len;
 
