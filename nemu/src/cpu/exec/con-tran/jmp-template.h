@@ -7,6 +7,7 @@ static void do_execute(){
 	DATA_TYPE_S displacement = op_src->val;
 	if (op_src->type == OP_TYPE_MEM){
 		cpu.eip = displacement - concat(decode_rm_, SUFFIX)(cpu.eip+1) -1;
+		
 	}
 	else {
 		print_asm("jmp %x", cpu.eip + displacement + 1);
@@ -14,21 +15,7 @@ static void do_execute(){
 	}
 }
 
-make_instr_helper(i);
-make_instr_helper(rm);
-
-#if DATA_BYTE != 1
-make_helper(concat(jmp_rmm_, SUFFIX)){
-
-	int len = concat(decode_i_, SUFFIX)(eip+1);
-	swaddr_t temp_addr = op_src->val;
-	DATA_TYPE_S displacement = MEM_R(temp_addr);	
-	cpu.eip += displacement;
-	print_asm("jmp %x", cpu.eip + displacement + 1);
-	return len;
-
-}
-
-#endif
+make_instr_helper(i)
+make_instr_helper(rm)
 
 #include "cpu/exec/template-end.h"
