@@ -3,7 +3,7 @@
 #define instr movsx
 
 static void do_execute() {
-	int32_t result = (DATA_TYPE_S) (op_src->val & 0xffff);
+	int32_t result = (DATA_TYPE_S) (op_src->val);
 	
 	OPERAND_W(op_dest, result);
 	print_asm_template2();
