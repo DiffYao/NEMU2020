@@ -17,6 +17,7 @@
 #include "con-tran/jl.h"
 #include "con-tran/ja.h"
 #include "con-tran/jg.h"
+#include "con-tran/jge.h"
 #include "con-tran/leave.h"
 
 #include "arith/dec.h"
