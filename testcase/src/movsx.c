@@ -21,11 +21,11 @@ int main() {
 	A[0] = (int)C[0];
 	nemu_assert(A[0] ==  0x61);
 
+
 	C[1] = 0x80;
 	A[0] = (int)C[1];
-
 	nemu_assert(C[1] == 0xffffff80);
-	nemu_assert(A[0] == 0xffffff80);
+	nemu_assert(A[0] == 0x80);
 
 /*
 	nemu_assert(A[1] == 1);
