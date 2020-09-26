@@ -98,7 +98,7 @@ helper_fun opcode_table [256] = {
 /* 0x04 */	add_i2a_b, add_i2a_v, inv, inv,
 /* 0x08 */	inv, inv, inv, inv,
 /* 0x0c */	inv, inv, inv, _2byte_esc,
-/* 0x10 */	inv, inv, inv, inv,
+/* 0x10 */	adc_r2rm_b, adc_r2rm_v, adc_rm2r_b, adc_rm2r_v,
 /* 0x14 */	adc_i2a_b, adc_i2a_v, inv, inv,
 /* 0x18 */	inv, inv, inv, inv,
 /* 0x1c */	inv, inv, inv, inv,
