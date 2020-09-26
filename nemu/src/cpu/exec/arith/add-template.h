@@ -7,12 +7,12 @@ static void do_execute(){
 	OPERAND_W(op_dest, result);
 
 
-	cpu.CF = op_dest->val < op_src->val;
+	cpu.CF = result < op_dest->val;
 	cpu.SF = MSB(result);
 	cpu.ZF = !result;
 	int r1 = MSB(op_dest->val);
 	int r2 = MSB(op_src->val);
-	cpu.OF = (r1 != r2) && (cpu.SF == r1);
+	cpu.OF = (r1 == r2) && (cpu.SF != r1);
 	result ^= result >> 4;
 	result ^= result >> 2;
 	result ^= result >> 1;
