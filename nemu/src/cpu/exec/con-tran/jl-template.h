@@ -6,7 +6,7 @@ static void do_execute(){
 	
 	DATA_TYPE_S displacement = op_src->val;
 	
-	if (cpu.SF != cpu.OF) cpu.eip += displacement;
+	if (cpu.SF != cpu.OF && cpu.ZF == 0) cpu.eip += displacement;
 	print_asm("jl %x", cpu.eip + displacement + 1);
 
 }
