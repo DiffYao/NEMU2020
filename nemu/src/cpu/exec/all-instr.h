@@ -14,6 +14,7 @@
 #include "con-tran/jbe.h"
 #include "con-tran/jle.h"
 #include "con-tran/jne.h"
+#include "con-tran/jna.h"
 #include "con-tran/jl.h"
 #include "con-tran/ja.h"
 #include "con-tran/jg.h"
