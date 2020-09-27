@@ -22,7 +22,7 @@ int main() {
 //	for(i = 0; i < NR_DATA; i ++) {
 //		nemu_assert(if_else(test_data[i]) == ans[ans_idx ++]);
 //	}
-	nemu_assert(if_else(test_data[7]) == ans[8]);
+	nemu_assert(if_else(test_data[8]) == ans[8]);
 //	nemu_assert(i == NR_DATA);
 
 	return 0;
