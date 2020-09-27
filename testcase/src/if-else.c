@@ -18,12 +18,12 @@ int ans[] = {0, 0, 0, 0, 50, 50, 50, 75, 75, 75, 100, 100, 100, 150};
 //(sizeof(test_data) / sizeof(test_data[0]))
 
 int main() {
-	int i = 0, ans_idx = 0;
+//	int i = 0;
 //	for(i = 0; i < NR_DATA; i ++) {
 //		nemu_assert(if_else(test_data[i]) == ans[ans_idx ++]);
 //	}
-	nemu_assert(if_else(test_data[0]) == ans[ans_idx ++]);
-	nemu_assert(i == NR_DATA);
+	nemu_assert(if_else(test_data[200]) == ans[8]);
+//	nemu_assert(i == NR_DATA);
 
 	return 0;
 }
