@@ -30,12 +30,13 @@ make_helper(rep) {
 			if ((ops_decoded.opcode == 0xa6	
 				|| ops_decoded.opcode == 0xa7	
 				|| ops_decoded.opcode == 0xae	
-				|| ops_decoded.opcode == 0xaf) && cpu.ZF == 1) break;			
+				|| ops_decoded.opcode == 0xaf) && cpu.ZF == 0) break;			
 
 		}
+		len = 1;
 		
 	}
-	len = 1;
+	
 	print_asm ("%s", assembly);
 #ifdef DEBUG
 	char temp[80];
