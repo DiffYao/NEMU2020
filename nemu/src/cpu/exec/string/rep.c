@@ -33,8 +33,9 @@ make_helper(rep) {
 				|| ops_decoded.opcode == 0xaf) && cpu.ZF == 1) break;			
 
 		}
-		len = 1;
+		
 	}
+	len = 1;
 	print_asm ("%s", assembly);
 #ifdef DEBUG
 	char temp[80];
