@@ -4,22 +4,29 @@
 
 static void do_execute() {
 
-	DATA_TYPE src,dest;
-	if (ops_decoded.is_operand_size_16)
+	uint32_t src,dest;
+	dest = swaddr_read (reg_l (R_EDI),DATA_BYTE);
+
+	if (DATA_BYTE == 1) {
+
+		src = reg_b(R_AL);
+
+	}
+	else if (DATA_BYTE == 2)
 	{
 		
-		src = reg_w (R_AX);
-		
-		dest = swaddr_read (reg_w (R_DI),DATA_BYTE);
+		src = reg_w(R_AX);
+
 	}
 	else
 	{
 		
-		src = reg_l (R_EAX);
-		
-		dest = swaddr_read (reg_l (R_EDI),DATA_BYTE);
+		src = reg_l(R_EAX);
+
 	}
+
 	DATA_TYPE result = dest - src;
+
 
 	cpu.CF = dest < src;
 	cpu.SF = MSB(result);
