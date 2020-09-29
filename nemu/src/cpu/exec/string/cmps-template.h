@@ -19,7 +19,7 @@ static void do_execute() {
 		
 		dest = swaddr_read (reg_l (R_EDI),DATA_BYTE);
 	}
-	DATA_TYPE result = src - dest;
+	DATA_TYPE result = dest - src;
 
 	cpu.CF = dest < src;
 	cpu.SF = MSB(result);
