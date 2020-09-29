@@ -5,7 +5,7 @@
 static void do_execute() {
 
 	DATA_TYPE_S IncDec;
-	DATA_TYPE src =  reg_l(R_ESI);
+	uint32_t src =  reg_l(R_ESI);
 
 	if (DATA_BYTE == 1) {
 
