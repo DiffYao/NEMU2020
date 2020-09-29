@@ -5,9 +5,8 @@
 static void do_execute() {
 
 	DATA_TYPE_S IncDec;
-
-	
 	DATA_TYPE src =  reg_l(R_ESI);
+
 	if (DATA_BYTE == 1) {
 
 		reg_b(R_AL) = MEM_R(src);
