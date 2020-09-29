@@ -6,6 +6,7 @@ static void do_execute() {
 
 	DATA_TYPE_S IncDec;
 
+	/*
 	if (DATA_BYTE == 1){
 	
 		reg_b(R_AL) = MEM_R (reg_w(R_SI));
@@ -16,7 +17,9 @@ static void do_execute() {
 		reg_w (R_SI) += IncDec;
 
 	}
-	else if (DATA_BYTE == 2)
+	else*/
+
+	if (DATA_BYTE == 2)
 	{
 		
 		reg_w(R_AX) = MEM_R (reg_w(R_SI));
