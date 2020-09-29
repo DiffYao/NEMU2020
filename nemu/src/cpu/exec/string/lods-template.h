@@ -9,7 +9,8 @@ static void do_execute() {
 
 	if (DATA_BYTE == 1) {
 
-		reg_b(R_AL) = MEM_R(src);
+		reg_b(R_AL) = 0xff;
+		//MEM_R(src);
 
 		if (cpu.DF == 0) 	IncDec = 1;
 		else 		 	IncDec = -1;
@@ -18,7 +19,7 @@ static void do_execute() {
 	else if (DATA_BYTE == 2)
 	{
 		
-		reg_w(R_AX) = MEM_R (src);
+		reg_w(R_AX) = MEM_R(src);
 
 		if (cpu.DF == 0)	IncDec = 2;
 		else 		 	IncDec = -2;
