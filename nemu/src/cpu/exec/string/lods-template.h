@@ -5,10 +5,11 @@
 static void do_execute() {
 
 	DATA_TYPE_S IncDec;
-	if (ops_decoded.is_operand_size_16)
+	if (DATA_BYTE == 2)
 	{
 		
-		swaddr_write (reg_w(R_AX),2,reg_w(R_SI));
+		reg_w(R_AX) = reg_w(R_SI);
+
 		if (cpu.DF == 0) IncDec = 2;
 		else 		 IncDec = -2;
 
@@ -17,7 +18,8 @@ static void do_execute() {
 	else
 	{
 		
-		swaddr_write (reg_l(R_EAX),4,reg_l(R_ESI));
+		reg_l(R_EAX) = reg_l(R_ESI);
+
 		if (cpu.DF == 0)	IncDec = 4;
 		else 			IncDec = -4;
 
