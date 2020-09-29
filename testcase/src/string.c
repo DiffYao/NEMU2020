@@ -1,6 +1,6 @@
 #include "trap.h"
 #include <string.h>
-
+/*
 char *s[] = {
 	"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", 
 	"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaab",
@@ -12,7 +12,9 @@ char *s[] = {
 
 char str1[] = "Hello";
 char str[20];
+*/
 
+char *s[] = {"a", "a", "a", "a"};
 int main() {
 	nemu_assert(strcmp(s[0], s[2]) == 0);
 /*
