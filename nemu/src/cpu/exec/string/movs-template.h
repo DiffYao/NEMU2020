@@ -12,9 +12,11 @@ static void do_execute() {
 	MEM_W(dest, MEM_R(src));
 
 	
-	print_asm("movs");
+	
 	if (cpu.DF == 0)	{reg_l (R_EDI) += DATA_BYTE; reg_l (R_ESI) += DATA_BYTE;}
 	else 			{reg_l (R_EDI) -= DATA_BYTE; reg_l (R_ESI) -= DATA_BYTE;}
+
+	print_asm("movs");
 }
 
 make_instr_helper(n)
