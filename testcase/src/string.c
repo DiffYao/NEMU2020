@@ -14,9 +14,9 @@ char str1[] = "Hello";
 char str[20];
 */
 
-//char *s[] = {"a", "a", "a", "a"};
+char *s[] = {"a", "a", "a", "a"};
 int main() {
-	nemu_assert(strcmp("a", "a") == 0);
+	nemu_assert(strcmp(s[0], s[1]) == 0);
 /*
 	nemu_assert(strcmp(s[0], s[1]) == -1);
 	nemu_assert(strcmp(s[0] + 1, s[1] + 1) == -1);
