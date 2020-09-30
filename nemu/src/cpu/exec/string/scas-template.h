@@ -25,10 +25,10 @@ static void do_execute() {
 
 	}
 
-	DATA_TYPE result = dest - src;
+	DATA_TYPE result = src - dest;
 
 
-	cpu.CF = dest < src;
+	cpu.CF = src < dest;
 	cpu.SF = MSB(result);
 	cpu.ZF = !result;
 	
