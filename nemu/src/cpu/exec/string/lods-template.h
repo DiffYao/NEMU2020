@@ -18,8 +18,7 @@ static void do_execute() {
 		reg_w(R_AX) = MEM_R(src);
 	}
 	else
-	{
-		
+	{	
 		reg_l(R_EAX) = MEM_R (src);
 
 	}
