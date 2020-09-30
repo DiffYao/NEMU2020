@@ -19,6 +19,7 @@
 #include "con-tran/jle.h"
 #include "con-tran/ja.h"
 #include "con-tran/js.h"
+#include "con-tran/jns.h"
 #include "con-tran/jg.h"
 #include "con-tran/jge.h"
 #include "con-tran/leave.h"
