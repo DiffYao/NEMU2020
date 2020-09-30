@@ -25,7 +25,7 @@ static void do_execute() {
 
 	}
 
-	DATA_TYPE result = src - dest;
+	DATA_TYPE result = dest - src;
 
 
 	cpu.CF = src < dest;
