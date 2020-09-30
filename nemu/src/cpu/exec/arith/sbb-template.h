@@ -18,6 +18,7 @@ static void do_execute() {
 	cpu.ZF = !result;
 	int r1 = MSB(op_dest->val);
 	int r2 = MSB(op_src->val);
+
 	cpu.OF = (r1 == r2) && (cpu.SF != r1);
 	result ^= result >> 4;
 	result ^= result >> 2;
