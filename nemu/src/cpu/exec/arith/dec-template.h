@@ -10,6 +10,7 @@ static void do_execute () {
 	
 	cpu.CF = op_src->val < 1;
 	cpu.SF = MSB (result);
+	cpu.ZF = !result;
 	int r1, r2;
 	r1 = MSB(op_src->val);
 	r2 = 0;
