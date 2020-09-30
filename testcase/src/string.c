@@ -15,7 +15,7 @@ char str[20];
 
 
 int main() {
-	nemu_assert(strcmp(s[0], s[1]) == 0);
+	nemu_assert(strcmp("aa", "aa") == 0);
 /*
 	nemu_assert(strcmp(s[0], s[1]) == -1);
 
