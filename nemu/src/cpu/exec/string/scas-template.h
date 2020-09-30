@@ -28,7 +28,7 @@ static void do_execute() {
 	DATA_TYPE result = dest - src;
 
 
-	cpu.CF = dest < src;
+	cpu.CF = src < dest;
 	cpu.SF = MSB(result);
 	cpu.ZF = !result;
 	
