@@ -5,8 +5,8 @@
 static void do_execute() {
 
 	uint32_t src,dest;
-	dest = swaddr_read (reg_l (R_EDI),DATA_BYTE);
-
+	
+	dest = MEM_R (reg_l (R_EDI));
 	if (DATA_BYTE == 1) {
 
 		src = reg_b(R_AL);
@@ -31,6 +31,7 @@ static void do_execute() {
 	cpu.CF = dest < src;
 	cpu.SF = MSB(result);
 	cpu.ZF = !result;
+	
 	int r1 = MSB(op_dest->val);
 	int r2 = MSB(op_src->val);
 	cpu.OF = (r1 != r2) && (cpu.SF == r2);
@@ -39,8 +40,8 @@ static void do_execute() {
 	result ^= result >> 1;
 	cpu.PF = !(result & 1);
 
-	if (cpu.DF == 0)REG (R_EDI) += DATA_BYTE;
-	else REG (R_EDI) -= DATA_BYTE;
+	if (cpu.DF == 0)	reg_l (R_EDI) += DATA_BYTE;
+	else			reg_l (R_EDI) -= DATA_BYTE;
 	
 	print_asm("scas");
 
