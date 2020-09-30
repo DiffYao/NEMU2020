@@ -37,7 +37,7 @@ make_helper(rep) {
 		
 	}
 	
-	print_asm ("%s", assembly);
+	
 #ifdef DEBUG
 	char temp[80];
 	sprintf(temp, "rep %s", assembly);
