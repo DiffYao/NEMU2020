@@ -25,7 +25,8 @@ int main() {
 	nemu_assert(strcmp(s[0] + 3, s[1] + 3) == -1);
 */
 	//nemu_assert(strcmp(strcpy(str, str1), "Hello") == 0);
-	nemu_assert(strcmp (strcat("a", "a") , "aa") == 0);
+	char str9[10] = "a";
+	nemu_assert(strcmp (strcat(str9, "a") , "aa") == 0);
 	//nemu_assert(strcmp( strcat(strcpy(str, str1), s[3]), s[4]) == 0);
 /*
 	nemu_assert(memcmp(memset(str, '#', 5), s[5], 5) == 0);
