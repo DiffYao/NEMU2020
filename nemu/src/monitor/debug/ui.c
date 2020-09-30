@@ -89,6 +89,7 @@ static int cmd_info(char *args){
                 printf("%%cpu.OF : %x\n", cpu.OF);
                 printf("%%cpu.ZF : %x\n", cpu.ZF);
                 printf("%%cpu.PF : %x\n", cpu.PF);
+		printf("%%cpu.SF : %x\n", cpu.SF);
 		printf("%%cpu.DF : %x\n", cpu.DF);
 	
 	}
