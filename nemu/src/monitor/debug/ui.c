@@ -83,6 +83,7 @@ static int cmd_info(char *args){
 		printf("%%cpu.ebp : %#08x\n", cpu.ebp);
 		printf("%%cpu.esi : %#08x\n", cpu.esi);
 		printf("%%cpu.edi : %#08x\n", cpu.edi);
+		printf("%%cpu.eip : %#08x\n", cpu.eip);
 	}
 	else if(strcmp(arg, "rf") == 0){
 		printf("%%cpu.CF : %x\n", cpu.CF);
