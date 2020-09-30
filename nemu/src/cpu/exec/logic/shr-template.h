@@ -11,9 +11,13 @@ static void do_execute () {
 	dest >>= count;
 	OPERAND_W(op_dest, dest);
 
-	/* There is no need to update EFLAGS, since no other instructions 
-	 * in PA will test the flags updated by this instruction.
-	 */
+	DATA_TYPE result = dest;
+	cpu.ZF = !result;
+	cpu.SF = MSB(result);	
+	result ^= result >> 4;
+	result ^= result >> 2;
+	result ^= result >> 1;
+	cpu.PF = !(result & 1);
 
 	print_asm_template2();
 }
