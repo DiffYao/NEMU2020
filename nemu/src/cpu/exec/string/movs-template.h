@@ -10,7 +10,7 @@ static void do_execute() {
 	dest = reg_l(R_EDI);
 
 	MEM_W(dest, MEM_R(src));
-
+	
 	
 	
 	if (cpu.DF == 0)	{reg_l (R_EDI) += DATA_BYTE; reg_l (R_ESI) += DATA_BYTE;}
