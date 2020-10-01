@@ -5,6 +5,7 @@
 static void do_execute() {
 
 	DATA_TYPE src,dest;
+/*
 	if (ops_decoded.is_operand_size_16)
 	{
 		
@@ -13,12 +14,12 @@ static void do_execute() {
 		dest = swaddr_read (reg_w (R_DI),DATA_BYTE);
 	}
 	else
-	{
+	{*/
 		
 		src = swaddr_read (reg_l (R_ESI),DATA_BYTE);
 		
 		dest = swaddr_read (reg_l (R_EDI),DATA_BYTE);
-	}
+	
 	DATA_TYPE result = dest - src;
 
 	cpu.CF = dest < src;
