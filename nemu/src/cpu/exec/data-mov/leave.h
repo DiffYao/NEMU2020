@@ -3,5 +3,4 @@
 
 make_helper(leave);
 
-
 #endif

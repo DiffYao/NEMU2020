@@ -5,9 +5,9 @@
 static void do_execute(){
 	
 	DATA_TYPE_S displacement = op_src->val;
+	print_asm("jns %x", cpu.eip + displacement + 1 + DATA_BYTE);
+	if (cpu.SF == 0) cpu.eip += displacement;
 	
-	if (cpu.SF == 1) cpu.eip += displacement;
-	print_asm("js %x", cpu.eip + displacement + 1);
 
 }
 

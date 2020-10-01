@@ -19,7 +19,7 @@ static void do_execute() {
 	int r1 = MSB(op_dest->val);
 	int r2 = MSB(op_src->val);
 
-	cpu.OF = (r1 == r2) && (cpu.SF != r1);
+	cpu.OF = (r1 != r2) && (cpu.SF == r2);
 	result ^= result >> 4;
 	result ^= result >> 2;
 	result ^= result >> 1;

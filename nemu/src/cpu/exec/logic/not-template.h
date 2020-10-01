@@ -5,6 +5,7 @@
 static void do_execute() {
 	DATA_TYPE result = ~op_src->val;
 	OPERAND_W(op_src, result);
+	cpu.ZF=!result;
 	print_asm_template1();
 }
 

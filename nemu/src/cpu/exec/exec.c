@@ -65,12 +65,12 @@ make_group(group2_cl_v,
 /* 0xf6 */
 make_group(group3_b,
 	test_i2rm_b, inv, not_rm_b, neg_rm_b, 
-	mul_rm_b, inv, inv, idiv_rm_b)
+	mul_rm_b, inv, div_rm_b, idiv_rm_b)
 
 /* 0xf7 */
 make_group(group3_v,
 	test_i2rm_v, inv, not_rm_v, neg_rm_v, 
-	mul_rm_v, imul_rm2a_v, inv, idiv_rm_v)
+	mul_rm_v, inv, div_rm_b, idiv_rm_v)
 
 /* 0xfe */
 make_group(group4,
@@ -79,7 +79,7 @@ make_group(group4,
 
 /* 0xff */
 make_group(group5,
-	inc_rm_b, dec_rm_v, inv, inv, 
+	inc_rm_v, dec_rm_v, inv, inv, 
 	jmp_rm_v, jmp_rm_v, push_rm_v, inv)
 
 make_group(group6,
@@ -122,17 +122,17 @@ helper_fun opcode_table [256] = {
 /* 0x64 */	inv, inv, operand_size, inv,
 /* 0x68 */	push_i_v, imul_i_rm2r_v, push_i_b, imul_si_rm2r_v,
 /* 0x6c */	inv, inv, inv, inv,
-/* 0x70 */	inv, inv, inv, inv,
+/* 0x70 */	inv, inv, jb_i_b, jae_i_b,
 /* 0x74 */	je_i_b, jne_i_b, jbe_i_b, ja_i_b,
 /* 0x78 */	js_i_b, jns_i_b, inv, inv,
 /* 0x7c */	jl_i_b, jge_i_b, jle_i_b, jg_i_b,
 /* 0x80 */	group1_b, group1_v, inv, group1_sx_v, 
 /* 0x84 */	test_r2rm_b, test_r2rm_v, xchg_r2rm_b, xchg_r2rm_v,
 /* 0x88 */	mov_r2rm_b, mov_r2rm_v, mov_rm2r_b, mov_rm2r_v,
-/* 0x8c */	inv, lea, inv, inv,
+/* 0x8c */	inv, lea, inv, pop_rm_v,
 /* 0x90 */	xchg_a2r_v, inv, inv, inv,
 /* 0x94 */	inv, inv, inv, inv,
-/* 0x98 */	inv, inv, inv, inv,
+/* 0x98 */	cwtl_v, cltd_v, inv, inv,
 /* 0x9c */	inv, inv, inv, inv,
 /* 0xa0 */	mov_moffs2a_b, mov_moffs2a_v, mov_a2moffs_b, mov_a2moffs_v,
 /* 0xa4 */	movs_n_b, movs_n_v, inv, inv,
@@ -144,7 +144,7 @@ helper_fun opcode_table [256] = {
 /* 0xbc */	mov_i2r_v, mov_i2r_v, mov_i2r_v, mov_i2r_v, 
 /* 0xc0 */	group2_i_b, group2_i_v, ret_i_v, ret_o_v,
 /* 0xc4 */	inv, inv, mov_i2rm_b, mov_i2rm_v,
-/* 0xc8 */	inv, leave, inv, inv,
+/* 0xc8 */	inv, leave, inv, ret_o_v,
 /* 0xcc */	int3, inv, inv, inv,
 /* 0xd0 */	group2_1_b, group2_1_v, group2_cl_b, group2_cl_v,
 /* 0xd4 */	inv, inv, nemu_trap, inv,
@@ -194,9 +194,9 @@ helper_fun _2byte_opcode_table [256] = {
 /* 0x78 */	inv, inv, inv, inv, 
 /* 0x7c */	inv, inv, inv, inv, 
 /* 0x80 */	inv, inv, inv, inv,
-/* 0x84 */	je_i_v, jne_i_v, jna_i_v, inv,
+/* 0x84 */	je_i_v, jne_i_v, jna_i_v, ja_i_v,
 /* 0x88 */	js_i_v, jns_i_v, inv, inv, 
-/* 0x8c */	inv, inv, jle_i_v, inv, 
+/* 0x8c */	jl_i_v, inv, jle_i_v, inv, 
 /* 0x90 */	inv, inv, inv, inv,
 /* 0x94 */	inv, setne_rm_b, inv, inv,
 /* 0x98 */	inv, inv, inv, inv, 
