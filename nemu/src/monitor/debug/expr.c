@@ -185,8 +185,9 @@ uint32_t eval (int p, int q)
 					Log("1\n");
 					char tmp [30];
 					int tmplen = symtab[i+1].st_name - symtab[i].st_name - 1;
-					strncpy (tmp, strtab + symtab[i].st_name,tmplen);
 					Log("2\n");
+					strncpy (tmp, strtab + symtab[i].st_name,tmplen);
+					Log("3\n");
 					tmp [tmplen] = '\0';
 					if (strcmp (tmp, check) == 0)
 					{
