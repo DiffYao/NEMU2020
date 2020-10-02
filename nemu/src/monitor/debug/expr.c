@@ -259,7 +259,7 @@ uint32_t expr(char *e, bool *success) {
 		int check = i > 0?  tokens[i-1].type : 0;
 		if (tokens[i].type == '*' && (i == 0 || (check != NUM && check != HEXNUM && check != REGISTER && check != ')')))	tokens[i].type = STAR;
 		if (tokens[i].type == '-' && (i == 0 || (check != NUM && check != HEXNUM && check != REGISTER && check != ')')))   	tokens[i].type = MINUS;
-		//printf("i = %d, str = %s, type is %d\n", i, tokens[i].str, tokens[i].type);
+		printf("i = %d, str = %s, type is %d\n", i, tokens[i].str, tokens[i].type);
 	}
 	
 	
