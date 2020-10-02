@@ -83,7 +83,7 @@ static bool make_token(char *e) {
 				int substr_len = pmatch.rm_eo;
 			//	printf("s = %s\n", substr_start);
 			//	printf("len = %d\n", substr_len);
-				Log("match rules[%d] = \"%s\" at position %d with len %d: %.*s", i, rules[i].regex, position, substr_len, substr_len, substr_start);
+		//		Log("match rules[%d] = \"%s\" at position %d with len %d: %.*s", i, rules[i].regex, position, substr_len, substr_len, substr_start);
 				position += substr_len;
 
 				/* TODO: Now a new token is recognized with rules[i]. Add codes
@@ -260,10 +260,10 @@ uint32_t expr(char *e, bool *success) {
 		int check = i > 0?  tokens[i-1].type : 0;
 		if (tokens[i].type == '*' && (i == 0 || (check != NUM && check != HEXNUM && check != REGISTER && check != ')')))	tokens[i].type = STAR;
 		if (tokens[i].type == '-' && (i == 0 || (check != NUM && check != HEXNUM && check != REGISTER && check != ')')))   	tokens[i].type = MINUS;
-		printf("i = %d, str = %s, type is %d\n", i, tokens[i].str, tokens[i].type);
+	//	printf("i = %d, str = %s, type is %d\n", i, tokens[i].str, tokens[i].type);
 	}
 	
-	Log("now b is %d\n", nr_token-1);	
+		
 	return eval(0, nr_token-1);
 }
 
