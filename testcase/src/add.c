@@ -2,6 +2,7 @@
 
 int add(int a, int b) {
 	int c = a + b;
+	set_bp();
 	return c;
 }
 
@@ -18,7 +19,7 @@ int main() {
 			nemu_assert(add(test_data[i], test_data[j]) == ans[ans_idx ++]);
 			loop ++;
 		}
-		set_bp();
+		
 	}
 	
 	nemu_assert(loop == NR_DATA * NR_DATA);
