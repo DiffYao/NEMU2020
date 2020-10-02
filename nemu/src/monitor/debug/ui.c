@@ -10,6 +10,13 @@
 void cpu_exec(uint32_t);
 
 /* We use the `readline' library to provide more flexibility to read from stdin. */
+
+typedef struct {
+	swaddr_t prev_ebp;
+	swaddr_t ret_addr;
+	uint32_t  args[4];
+}PartOfStackFrame;
+
 char* rl_gets() {
 	static char *line_read = NULL;
 
@@ -50,6 +57,8 @@ static int cmd_w(char *args);
 
 static int cmd_d(char *args);
 
+static int cmd_bt(char *args);
+
 static struct {
 	char *name;
 	char *description;
@@ -64,6 +73,8 @@ static struct {
 	{ "p", "Calculate the value of EXPR", cmd_p},
 	{ "w", "Set watchpoint for EXPR", cmd_w},
 	{ "d", "Delete No.N watchpoint", cmd_d},
+	{ "bt", "Print stack frame chain",cmd_bt},
+	
 	/* TODO: Add more commands */
 
 };
@@ -122,6 +133,48 @@ static int cmd_d(char *args){
 	suc = delete_wp(num);
 	if (suc == 0) Assert(0, "Invalid Num"); 
 	return 0;
+}
+static void read_ebp (swaddr_t addr , PartOfStackFrame *ebp)
+{
+	
+	ebp -> prev_ebp = swaddr_read (addr , 4);
+	ebp -> ret_addr = swaddr_read (addr + 4 , 4);
+	int i;
+	for (i = 0;i < 4;i ++)
+	{
+		ebp -> args [i] = swaddr_read (addr + 8 + 4 * i , 4);
+	}
+}
+static int cmd_bt(char *args){
+	
+	int i,j = 0;
+	PartOfStackFrame now_ebp;
+	char tmp [32];
+	int tmplen;
+	swaddr_t addr = reg_l (R_EBP);
+	now_ebp.ret_addr = cpu.eip;
+	while (addr > 0)
+	{
+		printf ("#%d  0x%08x in ",j++,now_ebp.ret_addr);
+		for (i=0;i<nr_symtab_entry;i++)
+		{
+			if (symtab[i].st_value <= now_ebp.ret_addr && symtab[i].st_value +  symtab[i].st_size >= now_ebp.ret_addr && (symtab[i].st_info&0xf) == STT_FUNC)
+			{
+				tmplen = symtab[i+1].st_name - symtab[i].st_name - 1;
+				strncpy (tmp,strtab+symtab[i].st_name,tmplen);
+				tmp [tmplen] = '\0';
+				break;
+			}
+		}
+		printf("%s\t",tmp);
+		read_ebp (addr,&now_ebp);
+		if (strcmp (tmp,"main") == 0)printf ("( )\n");
+		else printf ("( %d , %d , %d , %d )\n", now_ebp.args[0],now_ebp.args[1],now_ebp.args[2],now_ebp.args[3]);
+		addr = now_ebp.prev_ebp;
+		
+	}
+	return 0;
+
 }
 static int cmd_w(char *args){
 	if (args == NULL) {
