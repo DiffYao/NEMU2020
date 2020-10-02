@@ -184,9 +184,10 @@ uint32_t eval (int p, int q)
 				{
 					Log("1\n");
 					char tmp [32];
-					int tmplen = symtab[i+1].st_name - symtab[i].st_name - 1;
+					//int tmplen = symtab[i+1].st_name - symtab[i].st_name - 1;
 					Log("2\n");
 					char* temp2 = strtab + symtab[i].st_name;
+					int tmplen = strlen(temp2);
 					printf("str = %s, len = %x\n", temp2, (int)strlen(temp2));
 					printf("tmp2len = %d\n", tmplen);
 					strncpy (tmp, temp2 ,tmplen);
