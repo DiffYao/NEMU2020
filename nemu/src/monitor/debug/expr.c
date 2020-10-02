@@ -262,7 +262,7 @@ uint32_t expr(char *e, bool *success) {
 		printf("i = %d, str = %s, type is %d\n", i, tokens[i].str, tokens[i].type);
 	}
 	
-	
+	Log("now b is %d\n", nr_token-1);	
 	return eval(0, nr_token-1);
 }
 
