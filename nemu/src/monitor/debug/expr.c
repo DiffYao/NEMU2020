@@ -1,5 +1,4 @@
 #include "nemu.h"
-
 /* We use the POSIX regex functions to process regular expressions.
  * Type 'man regex' for more information about POSIX regex functions.
  */
@@ -7,7 +6,7 @@
 #include <regex.h>
 
 enum {
-	NOTYPE = 256, EQ, NUM, HEXNUM, NEQ, REGISTER, AND, OR, MINUS, STAR
+	NOTYPE = 256, EQ, NUM, HEXNUM, NEQ, REGISTER, AND, OR, MINUS, STAR, MARK
 
 	/* TODO: Add more token types */
 
@@ -24,7 +23,8 @@ static struct rule {
         {"\\(", '('},                                   // leftpa 40
         {"\\)", ')'},                                   // rightpa 41
 	{"0x[0-9a-fA-F]+", HEXNUM},			// hexadecimal number 259
-	{"\\$[a-zA-Z]+", REGISTER},
+	{"\\$[a-zA-Z]+", REGISTER},			// register
+	{"[a-zA-Z_0-9]+", MARK},			// mark
 	{"[0-9]+", NUM},                                // number 258
 	{" +",	NOTYPE},				// spaces 256
 	{"\\+", '+'},					// plus 43 
@@ -151,7 +151,7 @@ int dominant_operator(int p, int q)
 		//Log("i is %d, type is %c\n", i, tokens[i].type);
 		if (tokens[i].type == ')') is++;
 		if (tokens[i].type == '(') is--;
-		if (tokens[i].type == NUM || tokens[i].type == HEXNUM || tokens[i].type == REGISTER||is != 0) continue;
+		if (tokens[i].type == NUM || tokens[i].type == HEXNUM || tokens[i].type == REGISTER|| tokens[i].type == MARK|| is != 0) continue;
 		if (tokens[i].type == AND || tokens[i].type == OR ) return i;
 		if ((tokens[i].type == EQ  || tokens[i].type == NEQ) && priority > 1) { priority = 1; result = i;}
 		if ((tokens[i].type == '+' || tokens[i].type == '-') && priority > 2) { priority = 2; result = i;}
@@ -174,7 +174,25 @@ uint32_t eval (int p, int q)
 	{	
 		uint32_t i;
 		char* check = tokens[p].str;
-		
+		if (tokens[p].type == MARK)
+		{
+			int i;
+			for (i=0;i< nr_symtab_entry;i++)
+			{
+				if ((symtab[i].st_info & 0xf) == STT_OBJECT)
+				{
+					char tmp [30];
+					int tmplen = symtab[i+1].st_name - symtab[i].st_name - 1;
+					strncpy (tmp, strtab + symtab[i].st_name,tmplen);
+					tmp [tmplen] = '\0';
+					if (strcmp (tmp, check) == 0)
+					{
+						return symtab[i].st_value;
+					}
+				}
+			}
+			
+		}	
 		if (tokens[p].type == HEXNUM) { sscanf(check, "%x", &i); return i;}
 		if (tokens[p].type == NUM)    { sscanf(check, "%u", &i); return i;}
 		if (tokens[p].type == REGISTER) {
