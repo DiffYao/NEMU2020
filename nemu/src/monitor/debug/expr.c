@@ -183,9 +183,11 @@ uint32_t eval (int p, int q)
 				if ((symtab[i].st_info & 0xf) == STT_OBJECT)
 				{
 					Log("1\n");
-					char tmp [30];
+					char tmp [32];
 					int tmplen = symtab[i+1].st_name - symtab[i].st_name - 1;
 					Log("2\n");
+					char* temp2 = strtab + symtab[i].st_name;
+					printf("%s\n", temp2);
 					strncpy (tmp, strtab + symtab[i].st_name,tmplen);
 					Log("3\n");
 					tmp [tmplen] = '\0';
