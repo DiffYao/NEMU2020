@@ -108,7 +108,7 @@ static int cmd_p(char *args){
 	bool is;
 	uint32_t num = expr(args, &is);
 	if (is) {
-		printf("result is %d\n", num);
+		printf("result is 0x%x\n", num);
 	}else{
 		printf("EXPR IS WRONG\n");
 	}			
