@@ -160,7 +160,7 @@ static int cmd_bt(char *args){
 		{
 			if (symtab[i].st_value <= now_ebp.ret_addr && symtab[i].st_value +  symtab[i].st_size >= now_ebp.ret_addr && (symtab[i].st_info&0xf) == STT_FUNC)
 			{
-				tmplen = symtab[i+1].st_name - symtab[i].st_name - 1;
+				tmplen = (int)strlen(strtab+symtab[i].st_name);
 				strncpy (tmp,strtab+symtab[i].st_name,tmplen);
 				tmp [tmplen] = '\0';
 				break;
