@@ -188,7 +188,7 @@ uint32_t eval (int p, int q)
 					Log("2\n");
 					char* temp2 = strtab + symtab[i].st_name;
 					printf("str = %s, len = %x\n", temp2, (int)strlen(temp2));
-					strncpy (tmp, strtab + symtab[i].st_name,tmplen);
+					strncpy (tmp, temp2 ,tmplen);
 					Log("3\n");
 					tmp [tmplen] = '\0';
 					if (strcmp (tmp, check) == 0)
