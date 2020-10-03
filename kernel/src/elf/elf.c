@@ -38,12 +38,14 @@ uint32_t loader() {
 
 	/* Load each program segment */
 	
-	ph = (void *)(buf + elf->e_phoff);
+
 	int i;
-	for(i = 0; i < elf->e_phnum ; ++i,++ph) {
+	for(i = 0; i < elf->e_phnum ; ++i) {
+		
 		/* Scan the program header table, load each segment into memory */
 		if(ph->p_type == PT_LOAD) {
-			panic("please implement me");
+			ph = (void*)(buf + elf->e_ehsize + i * elf->e_phentsize);
+			
 			ph->p_vaddr = mm_malloc(ph->p_vaddr, ph->p_memsz);
 
 			/* TODO: read the content of the segment from the ELF file 
