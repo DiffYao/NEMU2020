@@ -11,7 +11,7 @@ static void do_execute(){
 	else {
 		cpu.eip += displacement;
 	}
-	print_asm("jmp %x", cpu.eip + 1);
+	print_asm("jmp %x", cpu.eip + 1 + DATA_BYTE);
 }
 
 make_instr_helper(i)
