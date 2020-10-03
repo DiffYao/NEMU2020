@@ -41,10 +41,10 @@ uint32_t loader() {
 
 	int i;
 	for(i = 0; i < elf->e_phnum ; ++i) {
-		
+		ph = (void*)(buf + elf->e_ehsize + i * elf->e_phentsize);
 		/* Scan the program header table, load each segment into memory */
 		if(ph->p_type == PT_LOAD) {
-			ph = (void*)(buf + elf->e_ehsize + i * elf->e_phentsize);
+			
 			
 			ph->p_vaddr = mm_malloc(ph->p_vaddr, ph->p_memsz);
 
