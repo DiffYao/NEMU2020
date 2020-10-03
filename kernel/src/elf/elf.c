@@ -48,6 +48,7 @@ uint32_t loader() {
 			/* TODO: read the content of the segment from the ELF file 
 			 * to the memory region [VirtAddr, VirtAddr + FileSiz)
 			 */
+			panic("please implement me");
 #ifdef HAS_DEVICE
 			ide_read((void *)ph->p_vaddr,ph->p_offset,ph->p_filesz);
 #else	
@@ -57,7 +58,7 @@ uint32_t loader() {
 			/* TODO: zero the memory region 
 			 * [VirtAddr + FileSiz, VirtAddr + MemSiz)
 			 */
-			 panic("please implement me");
+			 
 			 memset ((void *)(ph->p_vaddr + ph->p_filesz),0,ph->p_memsz -ph->p_filesz);
 
 
