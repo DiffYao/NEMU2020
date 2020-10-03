@@ -32,12 +32,12 @@ uint32_t loader() {
 
 	/* TODO: fix the magic number with the correct one */
 	const uint32_t elf_magic = 0x464c457f;
-	panic("elf is 0x%x\n, elf_magic");
+	//panic("elf is 0x%x\n, elf_magic");
 	uint32_t *p_magic = (void *)buf;
 	nemu_assert(*p_magic == elf_magic);
 
 	/* Load each program segment */
-	panic("please implement me");
+	//panic("please implement me");
 	for(; true; ) {
 		/* Scan the program header table, load each segment into memory */
 		if(ph->p_type == PT_LOAD) {
