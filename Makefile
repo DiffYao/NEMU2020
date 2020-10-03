@@ -53,10 +53,9 @@ clean: clean-cpp
 
 ##### some convinient rules #####
 
-USERPROG := obj/testcase/try
-ENTRY =  $(USERPROG)
-
-# ENTRY := $(kernel_BIN)
+USERPROG := obj/testcase/mov
+#ENTRY =  $(USERPROG)
+ENTRY := $(kernel_BIN)
 
 entry: $(ENTRY)
 	objcopy -S -O binary $(ENTRY) entry
