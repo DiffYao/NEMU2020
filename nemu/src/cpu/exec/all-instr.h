@@ -48,6 +48,11 @@
 #include "logic/shrd.h"
 #include "logic/test.h"
 #include "logic/setne.h"
+#include "logic/seta.h"
+#include "logic/setc.h"
+#include "logic/sete.h"
+#include "logic/setna.h"
+#include "logic/setnc.h"
 
 #include "string/rep.h"
 #include "string/stos.h"
