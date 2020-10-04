@@ -5,6 +5,7 @@
 
 extern char _vfprintf_internal;
 extern char _fpmaxtostr;
+extern char _ppfs_setargs;
 extern int __stdio_fwrite(char *buf, int len, FILE *stream);
 
 __attribute__((used)) static int format_FLOAT(FILE *stream, FLOAT f) {
@@ -17,7 +18,7 @@ __attribute__((used)) static int format_FLOAT(FILE *stream, FLOAT f) {
 	 */
 
 	char buf[80];
-	/*int sign = f >> 31;
+	int sign = f >> 31;
 	//to be positive num
 	if (sign == 1) f = (~f) + 1;
 	uint32_t tmp = (f << 16) >> 16;
@@ -27,13 +28,37 @@ __attribute__((used)) static int format_FLOAT(FILE *stream, FLOAT f) {
 		len = sprintf(buf, "-%d.%06%d", ((int)f >> 16), decimal);
 	else 
 		len = sprintf(buf, "%d.%06%d" , ((int)f >> 16), decimal);
-	*/
-	int len = sprintf(buf, "0x%08x", f);
+
+	//int len = sprintf(buf, "0x%08x", f);
 	return __stdio_fwrite(buf, len, stream);
 }
 
 static void modify_vfprintf() {
-	
+
+	char *addr = &_vfprintf_internal;
+	mprotect((void *)((int)(addr +100) & 0xfffff000), 4096 * 2, PROT_READ | PROT_WRITE | PROT_EXEC);
+	char *sub;
+	sub = (char *)(addr + 0x306 - 0xb);
+	*sub = 0x8;
+	sub = (char *)(addr + 0x306 - 0xa);
+	*sub = 0xff;
+	sub = (char *)(addr + 0x306 - 0x9);
+	*sub = 0x32;
+	sub = (char *)(addr + 0x306 - 0x8);
+	*sub = 0x90;
+
+	sub = (char *)(addr + 0x306 - 30);
+	*sub = 0x90;
+	sub = (char *)(addr + 0x306 - 29);
+	*sub = 0x90;
+	sub = (char *)(addr + 0x306 - 33);
+	*sub = 0x90;
+	sub = (char *)(addr + 0x306 - 34);
+	*sub = 0x90; 
+
+	int *pos = (int *)(addr + 0x307);
+
+	*pos += (int)format_FLOAT - (int)(&_fpmaxtostr);
 	/* TODO: Implement this function to hijack the formating of "%f"
 	 * argument during the execution of `_vfprintf_internal'. Below
 	 * is the code section in _vfprintf_internal() relative to the
@@ -80,6 +105,18 @@ static void modify_vfprintf() {
 }
 
 static void modify_ppfs_setargs() {
+
+	char *addr = &_ppfs_setargs;
+
+	//mprotect((void *)((int)(addr +100) & 0xfffff000), 4096 * 2, PROT_READ | PROT_WRITE | PROT_EXEC);
+
+	char *pos = (char *)(addr + 0x71);
+	*pos = 0xeb;
+	pos = (char *)(addr + 0x72);
+	*pos = 0x30;
+	pos = (char *)(addr + 0x73);
+	*pos = 0x90;
+
 	/* TODO: Implement this function to modify the action of preparing
 	 * "%f" arguments for _vfprintf_internal() in _ppfs_setargs().
 	 * Below is the code section in _vfprintf_internal() relative to
