@@ -38,7 +38,7 @@ __attribute__((used)) static int format_FLOAT(FILE *stream, FLOAT f) {
 static void modify_vfprintf() {
 
 	char *addr = &_vfprintf_internal;
-	mprotect((void *)(((uint32_t)addr - 100) & 0xfffff000), 4096 * 2, PROT_READ | PROT_WRITE | PROT_EXEC);
+//	mprotect((void *)(((uint32_t)addr - 100) & 0xfffff000), 4096 * 2, PROT_READ | PROT_WRITE | PROT_EXEC);
 	
 	char *sub;
 	sub = (char *)(addr + 0x306 - 0xb);
