@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdint.h>
 #include "../FLOAT.h"
+#include <sys/mman.h>
 
 extern char _vfprintf_internal;
 extern char _fpmaxtostr;
@@ -16,7 +17,17 @@ __attribute__((used)) static int format_FLOAT(FILE *stream, FLOAT f) {
 	 */
 
 	char buf[80];
-	int len = sprintf(buf, "0x%08x", f);
+	int sign = f >> 31;
+	//to be positive num
+	if (sign == 1) f = (~f) + 1;
+	uint32_t tmp = (f << 16) >> 16;
+	int decimal = (int) (tmp / 65536);  
+	int len, temp = 0;
+	if (sign == 1)
+		len = sprintf(buf, "-%d.%06%d", ((int)f >> 16), decimal);
+	else 
+		len = sprintf(buf, "%d.%06%d" , ((int)f >> 16), decimal);
+	
 	return __stdio_fwrite(buf, len, stream);
 }
 
