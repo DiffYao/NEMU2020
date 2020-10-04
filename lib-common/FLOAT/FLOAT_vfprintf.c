@@ -111,7 +111,7 @@ static void modify_ppfs_setargs() {
 
 	char *addr = &_ppfs_setargs;
 
-	//mprotect((void *)((int)(addr +100) & 0xfffff000), 4096 * 2, PROT_READ | PROT_WRITE | PROT_EXEC);
+	mprotect((void *)((int)(addr +100) & 0xfffff000), 4096 * 2, PROT_READ | PROT_WRITE | PROT_EXEC);
 
 	char *pos = (char *)(addr + 0x71);
 	*pos = 0xeb;
