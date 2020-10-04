@@ -42,6 +42,7 @@ __attribute__((used)) static int format_FLOAT(FILE *stream, FLOAT f) {
 	int len;
 	if (sym) len = sprintf(buf, "-%hu.%06lld", round, decimal);
 	else len = sprintf(buf, "%hu.%06llu", round, decimal);
+	
 	return __stdio_fwrite(buf, len, stream);
 }
 
