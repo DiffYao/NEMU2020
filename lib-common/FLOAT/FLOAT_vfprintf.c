@@ -110,13 +110,9 @@ static void modify_vfprintf() {
 static void modify_ppfs_setargs() {
 
 	char *addr = &_ppfs_setargs;
-	char *pos = (char *)(addr + 0x71);
-	*pos = 0xeb;
-	pos = (char *)(addr + 0x72);
-	*pos = 0x30;
-	pos = (char *)(addr + 0x73);
-	*pos = 0x90;
-
+	addr += 0x71;
+	short* pn = addr;
+	*pn = 0x30eb;
 	/* TODO: Implement this function to modify the action of preparing
 	 * "%f" arguments for _vfprintf_internal() in _ppfs_setargs().
 	 * Below is the code section in _vfprintf_internal() relative to
