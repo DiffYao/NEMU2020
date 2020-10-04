@@ -122,9 +122,9 @@ static void modify_vfprintf() {
 static void modify_ppfs_setargs() {
 
 	void* pp = &_ppfs_setargs;
-	pp += 0x71;
+	pp += 0x70;
 	short* pn = pp;
-	*pn = 0x30ec;
+	*pn = 0x30eb;
 
 	/* TODO: Implement this function to modify the action of preparing
 	 * "%f" arguments for _vfprintf_internal() in _ppfs_setargs().
