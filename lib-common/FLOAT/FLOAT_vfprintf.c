@@ -122,7 +122,7 @@ static void modify_vfprintf() {
 static void modify_ppfs_setargs() {
 
 	void* pp = &_ppfs_setargs;
-	pp += 0x71;
+	pp += 0x61;
 	short* pn = pp;
 	*pn = 0x30eb;
 
