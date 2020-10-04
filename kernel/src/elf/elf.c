@@ -40,8 +40,8 @@ uint32_t loader() {
 	
 
 	int i;
+	ph = (void *)(buf+elf->e_phoff) ;
 	for(i = 0; i < elf->e_phnum ; ++i) {
-		ph = (void*)(buf + elf->e_ehsize + i * elf->e_phentsize);
 		/* Scan the program header table, load each segment into memory */
 		if(ph->p_type == PT_LOAD) {
 			
