@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdint.h>
 #include "../FLOAT.h"
-#include <sys/mman.h>
 
 extern char _vfprintf_internal;
 extern char _fpmaxtostr;
