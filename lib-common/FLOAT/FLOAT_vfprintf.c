@@ -17,7 +17,7 @@ __attribute__((used)) static int format_FLOAT(FILE *stream, FLOAT f) {
 	 */
 
 	char buf[80];
-	int sign = f >> 31;
+	/*int sign = f >> 31;
 	//to be positive num
 	if (sign == 1) f = (~f) + 1;
 	uint32_t tmp = (f << 16) >> 16;
@@ -27,7 +27,8 @@ __attribute__((used)) static int format_FLOAT(FILE *stream, FLOAT f) {
 		len = sprintf(buf, "-%d.%06%d", ((int)f >> 16), decimal);
 	else 
 		len = sprintf(buf, "%d.%06%d" , ((int)f >> 16), decimal);
-	
+	*/
+	int len = sprintf(buf, "0x%08x", f);
 	return __stdio_fwrite(buf, len, stream);
 }
 
