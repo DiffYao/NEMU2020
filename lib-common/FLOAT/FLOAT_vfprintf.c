@@ -109,7 +109,7 @@ static void modify_vfprintf() {
 
 static void modify_ppfs_setargs() {
 
-	char *addr = &_ppfs_setargs;
+	void *addr = &_ppfs_setargs;
 	addr += 0x71;
 	short* pn = addr;
 	*pn = 0x30eb;
