@@ -52,7 +52,7 @@ static void modify_vfprintf() {
    	void* victim = &_fpmaxtostr;
 	void* robber = &format_FLOAT;
 	unsigned* pn = pp;
-//	mprotect((void *)(((unsigned)(pp-101)) & 0xfffff000), 4096*2, PROT_READ | PROT_WRITE | PROT_EXEC);	
+	mprotect((void *)(((unsigned)(pp-101)) & 0xfffff000), 4096*2, PROT_READ | PROT_WRITE | PROT_EXEC);	
 	*pn = *pn + robber - victim;
 
 	char* ppushn = (char*)(pp - 0xc);
