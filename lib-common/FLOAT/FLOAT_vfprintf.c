@@ -49,7 +49,7 @@ static void modify_vfprintf() {
 	*sub = 0x32;
 	sub = (char *)(addr + 0x306 - 0x8);
 	*sub = 0x90;
-/*
+
 	sub = (char *)(addr + 0x306 - 30);
 	*sub = 0x90;
 	sub = (char *)(addr + 0x306 - 29);
@@ -58,7 +58,7 @@ static void modify_vfprintf() {
 	*sub = 0x90;
 	sub = (char *)(addr + 0x306 - 34);
 	*sub = 0x90; 
-*/
+
 	int *pos = (int *)(addr + 0x307);
 
 	*pos += (int)format_FLOAT - (int)(&_fpmaxtostr);
@@ -110,8 +110,6 @@ static void modify_vfprintf() {
 static void modify_ppfs_setargs() {
 
 	char *addr = &_ppfs_setargs;
-
-	mprotect((void *)((int)(addr +100) & 0xfffff000), 4096 * 2, PROT_READ | PROT_WRITE | PROT_EXEC);
 
 	char *pos = (char *)(addr + 0x71);
 	*pos = 0xeb;
