@@ -41,7 +41,7 @@ static void modify_vfprintf() {
    	void* victim = &_fpmaxtostr;
 	void* robber = &format_FLOAT;
 	unsigned* pn = pp;
-	mprotect((void *)(((unsigned)(pp-101)) & 0xfffff000), 4096*2, PROT_READ | PROT_WRITE | PROT_EXEC);	
+//	mprotect((void *)(((unsigned)(pp-101)) & 0xfffff000), 4096*2, PROT_READ | PROT_WRITE | PROT_EXEC);	
 	*pn = *pn + robber - victim;
 
 	char* ppushn = (char*)(pp - 0xc);
@@ -110,10 +110,11 @@ static void modify_vfprintf() {
 
 static void modify_ppfs_setargs() {
 
-	void *addr = &_ppfs_setargs;
-	addr += 0x71;
-	short* pn = addr;
+	void* pp = &_ppfs_setargs;
+	pp += 0x71;
+	short* pn = pp;
 	*pn = 0x30eb;
+
 	/* TODO: Implement this function to modify the action of preparing
 	 * "%f" arguments for _vfprintf_internal() in _ppfs_setargs().
 	 * Below is the code section in _vfprintf_internal() relative to
