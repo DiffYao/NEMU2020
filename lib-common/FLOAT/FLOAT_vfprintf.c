@@ -32,6 +32,7 @@ __attribute__((used)) static int format_FLOAT(FILE *stream, FLOAT f) {
 }
 
 static void modify_vfprintf() {
+	
 	/* TODO: Implement this function to hijack the formating of "%f"
 	 * argument during the execution of `_vfprintf_internal'. Below
 	 * is the code section in _vfprintf_internal() relative to the
