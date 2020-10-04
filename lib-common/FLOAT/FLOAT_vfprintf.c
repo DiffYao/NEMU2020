@@ -18,25 +18,28 @@ __attribute__((used)) static int format_FLOAT(FILE *stream, FLOAT f) {
 	 */
 
 	char buf[80];
-	int sign = f >> 31;
+	uint32_t tmp = f;
+	int sign = tmp  >> 31;
 	//to be positive num
-	if (sign == 1) f = (~f) + 1;
-	uint32_t tmp = (f << 16) >> 16;
-	int decimal = (int) (tmp / 65536);  
-	int len, temp = 0;
+	if (sign == 1) tmp = (~tmp) + 1;
+	int tmp2 = tmp << 16 >> 16;
+	int decimal = ( tmp2 *1.0 * 1000000 / 65536);  
+	int len;
 	if (sign == 1)
-		len = sprintf(buf, "-%d.%06%d", ((int)f >> 16), decimal);
+		len = sprintf(buf, "-%d.%06d", ( tmp >> 16), decimal);
 	else 
-		len = sprintf(buf, "%d.%06%d" , ((int)f >> 16), decimal);
+		len = sprintf(buf,  "%d.%06d" , ( tmp >> 16), decimal);
 
-	//int len = sprintf(buf, "0x%08x", f);
+	//printf("integer = %d, tmp2 = %d, decimal = %u\n", tmp >>16, tmp2, decimal);
+	//int len = sprintf(buf, "0x%08x", tmp);
 	return __stdio_fwrite(buf, len, stream);
 }
 
 static void modify_vfprintf() {
 
 	char *addr = &_vfprintf_internal;
-	mprotect((void *)((int)(addr +100) & 0xfffff000), 4096 * 2, PROT_READ | PROT_WRITE | PROT_EXEC);
+	mprotect((void *)(((uint32_t)addr - 100) & 0xfffff000), 4096 * 2, PROT_READ | PROT_WRITE | PROT_EXEC);
+	
 	char *sub;
 	sub = (char *)(addr + 0x306 - 0xb);
 	*sub = 0x8;
@@ -46,7 +49,7 @@ static void modify_vfprintf() {
 	*sub = 0x32;
 	sub = (char *)(addr + 0x306 - 0x8);
 	*sub = 0x90;
-
+/*
 	sub = (char *)(addr + 0x306 - 30);
 	*sub = 0x90;
 	sub = (char *)(addr + 0x306 - 29);
@@ -55,7 +58,7 @@ static void modify_vfprintf() {
 	*sub = 0x90;
 	sub = (char *)(addr + 0x306 - 34);
 	*sub = 0x90; 
-
+*/
 	int *pos = (int *)(addr + 0x307);
 
 	*pos += (int)format_FLOAT - (int)(&_fpmaxtostr);
@@ -64,7 +67,7 @@ static void modify_vfprintf() {
 	 * is the code section in _vfprintf_internal() relative to the
 	 * hijack.
 	 */
-
+        
 #if 0
 	else if (ppfs->conv_num <= CONV_A) {  /* floating point */
 		ssize_t nf;
