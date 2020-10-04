@@ -110,7 +110,6 @@ static void modify_vfprintf() {
 static void modify_ppfs_setargs() {
 
 	char *addr = &_ppfs_setargs;
-	printf("addr is %x", addr);
 	char *pos = (char *)(addr + 0x71);
 	*pos = 0xeb;
 	pos = (char *)(addr + 0x72);
