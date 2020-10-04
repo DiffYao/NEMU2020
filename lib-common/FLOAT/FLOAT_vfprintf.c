@@ -37,31 +37,32 @@ __attribute__((used)) static int format_FLOAT(FILE *stream, FLOAT f) {
 
 static void modify_vfprintf() {
 
-	char *addr = &_vfprintf_internal;
-//	mprotect((void *)(((uint32_t)addr - 100) & 0xfffff000), 4096 * 2, PROT_READ | PROT_WRITE | PROT_EXEC);
-	
-	char *sub;
-	sub = (char *)(addr + 0x306 - 0xb);
-	*sub = 0x8;
-	sub = (char *)(addr + 0x306 - 0xa);
-	*sub = 0xff;
-	sub = (char *)(addr + 0x306 - 0x9);
-	*sub = 0x32;
-	sub = (char *)(addr + 0x306 - 0x8);
-	*sub = 0x90;
+	void* pp = &_vfprintf_internal + 0x307;
+   	void* victim = &_fpmaxtostr;
+	void* robber = &format_FLOAT;
+	unsigned* pn = pp;
+	//mprotect((void *)(((unsigned)(pp-101)) & 0xfffff000), 4096*2, PROT_READ | PROT_WRITE | PROT_EXEC);	
+	*pn = *pn + robber - victim;
 
-	sub = (char *)(addr + 0x306 - 30);
-	*sub = 0x90;
-	sub = (char *)(addr + 0x306 - 29);
-	*sub = 0x90;
-	sub = (char *)(addr + 0x306 - 33);
-	*sub = 0x90;
-	sub = (char *)(addr + 0x306 - 34);
-	*sub = 0x90; 
+	char* ppushn = (char*)(pp - 0xc);
+	*ppushn = 0x8;
+	ppushn += 1;
+	*ppushn = 0xFF;
+	ppushn += 1;
+	*ppushn = 0x32;
+	ppushn += 1;
+	*ppushn = 0x90;
 
-	int *pos = (int *)(addr + 0x307);
+	char* cleaner = (char*)(pp - 0x23);
+	*cleaner = 0x90;
+	cleaner += 1;
+	*cleaner = 0x90;
+	cleaner += 3;
+	*cleaner = 0x90;
+	cleaner += 1;
+	*cleaner = 0x90;
 
-	*pos += (int)format_FLOAT - (int)(&_fpmaxtostr);
+
 	/* TODO: Implement this function to hijack the formating of "%f"
 	 * argument during the execution of `_vfprintf_internal'. Below
 	 * is the code section in _vfprintf_internal() relative to the
