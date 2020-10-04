@@ -86,15 +86,15 @@ static int cmd_info(char *args){
 		printf("Invalid Input\n");
 	}
 	else if(strcmp(arg, "r") == 0){
-		printf("%%cpu.eax : %#08x\n", cpu.eax);
-		printf("%%cpu.ecx : %#08x\n", cpu.ecx);
-		printf("%%cpu.edx : %#08x\n", cpu.edx);
-		printf("%%cpu.ebx : %#08x\n", cpu.ebx);
-		printf("%%cpu.esp : %#08x\n", cpu.esp);
-		printf("%%cpu.ebp : %#08x\n", cpu.ebp);
-		printf("%%cpu.esi : %#08x\n", cpu.esi);
-		printf("%%cpu.edi : %#08x\n", cpu.edi);
-		printf("%%cpu.eip : %#08x\n", cpu.eip);
+		printf("%%cpu.eax : %#08x\t %x\n", cpu.eax, swaddr_read(cpu.eax, 4));
+		printf("%%cpu.ecx : %#08x\t %x\n", cpu.ecx, swaddr_read(cpu.ecx, 4));
+		printf("%%cpu.edx : %#08x\t %x\n", cpu.edx, swaddr_read(cpu.edx, 4));
+		printf("%%cpu.ebx : %#08x\t %x\n", cpu.ebx, swaddr_read(cpu.ebx, 4));
+		printf("%%cpu.esp : %#08x\t %x\n", cpu.esp, swaddr_read(cpu.esp, 4));
+		printf("%%cpu.ebp : %#08x\t %x\n", cpu.ebp, swaddr_read(cpu.ebp, 4));
+		printf("%%cpu.esi : %#08x\t %x\n", cpu.esi, swaddr_read(cpu.esi, 4));
+		printf("%%cpu.edi : %#08x\t %x\n", cpu.edi, swaddr_read(cpu.edi, 4));
+		printf("%%cpu.eip : %#08x\t %x\n", cpu.eip, swaddr_read(cpu.eip, 4));
 	}
 	else if(strcmp(arg, "rf") == 0){
 		printf("%%cpu.CF : %x\n", cpu.CF);
