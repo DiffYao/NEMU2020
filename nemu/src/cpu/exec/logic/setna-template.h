@@ -4,7 +4,7 @@
 
 static void do_execute() {
 	uint32_t result;
-	if (cpu.CF == 1 )	result = 1;
+	if (cpu.CF == 1 || cpu.ZF == 1)	result = 1;
 	else 				result = 0;
 
 	OPERAND_W(op_src, result);
