@@ -43,7 +43,7 @@ __attribute__((used)) static int format_FLOAT(FILE *stream, FLOAT f) {
 	decimal = (decimal * 1000000) / 65536;
 	char buf[80];
 	int len;
-	if (sign == 0) len = sprintf(buf, "%hu.%06lld", round, decimal);
+	if (sign == 0) len = sprintf(buf, "%hu.%06llu", round, decimal);
 	else len = sprintf(buf, "-%hu.%06llu", round, decimal);	
 	
 	return __stdio_fwrite(buf, len, stream);
