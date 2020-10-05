@@ -16,23 +16,27 @@ __attribute__((used)) static int format_FLOAT(FILE *stream, FLOAT f) {
 	 *         0x00010000    "1.000000"
 	 *         0x00013333    "1.199996"
 	 */
-/*
+
 	char buf[80];
+	int len;
+	
 	uint32_t tmp = f;
 	int sign = tmp  >> 31;
 	//to be positive num
 	if (sign == 1) tmp = (~tmp) + 1;
-	int tmp2 = tmp << 16 >> 16;
-	int decimal = ( tmp2 *1.0 * 1000000 / 65536);  
-	int len;
+	
+	long long decimal = (long long)(tmp & 0x0000ffff);
+        decimal = (decimal * 1000000) / 65536; 
+	
 	if (sign == 1)
-		len = sprintf(buf, "-%d.%06d", ( tmp >> 16), decimal);
+		len = sprintf(buf, "-%d.%06lld", ( tmp >> 16), decimal);
 	else 
-		len = sprintf(buf,  "%d.%06d" , ( tmp >> 16), decimal);
-*/
-	//printf("integer = %d, tmp2 = %d, decimal = %u\n", tmp >>16, tmp2, decimal);
-	//int len = sprintf(buf, "0x%08x", tmp);
-	//return __stdio_fwrite(buf, len, stream);
+		len = sprintf(buf,  "%d.%06lld" , ( tmp >> 16), decimal);
+	
+	//len = sprintf(buf, "%08d", f);
+	return __stdio_fwrite(buf, len, stream);
+
+/*
 	int sym = f & 0x80000000;
 	if (sym) f = ~f + 1;
 	unsigned short round = (unsigned short)(f >> 16);
@@ -41,9 +45,8 @@ __attribute__((used)) static int format_FLOAT(FILE *stream, FLOAT f) {
 	char buf[80];
 	int len;
 	if (sym) len = sprintf(buf, "-%hu.%06lld", round, decimal);
-	else len = sprintf(buf, "%hu.%06llu", round, decimal);
-	
-	return __stdio_fwrite(buf, len, stream);
+	else len = sprintf(buf, "%hu.%06llu", round, decimal);	
+	return __stdio_fwrite(buf, len, stream);*/
 }
 
 static void modify_vfprintf() {
@@ -52,7 +55,7 @@ static void modify_vfprintf() {
    	void* victim = &_fpmaxtostr;
 	void* robber = &format_FLOAT;
 	unsigned* pn = pp;
-	//mprotect((void *)(((unsigned)(pp-101)) & 0xfffff000), 4096*2, PROT_READ | PROT_WRITE | PROT_EXEC);	
+	mprotect((void *)(((unsigned)(pp-101)) & 0xfffff000), 4096*2, PROT_READ | PROT_WRITE | PROT_EXEC);	
 	*pn = *pn + robber - victim;
 
 	char* ppushn = (char*)(pp - 0xc);
