@@ -51,29 +51,23 @@ __attribute__((used)) static int format_FLOAT(FILE *stream, FLOAT f) {
 
 static void modify_vfprintf() {
 
-	void* pp = &_vfprintf_internal + 0x307;
-   	void* victim = &_fpmaxtostr;
-	void* robber = format_FLOAT;
-	unsigned* pn = pp;
+	void* p = &_vfprintf_internal + 0x307;
+   	void* r = (void *)format_FLOAT;
+	void* v = &_fpmaxtostr;
+	unsigned* pn = p;
 //	mprotect((void *)(((unsigned)(pp-101)) & 0xfffff000), 4096*2, PROT_READ | PROT_WRITE | PROT_EXEC);	
-	*pn = *pn + robber - victim;
+	*pn = *pn + r - v;
 
-	char* ppushn = (char*)(pp - 0xc);
-	*ppushn = 0x8;
-	ppushn += 1;
-	*ppushn = 0xFF;
-	ppushn += 1;
-	*ppushn = 0x32;
-	ppushn += 1;
-	*ppushn = 0x90;
+	char* ppush = (char*)(p - 0xc);
+	*ppush = 0x8; ppush ++;
+	*ppush = 0xFF; ppush ++;
+	*ppush = 0x32; ppush ++;
+	*ppush = 0x90;
 
-	char* cleaner = (char*)(pp - 0x23);
-	*cleaner = 0x90;
-	cleaner += 1;
-	*cleaner = 0x90;
-	cleaner += 3;
-	*cleaner = 0x90;
-	cleaner += 1;
+	char* cleaner = (char*)(p - 0x23);
+	*cleaner = 0x90;cleaner += 1;
+	*cleaner = 0x90;cleaner += 3;
+	*cleaner = 0x90;cleaner += 1;
 	*cleaner = 0x90;
 
 
@@ -124,9 +118,9 @@ static void modify_vfprintf() {
 
 static void modify_ppfs_setargs() {
 
-	void* pp = &_ppfs_setargs;
-	pp += 0x71;
-	short* pn = pp;
+	void* p = &_ppfs_setargs;
+	p += 0x71;
+	short* pn = p;
 	*pn = 0x30eb;
 
 	/* TODO: Implement this function to modify the action of preparing
