@@ -19,7 +19,7 @@ __attribute__((used)) static int format_FLOAT(FILE *stream, FLOAT f) {
 
 	char buf[80];
 	int len;
-	
+/*	
 	uint32_t tmp = f;
 	int sign = tmp  >> 31;
 	//to be positive num
@@ -35,18 +35,16 @@ __attribute__((used)) static int format_FLOAT(FILE *stream, FLOAT f) {
 	
 	//len = sprintf(buf, "%08d", f);
 	return __stdio_fwrite(buf, len, stream);
+*/
 
-/*
 	int sym = f & 0x80000000;
 	if (sym) f = ~f + 1;
 	unsigned short round = (unsigned short)(f >> 16);
 	long long decimal = (long long)(f & 0x0000ffff);
 	decimal = (decimal * 1000000) / 65536;
-	char buf[80];
-	int len;
 	if (sym) len = sprintf(buf, "-%hu.%06lld", round, decimal);
 	else len = sprintf(buf, "%hu.%06llu", round, decimal);	
-	return __stdio_fwrite(buf, len, stream);*/
+	return __stdio_fwrite(buf, len, stream);
 }
 
 static void modify_vfprintf() {
