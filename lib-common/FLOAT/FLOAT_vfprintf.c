@@ -16,10 +16,9 @@ __attribute__((used)) static int format_FLOAT(FILE *stream, FLOAT f) {
 	 *         0x00010000    "1.000000"
 	 *         0x00013333    "1.199996"
 	 */
-
+/*
 	char buf[80];
-	int len;
-/*	
+	int len;	
 	uint32_t tmp = f;
 	int sign = tmp  >> 31;
 	//to be positive num
@@ -37,13 +36,16 @@ __attribute__((used)) static int format_FLOAT(FILE *stream, FLOAT f) {
 	return __stdio_fwrite(buf, len, stream);
 */
 
-	int sym = f & 0x80000000;
-	if (sym) f = ~f + 1;
+	int sign = f & 0x80000000;
+	if (sign == 1) f = ~f + 1;
 	unsigned short round = (unsigned short)(f >> 16);
 	long long decimal = (long long)(f & 0x0000ffff);
 	decimal = (decimal * 1000000) / 65536;
-	if (sym) len = sprintf(buf, "-%hu.%06lld", round, decimal);
-	else len = sprintf(buf, "%hu.%06llu", round, decimal);	
+	char buf[80];
+	int len;
+	if (sign == 0) len = sprintf(buf, "%hu.%06lld", round, decimal);
+	else len = sprintf(buf, "-%hu.%06llu", round, decimal);	
+	
 	return __stdio_fwrite(buf, len, stream);
 }
 
