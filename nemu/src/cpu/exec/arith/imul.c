@@ -16,5 +16,6 @@
 
 make_helper_v(imul_rm2a)
 make_helper_v(imul_rm2r)
+make_helper_v(imul_rm)
 make_helper_v(imul_si_rm2r)
 make_helper_v(imul_i_rm2r)

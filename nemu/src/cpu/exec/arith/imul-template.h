@@ -31,6 +31,7 @@ make_helper(concat(imul_rm2r_, SUFFIX)) {
 
 make_instr_helper(si_rm2r)
 make_instr_helper(i_rm2r)
+make_instr_helper(rm)
 #endif
 
 make_helper(concat(imul_rm2a_, SUFFIX)) {
