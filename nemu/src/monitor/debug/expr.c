@@ -1,5 +1,4 @@
 #include "nemu.h"
-
 /* We use the POSIX regex functions to process regular expressions.
  * Type 'man regex' for more information about POSIX regex functions.
  */
@@ -7,7 +6,7 @@
 #include <regex.h>
 
 enum {
-	NOTYPE = 256, EQ, NUM, HEXNUM, NEQ, REGISTER, AND, OR, MINUS, STAR
+	NOTYPE = 256, EQ, NUM, HEXNUM, NEQ, REGISTER, AND, OR, MINUS, STAR, MARK
 
 	/* TODO: Add more token types */
 
@@ -24,8 +23,10 @@ static struct rule {
         {"\\(", '('},                                   // leftpa 40
         {"\\)", ')'},                                   // rightpa 41
 	{"0x[0-9a-fA-F]+", HEXNUM},			// hexadecimal number 259
-	{"\\$[a-zA-Z]+", REGISTER},
 	{"[0-9]+", NUM},                                // number 258
+	{"\\$[a-zA-Z]+", REGISTER},			// register
+	{"[a-zA-Z_0-9]+", MARK},			// mark
+
 	{" +",	NOTYPE},				// spaces 256
 	{"\\+", '+'},					// plus 43 
 	{"==", EQ},					// equal 257
@@ -82,7 +83,7 @@ static bool make_token(char *e) {
 				int substr_len = pmatch.rm_eo;
 			//	printf("s = %s\n", substr_start);
 			//	printf("len = %d\n", substr_len);
-			//	Log("match rules[%d] = \"%s\" at position %d with len %d: %.*s", i, rules[i].regex, position, substr_len, substr_len, substr_start);
+				//Log("match rules[%d] = \"%s\" at position %d with len %d: %.*s", i, rules[i].regex, position, substr_len, substr_len, substr_start);
 				position += substr_len;
 
 				/* TODO: Now a new token is recognized with rules[i]. Add codes
@@ -151,7 +152,7 @@ int dominant_operator(int p, int q)
 		//Log("i is %d, type is %c\n", i, tokens[i].type);
 		if (tokens[i].type == ')') is++;
 		if (tokens[i].type == '(') is--;
-		if (tokens[i].type == NUM || tokens[i].type == HEXNUM || tokens[i].type == REGISTER||is != 0) continue;
+		if (tokens[i].type == NUM || tokens[i].type == HEXNUM || tokens[i].type == REGISTER|| tokens[i].type == MARK|| is != 0) continue;
 		if (tokens[i].type == AND || tokens[i].type == OR ) return i;
 		if ((tokens[i].type == EQ  || tokens[i].type == NEQ) && priority > 1) { priority = 1; result = i;}
 		if ((tokens[i].type == '+' || tokens[i].type == '-') && priority > 2) { priority = 2; result = i;}
@@ -174,7 +175,31 @@ uint32_t eval (int p, int q)
 	{	
 		uint32_t i;
 		char* check = tokens[p].str;
-		
+		if (tokens[p].type == MARK)
+		{
+			int i;
+			for (i=0;i< nr_symtab_entry;i++)
+			{
+				if ((symtab[i].st_info & 0xf) == STT_OBJECT)
+				{
+				
+					char tmp [32];
+					//int tmplen = symtab[i+1].st_name - symtab[i].st_name - 1;
+					char* temp2 = strtab + symtab[i].st_name;
+					int tmplen = strlen(temp2);
+					//printf("str = %s, len = %x\n", temp2, (int)strlen(temp2));
+					//printf("tmp2len = %d\n", tmplen);
+					strncpy (tmp, temp2 ,tmplen);
+					//Log("3\n");
+					tmp [tmplen] = '\0';
+					if (strcmp (tmp, check) == 0)
+					{
+						return symtab[i].st_value;
+					}
+				}
+			}
+			
+		}	
 		if (tokens[p].type == HEXNUM) { sscanf(check, "%x", &i); return i;}
 		if (tokens[p].type == NUM)    { sscanf(check, "%u", &i); return i;}
 		if (tokens[p].type == REGISTER) {
@@ -205,7 +230,7 @@ uint32_t eval (int p, int q)
 			uint32_t val = eval(p+1, q);
 			switch (tokens[op].type) {
 				case MINUS : return -val;
-				case STAR  : return swaddr_read(val, 1);
+				case STAR  : return swaddr_read(val, 4);
 				case '!'   : return !val;
 				default:  Assert(0, "Wrong Token Type\n"); 
 			} 
@@ -241,10 +266,10 @@ uint32_t expr(char *e, bool *success) {
 		int check = i > 0?  tokens[i-1].type : 0;
 		if (tokens[i].type == '*' && (i == 0 || (check != NUM && check != HEXNUM && check != REGISTER && check != ')')))	tokens[i].type = STAR;
 		if (tokens[i].type == '-' && (i == 0 || (check != NUM && check != HEXNUM && check != REGISTER && check != ')')))   	tokens[i].type = MINUS;
-		//printf("i = %d, str = %s, type is %d\n", i, tokens[i].str, tokens[i].type);
+	//	printf("i = %d, str = %s, type is %d\n", i, tokens[i].str, tokens[i].type);
 	}
 	
-	
+		
 	return eval(0, nr_token-1);
 }
 

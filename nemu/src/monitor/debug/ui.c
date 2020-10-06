@@ -10,6 +10,13 @@
 void cpu_exec(uint32_t);
 
 /* We use the `readline' library to provide more flexibility to read from stdin. */
+
+typedef struct {
+	swaddr_t prev_ebp;
+	swaddr_t ret_addr;
+	uint32_t  args[4];
+}PartOfStackFrame;
+
 char* rl_gets() {
 	static char *line_read = NULL;
 
@@ -50,6 +57,8 @@ static int cmd_w(char *args);
 
 static int cmd_d(char *args);
 
+static int cmd_bt(char *args);
+
 static struct {
 	char *name;
 	char *description;
@@ -64,6 +73,8 @@ static struct {
 	{ "p", "Calculate the value of EXPR", cmd_p},
 	{ "w", "Set watchpoint for EXPR", cmd_w},
 	{ "d", "Delete No.N watchpoint", cmd_d},
+	{ "bt", "Print stack frame chain",cmd_bt},
+	
 	/* TODO: Add more commands */
 
 };
@@ -71,18 +82,28 @@ static struct {
 #define NR_CMD (sizeof(cmd_table) / sizeof(cmd_table[0]))
 static int cmd_info(char *args){
 	char* arg = strtok(NULL, " ");
-	if (arg == NULL || strlen(arg) != 1 || (arg[0] != 'r' && arg[0] != 'w')){
+	if (arg == NULL || strlen(arg) > 2 || (arg[0] != 'r' && arg[0] != 'w')){
 		printf("Invalid Input\n");
 	}
 	else if(strcmp(arg, "r") == 0){
-		printf("%%cpu.eax : %#08x\n", cpu.eax);
-		printf("%%cpu.ecx : %#08x\n", cpu.ecx);
-		printf("%%cpu.edx : %#08x\n", cpu.edx);
-		printf("%%cpu.ebx : %#08x\n", cpu.ebx);
-		printf("%%cpu.esp : %#08x\n", cpu.esp);
-		printf("%%cpu.ebp : %#08x\n", cpu.ebp);
-		printf("%%cpu.esi : %#08x\n", cpu.esi);
-		printf("%%cpu.edi : %#08x\n", cpu.edi);
+		printf("%%cpu.eax : %#08x\t %x\n", cpu.eax, swaddr_read(cpu.eax, 4));
+		printf("%%cpu.ecx : %#08x\t %x\n", cpu.ecx, swaddr_read(cpu.ecx, 4));
+		printf("%%cpu.edx : %#08x\t %x\n", cpu.edx, swaddr_read(cpu.edx, 4));
+		printf("%%cpu.ebx : %#08x\t %x\n", cpu.ebx, swaddr_read(cpu.ebx, 4));
+		printf("%%cpu.esp : %#08x\t %x\n", cpu.esp, swaddr_read(cpu.esp, 4));
+		printf("%%cpu.ebp : %#08x\t %x\n", cpu.ebp, swaddr_read(cpu.ebp, 4));
+		printf("%%cpu.esi : %#08x\t %x\n", cpu.esi, swaddr_read(cpu.esi, 4));
+		printf("%%cpu.edi : %#08x\t %x\n", cpu.edi, swaddr_read(cpu.edi, 4));
+		printf("%%cpu.eip : %#08x\t %x\n", cpu.eip, swaddr_read(cpu.eip, 4));
+	}
+	else if(strcmp(arg, "rf") == 0){
+		printf("%%cpu.CF : %x\n", cpu.CF);
+                printf("%%cpu.OF : %x\n", cpu.OF);
+                printf("%%cpu.ZF : %x\n", cpu.ZF);
+                printf("%%cpu.PF : %x\n", cpu.PF);
+		printf("%%cpu.SF : %x\n", cpu.SF);
+		printf("%%cpu.DF : %x\n", cpu.DF);
+	
 	}
 	else if (strcmp(arg, "w") == 0){
 		printf("NUM\t\tEXPR\t\tVAL\n"); 
@@ -98,7 +119,7 @@ static int cmd_p(char *args){
 	bool is;
 	uint32_t num = expr(args, &is);
 	if (is) {
-		printf("result is %d\n", num);
+		printf("result is 0x%x\n", num);
 	}else{
 		printf("EXPR IS WRONG\n");
 	}			
@@ -112,6 +133,48 @@ static int cmd_d(char *args){
 	suc = delete_wp(num);
 	if (suc == 0) Assert(0, "Invalid Num"); 
 	return 0;
+}
+static void read_ebp (swaddr_t addr , PartOfStackFrame *ebp)
+{
+	
+	ebp -> prev_ebp = swaddr_read (addr , 4);
+	ebp -> ret_addr = swaddr_read (addr + 4 , 4);
+	int i;
+	for (i = 0;i < 4;i ++)
+	{
+		ebp -> args [i] = swaddr_read (addr + 8 + 4 * i , 4);
+	}
+}
+static int cmd_bt(char *args){
+	
+	int i,j = 0;
+	PartOfStackFrame now_ebp;
+	char tmp [32];
+	int tmplen;
+	swaddr_t addr = reg_l (R_EBP);
+	now_ebp.ret_addr = cpu.eip;
+	while (addr > 0)
+	{
+		printf ("#%d  0x%08x in ",j++,now_ebp.ret_addr);
+		for (i=0;i<nr_symtab_entry;i++)
+		{
+			if (symtab[i].st_value <= now_ebp.ret_addr && symtab[i].st_value +  symtab[i].st_size >= now_ebp.ret_addr && (symtab[i].st_info&0xf) == STT_FUNC)
+			{
+				tmplen = (int)strlen(strtab+symtab[i].st_name);
+				strncpy (tmp,strtab+symtab[i].st_name,tmplen);
+				tmp [tmplen] = '\0';
+				break;
+			}
+		}
+		printf("%s\t",tmp);
+		read_ebp (addr,&now_ebp);
+		if (strcmp (tmp,"main") == 0)printf ("( )\n");
+		else printf ("( %d , %d , %d , %d )\n", now_ebp.args[0],now_ebp.args[1],now_ebp.args[2],now_ebp.args[3]);
+		addr = now_ebp.prev_ebp;
+		
+	}
+	return 0;
+
 }
 static int cmd_w(char *args){
 	if (args == NULL) {

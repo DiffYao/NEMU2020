@@ -1,9 +1,11 @@
 #include <stdio.h>
 #include <stdint.h>
-#include "FLOAT.h"
+#include "../FLOAT.h"
+#include <sys/mman.h>
 
 extern char _vfprintf_internal;
 extern char _fpmaxtostr;
+extern char _ppfs_setargs;
 extern int __stdio_fwrite(char *buf, int len, FILE *stream);
 
 __attribute__((used)) static int format_FLOAT(FILE *stream, FLOAT f) {
@@ -14,19 +16,67 @@ __attribute__((used)) static int format_FLOAT(FILE *stream, FLOAT f) {
 	 *         0x00010000    "1.000000"
 	 *         0x00013333    "1.199996"
 	 */
-
+/*
 	char buf[80];
-	int len = sprintf(buf, "0x%08x", f);
+	int len;	
+	uint32_t tmp = f;
+	int sign = tmp  >> 31;
+	//to be positive num
+	if (sign == 1) tmp = (~tmp) + 1;
+	
+	long long decimal = (long long)(tmp & 0x0000ffff);
+        decimal = (decimal * 1000000) / 65536; 
+	
+	if (sign == 1)
+		len = sprintf(buf, "-%d.%06lld", ( tmp >> 16), decimal);
+	else 
+		len = sprintf(buf,  "%d.%06lld" , ( tmp >> 16), decimal);
+	
+	//len = sprintf(buf, "%08d", f);
+	return __stdio_fwrite(buf, len, stream);
+*/
+
+	int sign = f & 0x80000000;
+	if (sign == 1) f = ~f + 1;
+	unsigned short round = (unsigned short)(f >> 16);
+	long long decimal = (long long)(f & 0x0000ffff);
+	decimal = (decimal * 1000000) / 65536;
+	char buf[80];
+	int len;
+	if (sign == 0) len = sprintf(buf, "%hu.%06llu", round, decimal);
+	else len = sprintf(buf, "-%hu.%06llu", round, decimal);	
+	
 	return __stdio_fwrite(buf, len, stream);
 }
 
 static void modify_vfprintf() {
+
+	void* p = &_vfprintf_internal + 0x307;
+   	void* r = (void *)format_FLOAT;
+	void* v = &_fpmaxtostr;
+	unsigned* pn = p;
+//	mprotect((void *)(((unsigned)(pp-101)) & 0xfffff000), 4096*2, PROT_READ | PROT_WRITE | PROT_EXEC);	
+	*pn = *pn + r - v;
+
+	char* ppush = (char*)(p - 0xc);
+	*ppush = 0x8; ppush ++;
+	*ppush = 0xFF; ppush ++;
+	*ppush = 0x32; ppush ++;
+	*ppush = 0x90;
+
+	char* cleaner = (char*)(p - 0x23);
+	*cleaner = 0x90;cleaner += 1;
+	*cleaner = 0x90;cleaner += 3;
+	*cleaner = 0x90;cleaner += 1;
+	*cleaner = 0x90;
+
+
 	/* TODO: Implement this function to hijack the formating of "%f"
 	 * argument during the execution of `_vfprintf_internal'. Below
 	 * is the code section in _vfprintf_internal() relative to the
 	 * hijack.
 	 */
-
+        
 #if 0
 	else if (ppfs->conv_num <= CONV_A) {  /* floating point */
 		ssize_t nf;
@@ -67,6 +117,12 @@ static void modify_vfprintf() {
 }
 
 static void modify_ppfs_setargs() {
+
+	void* p = &_ppfs_setargs;
+	p += 0x71;
+	short* pn = p;
+	*pn = 0x30eb;
+
 	/* TODO: Implement this function to modify the action of preparing
 	 * "%f" arguments for _vfprintf_internal() in _ppfs_setargs().
 	 * Below is the code section in _vfprintf_internal() relative to

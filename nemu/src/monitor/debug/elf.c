@@ -4,11 +4,12 @@
 
 char *exec_file = NULL;
 
-static char *strtab = NULL;
-static Elf32_Sym *symtab = NULL;
-static int nr_symtab_entry;
+char *strtab = NULL;
+Elf32_Sym *symtab = NULL;
+int nr_symtab_entry;
 
 void load_elf_tables(int argc, char *argv[]) {
+
 	int ret;
 	Assert(argc == 2, "run NEMU with format 'nemu [program]'");
 	exec_file = argv[1];
