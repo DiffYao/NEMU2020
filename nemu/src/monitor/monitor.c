@@ -86,7 +86,7 @@ void restart() {
 	load_entry();
 
 	/* INIT cache.*/
-	init_Cache();
+	init_cache();
 	/* Set the initial instruction pointer. */
 	cpu.eip = ENTRY_START;
 	cpu.eflags = EFLAGS_INITIAL_VALUE;

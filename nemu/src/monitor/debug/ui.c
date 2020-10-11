@@ -86,21 +86,21 @@ static int cmd_info(char *args){
 		printf("Invalid Input\n");
 	}
 	else if(strcmp(arg, "r") == 0){
-		printf("%%cpu.eax : %#08x\t %x\n", cpu.eax, swaddr_read(cpu.eax, 4));
-		printf("%%cpu.ecx : %#08x\t %x\n", cpu.ecx, swaddr_read(cpu.ecx, 4));
-		printf("%%cpu.edx : %#08x\t %x\n", cpu.edx, swaddr_read(cpu.edx, 4));
-		printf("%%cpu.ebx : %#08x\t %x\n", cpu.ebx, swaddr_read(cpu.ebx, 4));
-		printf("%%cpu.esp : %#08x\t %x\n", cpu.esp, swaddr_read(cpu.esp, 4));
-		printf("%%cpu.ebp : %#08x\t %x\n", cpu.ebp, swaddr_read(cpu.ebp, 4));
-		printf("%%cpu.esi : %#08x\t %x\n", cpu.esi, swaddr_read(cpu.esi, 4));
-		printf("%%cpu.edi : %#08x\t %x\n", cpu.edi, swaddr_read(cpu.edi, 4));
-		printf("%%cpu.eip : %#08x\t %x\n", cpu.eip, swaddr_read(cpu.eip, 4));
+		printf("%%cpu.eax : %#08x\t \n", cpu.eax );//swaddr_read(cpu.eax, 4));
+		printf("%%cpu.ecx : %#08x\t \n", cpu.ecx );//swaddr_read(cpu.ecx, 4));
+		printf("%%cpu.edx : %#08x\t \n", cpu.edx );//swaddr_read(cpu.edx, 4));
+		printf("%%cpu.ebx : %#08x\t \n", cpu.ebx );//swaddr_read(cpu.ebx, 4));
+		printf("%%cpu.esp : %#08x\t \n", cpu.esp );//swaddr_read(cpu.esp, 4));
+		printf("%%cpu.ebp : %#08x\t \n", cpu.ebp );//swaddr_read(cpu.ebp, 4));
+		printf("%%cpu.esi : %#08x\t \n", cpu.esi );//swaddr_read(cpu.esi, 4));
+		printf("%%cpu.edi : %#08x\t \n", cpu.edi );//swaddr_read(cpu.edi, 4));
+		printf("%%cpu.eip : %#08x\t \n", cpu.eip );//swaddr_read(cpu.eip, 4));
 	}
 	else if(strcmp(arg, "rf") == 0){
 		printf("%%cpu.CF : %x\n", cpu.CF);
-                printf("%%cpu.OF : %x\n", cpu.OF);
-                printf("%%cpu.ZF : %x\n", cpu.ZF);
-                printf("%%cpu.PF : %x\n", cpu.PF);
+        printf("%%cpu.OF : %x\n", cpu.OF);
+        printf("%%cpu.ZF : %x\n", cpu.ZF);
+        printf("%%cpu.PF : %x\n", cpu.PF);
 		printf("%%cpu.SF : %x\n", cpu.SF);
 		printf("%%cpu.DF : %x\n", cpu.DF);
 	
