@@ -1,9 +1,31 @@
 #include "common.h"
 
+#define BLOCK_SIZE 64
+#define STORE_SIZE_L1 64*1024
+#define COUNT_Cache_L1 1024
+
 uint32_t dram_read(hwaddr_t, size_t);
 void dram_write(hwaddr_t, size_t, uint32_t);
-
 /* Memory accessing interfaces */
+
+struct Cache
+{
+	bool valid;
+	int tag;
+	uint8_t data[BLOCK_SIZE];
+}cache[COUNT_Cache_L1];
+
+void init_Cache( ){
+	int i;
+	for (i = 0; i < COUNT_Cache_L1; i++)
+	{
+		cache[i].valid = false;
+		cache[i].tag = 0;
+		memset(cache[i].data, 0, BLOCK_SIZE);
+	}
+
+}
+
 
 uint32_t hwaddr_read(hwaddr_t addr, size_t len) {
 	return dram_read(addr, len) & (~0u >> ((4 - len) << 3));
