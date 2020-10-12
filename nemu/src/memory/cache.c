@@ -57,32 +57,7 @@ inline static void memcpy_cache(void *dest, void *src, size_t len){
 	
 }
 
-void cache1_write(hwaddr_t addr, size_t len, uint32_t data){
-	
-	struct Cache1 mirror;
-	mirror.addr = addr;
-	uint32_t group_num = mirror.group;
-	uint32_t tag = mirror.tag;
-	uint32_t addr_block = (addr >> BLOCK_BIT << BLOCK_BIT);
 
-	int i;
-	bool is = false;
-	for (i = group_num * way ; i < (group_num + 1) * way ; i++)
-	{
-		if (cache1[i].valid && cache1[i].tag == tag)
-			{
-				is = true;
-				break;
-			}
-	}
-	//update the memory
-	dram_write(addr, len, data);
-	if (is){
-		int j;
-		for(j = 0; j < BLOCK_SIZE; j++)
-			cache1[i].data[j] = dram_read(addr_block+j, 1) & (~0u >> ((4 - len) << 3));		
-	}
-}
 uint32_t cache1_read(hwaddr_t addr, size_t len){
 	uint32_t group_num = (addr >> 6) & 0x7f;
 	uint32_t addr_block = (addr >> BLOCK_BIT << BLOCK_BIT);
@@ -119,4 +94,31 @@ uint32_t cache1_read(hwaddr_t addr, size_t len){
 	
 	return unalign_rw(temp + offset, 4);
 
+}
+
+void cache1_write(hwaddr_t addr, size_t len, uint32_t data){
+	
+	struct Cache1 mirror;
+	mirror.addr = addr;
+	uint32_t group_num = mirror.group;
+	uint32_t tag = mirror.tag;
+	uint32_t addr_block = (addr >> BLOCK_BIT << BLOCK_BIT);
+
+	int i;
+	bool is = false;
+	for (i = group_num * way ; i < (group_num + 1) * way ; i++)
+	{
+		if (cache1[i].valid && cache1[i].tag == tag)
+			{
+				is = true;
+				break;
+			}
+	}
+	//update the memory
+	dram_write(addr, len, data);
+	if (is){
+		int j;
+		for(j = 0; j < BLOCK_SIZE; j++)
+			cache1[i].data[j] = dram_read(addr_block+j, 1) & (~0u >> ((4 - len) << 3));		
+	}
 }
