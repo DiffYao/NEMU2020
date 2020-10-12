@@ -90,6 +90,7 @@ uint32_t cache1_read(hwaddr_t addr, size_t len){
 	int i;
 	bool is = false;
 	uint8_t temp[BLOCK_SIZE*2];
+	printf("hello world\n");
 	for (i = group_num * way ; i < (group_num + 1) * way ; i++)
 	{
 		if (cache1[i].valid && cache1[i].tag == (addr >> 13))
