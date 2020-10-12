@@ -8,16 +8,22 @@
 #define COUNT_CACHE_L1 1024
 #define BLOCK_BIT 6
 #define GROUP_BIT 7
-#define TAG_BIT (32 - BLOCK_BIT - GROUP_BIT)
+#define TAG_BIT (32 - BLOCK_BIT - GROUP_BIT) //19
 
 /*Lache L2*/
+#define way_2 16
+#define STORE_SIZE_L2 4*1024*1024
+#define COUNT_CACHE_L2 64*1024
+#define BLOCK_BIT_2 6
+//group num = 1024*64 / 16 = 4096
+#define GROUP_BIT_2 12
+#define TAG_BIT_2 (32 - BLOCK_BIT_2 - GROUP_BIT_2) //14
 
 
-
-
+/* Memory accessing interfaces */
 uint32_t dram_read(hwaddr_t, size_t);
 void dram_write(hwaddr_t, size_t, uint32_t);
-/* Memory accessing interfaces */
+
 
 struct Cache1
 {
@@ -36,6 +42,26 @@ struct Cache1
 	uint8_t data[BLOCK_SIZE];
 
 }cache1[COUNT_CACHE_L1];
+
+struct Cache2
+{
+	bool valid;
+	bool dirty;
+	union 
+	{
+		struct 
+		{
+			uint32_t offset : BLOCK_BIT_2;
+			uint32_t group  : GROUP_BIT_2;
+			uint32_t tag 	: TAG_BIT_2;
+		};
+		uint32_t addr;
+	};
+
+	uint8_t data[BLOCK_SIZE];
+
+}cache2[COUNT_CACHE_L2];
+
 
 void init_cache( ){
 	int i;
