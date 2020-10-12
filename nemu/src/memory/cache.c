@@ -72,6 +72,14 @@ void init_cache( ){
 		memset(cache1[i].data, 0, BLOCK_SIZE);
 	}
 
+	for (i = 0; i < COUNT_CACHE_L2; i++)
+	{
+		cache2[i].valid = false;
+		cache2[i].dirty = false;
+		cache2[i].addr = 0;
+		memset(cache1[i].data, 0, BLOCK_SIZE);
+	}
+
 }
 
 inline static void memcpy_cache(void *dest, void *src, size_t len){
