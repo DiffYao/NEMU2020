@@ -25,6 +25,11 @@ uint32_t dram_read(hwaddr_t, size_t);
 void dram_write(hwaddr_t, size_t, uint32_t);
 
 
+/* Cache accessing interfaces */
+uint32_t cache1_read(hwaddr_t, size_t);
+void cache1_write(hwaddr_t, size_t, uint32_t);
+
+
 struct Cache1
 {
 	bool valid;
@@ -91,6 +96,106 @@ inline static void memcpy_cache(void *dest, void *src, size_t len){
 	
 }
 
+uint32_t cache2_read(hwaddr_t addr, size_t len){
+	struct Cache2 mirror;
+
+	mirror.addr = addr;
+	uint32_t group_num = mirror.group;
+	uint32_t tag = mirror.tag;
+	uint32_t offset = mirror.offset;
+	uint32_t addr_block = (addr >> BLOCK_BIT_2) << BLOCK_BIT_2;
+
+	int i;
+	bool is = false;
+	uint8_t temp[BLOCK_SIZE*2];
+	for (i = group_num * way_2 ; i < (group_num + 1) * way_2 ; i++)
+	{
+		if (cache2[i].valid && cache2[i].tag == tag)
+			{
+				is = true;
+				break;
+			}
+	}
+	//If Not Hit
+	if (!is){
+		for (i = group_num * way_2 ; i < (group_num + 1) * way_2 ; i++)
+		{
+			if (!cache2[i].valid)	break;
+		}
+		if (i == (group_num+1) * way_2){
+			srand(0);
+			i = group_num * way_2 + rand() % way;
+		}
+		cache2[i].valid = true;
+		cache2[i].dirty = false;
+		cache2[i].tag = tag;
+		int j;
+		for(j = 0; j < BLOCK_SIZE; j++)
+			cache2[i].data[j] = dram_read(addr_block+j, 1) & (~0u >> ((4 - len) << 3));		
+	}
+	memcpy_cache(temp, cache2[i].data, BLOCK_SIZE);
+	if (len + offset > BLOCK_SIZE) 
+		 *(uint32_t*)(temp + BLOCK_SIZE) = cache2_read(addr_block + BLOCK_SIZE, len);
+	
+	return unalign_rw(temp + offset, 4);
+}
+
+void cache2_write(hwaddr_t addr, size_t len, uint32_t data){
+
+	struct Cache2 mirror;
+	mirror.addr = addr;
+	uint32_t group_num = mirror.group;
+	uint32_t offset = mirror.offset;
+	uint32_t tag = mirror.tag;
+	uint32_t addr_block = (addr >> BLOCK_BIT) << BLOCK_BIT;
+
+	int i, j;
+	bool is = false;
+	for (i = group_num * way_2 ; i < (group_num + 1) * way_2 ; i++)
+	{
+		if (cache2[i].valid && cache2[i].tag == tag)
+			{
+				is = true;
+				break;
+			}
+	}
+	//write allocate and write bakck 
+	if (is){
+		uint8_t* datap = (uint8_t *)(&data);
+		
+		for (j = 0; j < len; j++)
+		{
+			cache2[i].data[offset+j] = *(datap+j);
+		}
+		cache2[i].dirty = true;	
+	}
+	else {
+		// update memory
+		dram_write(addr, len, data);
+		for (i = group_num * way_2 ; i < (group_num + 1) * way_2 ; i++)
+		{
+			if (!cache2[i].valid)	break;
+		}
+		if (i == (group_num+1) * way_2){
+			srand(0);
+			i = group_num * way_2 + rand() % way;
+		}
+		if (cache2[i].dirty == true){
+			for (j = 0; j < BLOCK_SIZE; j++)
+			{
+				dram_write(addr_block+j, 1, cache2[i].data[j]);
+			}
+		}
+		cache2[i].valid = true;
+		cache2[i].dirty = false;
+		cache2[i].tag = tag;
+		int j;
+		for(j = 0; j < BLOCK_SIZE; j++)
+			cache2[i].data[j] = dram_read(addr_block+j, 1) & (~0u >> ((4 - len) << 3));	
+			
+	}
+
+}
 
 uint32_t cache1_read(hwaddr_t addr, size_t len){
 	uint32_t group_num = (addr >> 6) & 0x7f;
