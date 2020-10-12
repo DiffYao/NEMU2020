@@ -77,7 +77,7 @@ void init_cache( ){
 		cache2[i].valid = false;
 		cache2[i].dirty = false;
 		cache2[i].addr = 0;
-		memset(cache1[i].data, 0, BLOCK_SIZE);
+		memset(cache2[i].data, 0, BLOCK_SIZE);
 	}
 
 }
