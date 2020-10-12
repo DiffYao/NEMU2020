@@ -131,7 +131,7 @@ uint32_t cache2_read(hwaddr_t addr, size_t len){
 		cache2[i].tag = tag;
 		int j;
 		for(j = 0; j < BLOCK_SIZE; j++)
-			cache2[i].data[j] = dram_read(addr_block+j, 1) & (~0u >> ((4 - len) << 3));		
+			cache2[i].data[j] = dram_read(addr_block+j, 1) & (~0u >> ((4 - 1) << 3));		
 	}
 	memcpy_cache(temp, cache2[i].data, BLOCK_SIZE);
 	if (len + offset > BLOCK_SIZE) 
@@ -225,7 +225,7 @@ uint32_t cache1_read(hwaddr_t addr, size_t len){
 		cache1[i].tag = addr >> 13;
 		int j;
 		for(j = 0; j < BLOCK_SIZE; j++)
-			cache1[i].data[j] = dram_read(addr_block+j, 1) & (~0u >> ((4 - len) << 3));		
+			cache1[i].data[j] = cache2_read(addr_block+j, 1) & (~0u >> ((4 - 1) << 3));		
 	}
 	memcpy_cache(temp, cache1[i].data, BLOCK_SIZE);
 	if (len + offset > BLOCK_SIZE) 
@@ -254,10 +254,10 @@ void cache1_write(hwaddr_t addr, size_t len, uint32_t data){
 			}
 	}
 	//update the memory
-	dram_write(addr, len, data);
+	cache2_write(addr, len, data);
 	if (is){
 		int j;
 		for(j = 0; j < BLOCK_SIZE; j++)
-			cache1[i].data[j] = dram_read(addr_block+j, 1) & (~0u >> ((4 - len) << 3));		
+			cache1[i].data[j] = cache2_read(addr_block+j, 1) & (~0u >> ((4 - 1) << 3));		
 	}
 }
