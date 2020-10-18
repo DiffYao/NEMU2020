@@ -228,7 +228,7 @@ uint32_t cache1_read(hwaddr_t addr, size_t len){
 		for(j = 0; j < BLOCK_SIZE; j++)
 			cache1[i].data[j] = cache2_read(addr_block+j, 1) & (~0u >> ((4 - 1) << 3));		
 	}
-	memcpy_cache(temp, cache1[i].data, BLOCK_SIZE);
+	memcpy(temp, cache1[i].data, BLOCK_SIZE);
 	if (len + offset > BLOCK_SIZE) 
 		 *(uint32_t*)(temp + BLOCK_SIZE) = cache1_read(addr_block + BLOCK_SIZE, len);
 	
@@ -237,6 +237,9 @@ uint32_t cache1_read(hwaddr_t addr, size_t len){
 }
 
 void cache1_write(hwaddr_t addr, size_t len, uint32_t data){
+
+	//update the cache2
+	cache2_write(addr, len, data);
 	
 	struct Cache1 mirror;
 	mirror.addr = addr;
@@ -254,8 +257,7 @@ void cache1_write(hwaddr_t addr, size_t len, uint32_t data){
 				break;
 			}
 	}
-	//update the memory
-	cache2_write(addr, len, data);
+	
 	if (is){
 		int j;
 		for(j = 0; j < BLOCK_SIZE; j++)
