@@ -86,7 +86,7 @@ void init_cache( ){
 	}
 
 }
-
+/*
 inline static void memcpy_cache(void *dest, void *src, size_t len){
 	int i;
 	for (i = 0; i < len; i++)
@@ -94,7 +94,7 @@ inline static void memcpy_cache(void *dest, void *src, size_t len){
 		((uint8_t*) dest)[i] = ((uint8_t*) src)[i];
 	}
 	
-}
+}*/
 
 uint32_t cache2_read(hwaddr_t addr, size_t len){
 	struct Cache2 mirror;
@@ -133,7 +133,7 @@ uint32_t cache2_read(hwaddr_t addr, size_t len){
 		for(j = 0; j < BLOCK_SIZE; j++)
 			cache2[i].data[j] = dram_read(addr_block+j, 1) & (~0u >> ((4 - 1) << 3));		
 	}
-	memcpy_cache(temp, cache2[i].data, BLOCK_SIZE);
+	memcpy(temp, cache2[i].data, BLOCK_SIZE);
 	
 	if (len + offset > BLOCK_SIZE) 
 		 *(uint32_t*)(temp + BLOCK_SIZE) = cache2_read(addr_block + BLOCK_SIZE, len);
@@ -162,11 +162,11 @@ void cache2_write(hwaddr_t addr, size_t len, uint32_t data){
 	}
 	//write allocate and write bakck 
 	if (is){
-		uint8_t* datap = (uint8_t *)(&data);
+		uint8_t* data_byte = (uint8_t *)(&data);
 		
 		for (j = 0; j < len; j++)
 		{
-			cache2[i].data[offset+j] = *(datap+j);
+			cache2[i].data[offset+j] = *(data_byte+j);
 		}
 		cache2[i].dirty = true;	
 	}
