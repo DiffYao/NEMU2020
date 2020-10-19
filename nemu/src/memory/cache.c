@@ -86,15 +86,6 @@ void init_cache( ){
 	}
 
 }
-/*
-inline static void memcpy_cache(void *dest, void *src, size_t len){
-	int i;
-	for (i = 0; i < len; i++)
-	{
-		((uint8_t*) dest)[i] = ((uint8_t*) src)[i];
-	}
-	
-}*/
 
 uint32_t cache2_read(hwaddr_t addr, size_t len){
 	struct Cache2 mirror;
