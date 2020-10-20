@@ -34,7 +34,7 @@ make_helper(concat(mov_moffs2a_, SUFFIX)) {
 make_helper(mov_cr2r){
 	int r_num = instr_fetch(eip + 1, 1);;
 	if (((r_num >> 3) & 0x7) == 0){
-		reg_l(r_num & 0x7) = cpu.cr0;
+		reg_l(r_num & 0x7) = cpu.cr0.val;
 		print_asm("mov %%cr0,%s", REG_NAME(r_num & 0x7));
 	}
 
@@ -44,7 +44,7 @@ make_helper(mov_cr2r){
 make_helper(mov_r2cr){
 	int r_num = instr_fetch(eip + 1, 1);
 	if (((r_num >> 3) & 0x7) == 0){
-		cpu.cr0 = reg_l(r_num & 0x7);
+		cpu.cr0.val = reg_l(r_num & 0x7);
 		print_asm("mov %%cr0,%s", REG_NAME(r_num & 0x7));
 	}
 	return 2;

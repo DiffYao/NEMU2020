@@ -88,7 +88,7 @@ void restart() {
 	/* INIT cache.*/
 	init_cache();
 	/* Set the initial instruction pointer. */
-	cpu.PE = 0;
+	cpu.cr0.protect_enable = 0;
 	/*
 	cpu.sreg[cs].cache.base_15_0 = 0;
     cpu.sreg[cs].cache.base_23_16 = 0;
