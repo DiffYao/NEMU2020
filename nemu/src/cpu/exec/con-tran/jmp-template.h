@@ -27,6 +27,12 @@ make_helper(concat(jmp_l_, SUFFIX)) {
 	uint16_t cs_new = instr_fetch(eip + 5, 2);
 	cpu.eip = offset - DATA_BYTE - 3;
 	printf("index = %x\n", cpu.sreg[1].INDEX);
+		cpu.sreg[1].selector = cs_new;
+	printf("%x\n", cpu.gdtr.base + 8 * cpu.sreg[1].INDEX + 2);
+	printf("%x\n", cpu.gdtr.base + 8 * cpu.sreg[1].INDEX + 4);
+	printf("%x\n", cpu.gdtr.base + 8 * cpu.sreg[1].INDEX + 7);
+	printf("%x\n", cpu.gdtr.base + 8 * cpu.sreg[1].INDEX);
+	printf("%x\n", cpu.gdtr.base + 8 * cpu.sreg[1].INDEX + 6);
 #if DATA_BYTE == 2
 	cpu.eip = cpu.eip & 0x0000ffff;
 #endif
