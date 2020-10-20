@@ -12,13 +12,13 @@ void dram_write(hwaddr_t, size_t, uint32_t);
 
 
 uint32_t hwaddr_read(hwaddr_t addr, size_t len) {
-	return dram_read(addr, len) & (~0u >> ((4 - len) << 3));
-	//return cache1_read(addr, len) & (~0u >> ((4 - len) << 3));
+	//return dram_read(addr, len) & (~0u >> ((4 - len) << 3));
+	return cache1_read(addr, len) & (~0u >> ((4 - len) << 3));
 }
 
 void hwaddr_write(hwaddr_t addr, size_t len, uint32_t data) {
-	return dram_write(addr, len, data);
-	//return cache1_write(addr, len, data);
+	//return dram_write(addr, len, data);
+	return cache1_write(addr, len, data);
 }
 
 uint32_t lnaddr_read(lnaddr_t addr, size_t len) {
