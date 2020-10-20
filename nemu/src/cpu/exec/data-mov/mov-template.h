@@ -53,7 +53,7 @@ make_helper(mov_r2cr){
 #endif
 
 #if DATA_BYTE == 2
-make_helper(movrm2s) {
+make_helper(mov_rm2s) {
 	int len = decode_r2rm_w(eip + 1);
 	cpu.sreg[op_src->reg].selector = op_dest->val & 0xffff;
 	cpu.sreg[op_src->reg].cache.base_15_0 = lnaddr_read(cpu.gdtr.base + 8 * cpu.sreg[op_src->reg].INDEX + 2, 2);
