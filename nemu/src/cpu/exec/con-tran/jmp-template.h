@@ -31,6 +31,7 @@ make_helper(concat(jmp_l_, SUFFIX)) {
 	cpu.eip = cpu.eip & 0x0000ffff;
 #endif
 	cpu.sreg[1].selector = cs_new;
+	printf("addr = %x\n", lnaddr_read(cpu.gdtr.base + 8 * cpu.sreg[1].INDEX + 2, 2));
 	cpu.sreg[1].cache.base_15_0 = lnaddr_read(cpu.gdtr.base + 8 * cpu.sreg[1].INDEX + 2, 2);
 /*	
 	cpu.sreg[1].cache.base_23_16 = lnaddr_read(cpu.gdtr.base + 8 * cpu.sreg[1].INDEX + 4, 1);
