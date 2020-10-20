@@ -88,6 +88,9 @@ static int cmd_info(char *args){
 	else if (strcmp(arg , "rs") == 0){
 		printf("base = %x,\nlimit = %x\n", cpu.gdtr.base, cpu.gdtr.limit);
 	}
+	else if (strcmp(arg , "rc") == 0){
+		printf("CR0 = %x\n", cpu.cr0.val);
+	}
 	else if(strcmp(arg, "r") == 0){
 		printf("%%cpu.eax : %#08x\t \n", cpu.eax );//swaddr_read(cpu.eax, 4));
 		printf("%%cpu.ecx : %#08x\t \n", cpu.ecx );//swaddr_read(cpu.ecx, 4));
