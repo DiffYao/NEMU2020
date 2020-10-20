@@ -7,6 +7,7 @@
 #include "data-mov/pop.h"
 #include "data-mov/cltd.h"
 #include "data-mov/leave.h"
+#include "data-mov/lgdt.h"
 
 #include "con-tran/call.h"
 #include "con-tran/ret.h"
