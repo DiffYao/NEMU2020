@@ -211,7 +211,7 @@ static int cmd_x(char *args){
 	int digit;
 	int i = 0;
 	for (; num > 0; num--){
-		digit = swaddr_read(result+i, 4, 3);
+		digit = lnaddr_read(result+i, 4);
 		printf("address:0x%x  \t%08x\n",result+i,digit);
 		i+=4;
 	}	
