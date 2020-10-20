@@ -85,6 +85,9 @@ static int cmd_info(char *args){
 	if (arg == NULL || strlen(arg) > 2 || (arg[0] != 'r' && arg[0] != 'w')){
 		printf("Invalid Input\n");
 	}
+	else if (strcmp(arg , "rs") == 0){
+		printf("base = %x,\nlimit = %x", cpu.gdtr.base, cpu.gdtr.limit);
+	}
 	else if(strcmp(arg, "r") == 0){
 		printf("%%cpu.eax : %#08x\t \n", cpu.eax );//swaddr_read(cpu.eax, 4));
 		printf("%%cpu.ecx : %#08x\t \n", cpu.ecx );//swaddr_read(cpu.ecx, 4));
