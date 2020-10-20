@@ -28,4 +28,26 @@ make_helper(concat(mov_moffs2a_, SUFFIX)) {
 	return 5;
 }
 
+#if DATA_BYTE == 4
+
+make_helper(mov_cr2r){
+	int r_num = instr_fetch(eip + 1, 1);;
+	if (((r_num >> 3) & 0x7) == 0){
+		reg_l(r_num) = cpu.cr0;
+		print_asm("mov %%cr0,%s", REG_NAME(r_num & 0x7));
+	}
+
+	return 2;
+}	
+
+make_helper(mov_r2cr){
+	int r_num = instr_fetch(eip + 1, 1);
+	if (((r_num >> 3) & 0x7) == 0){
+		cpu.cr0 = reg_l(r_num);
+		print_asm("mov %%cr0,%s", REG_NAME(r_num & 0x7));
+	}
+	return 2;
+}
+
+#endif
 #include "cpu/exec/template-end.h"
