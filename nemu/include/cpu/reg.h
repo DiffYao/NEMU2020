@@ -69,10 +69,10 @@ typedef struct {
 		union 
 		{
 			struct 
-			{
-				uint16_t INDEX : 13;
+			{	
+				uint16_t RPL   :  2;
 				uint16_t TI	   :  1;
-				uint16_t RPL   :  2;	
+				uint16_t INDEX : 13;
 			};
 			uint16_t selector;
 		};
@@ -81,7 +81,7 @@ typedef struct {
 	
 	
 	CR0 cr0;
-		
+	CR3 cr3;	
 	
 	
 } CPU_state;
