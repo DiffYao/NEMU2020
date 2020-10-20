@@ -45,7 +45,7 @@ make_helper(mov_r2cr){
 	int r_num = instr_fetch(eip + 1, 1);
 	if (((r_num >> 3) & 0x7) == 0){
 		cpu.cr0.val = reg_l(r_num & 0x7);
-		print_asm("mov %%cr0,%s", REG_NAME(r_num & 0x7));
+		print_asm("mov %s,%%cr0", REG_NAME(r_num & 0x7));
 	}
 	return 2;
 }
