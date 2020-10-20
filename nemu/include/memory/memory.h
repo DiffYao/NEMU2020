@@ -2,6 +2,8 @@
 #define __MEMORY_H__
 
 #include "common.h"
+#include "cpu/reg.h"
+
 
 #define HW_MEM_SIZE (128 * 1024 * 1024)
 

@@ -74,7 +74,7 @@ typedef struct {
 			};
 			uint16_t selector;
 		};
-		
+		SegDesc cache;
 	}sreg[6];
 	
 	

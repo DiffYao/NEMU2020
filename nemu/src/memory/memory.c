@@ -1,4 +1,5 @@
 #include "common.h"
+#include "cpu/reg.h"
 #include <stdlib.h>
 
 /* Cache accessing interfaces */
@@ -28,18 +29,31 @@ void lnaddr_write(lnaddr_t addr, size_t len, uint32_t data) {
 	hwaddr_write(addr, len, data);
 }
 
-uint32_t swaddr_read(swaddr_t addr, size_t len) {
-
-#ifdef DEBUG
-	assert(len == 1 || len == 2 || len == 4);
-#endif
-	return lnaddr_read(addr, len);
+lnaddr_t seg_translate(swaddr_t addr, size_t len, uint8_t sreg) {
+	assert(sreg == 0 || sreg == 1 || sreg == 2 || sreg == 3);
+	lnaddr_t ret_addr = addr;
+	if (cpu.PE == 1) {
+		ret_addr += (cpu.sreg[sreg].cache.base_15_0 | (cpu.sreg[sreg].cache.base_23_16 << 16) | (cpu.sreg[sreg].cache.base_31_24 << 24));
+	}
+	return ret_addr;	
 }
 
-void swaddr_write(swaddr_t addr, size_t len, uint32_t data) {
+
+
+uint32_t swaddr_read(swaddr_t addr, size_t len, uint8_t sreg) {
+
 #ifdef DEBUG
 	assert(len == 1 || len == 2 || len == 4);
 #endif
-	lnaddr_write(addr, len, data);
+	lnaddr_t lnaddr = seg_translate(addr, len, sreg);
+	return lnaddr_read(lnaddr, len);
+}
+
+void swaddr_write(swaddr_t addr, size_t len, uint32_t data, uint8_t sreg) {
+#ifdef DEBUG
+	assert(len == 1 || len == 2 || len == 4);
+#endif
+	lnaddr_t lnaddr = seg_translate(addr, len, sreg);
+	lnaddr_write(lnaddr, len, data);
 }
 
