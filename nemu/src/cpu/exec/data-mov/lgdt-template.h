@@ -4,7 +4,7 @@
 
 make_helper(concat(lgdt_, SUFFIX)) {
 	int len = decode_rm2r_l(eip + 1);
-	print_asm("addr is 0x%x", op_src->addr);
+	printf("addr is 0x%x", op_src->addr);
 	cpu.gdtr.limit = lnaddr_read(op_src->addr, 2);
 	if (DATA_BYTE == 2) 
 		cpu.gdtr.base = lnaddr_read(op_src->addr + 2, 3);
