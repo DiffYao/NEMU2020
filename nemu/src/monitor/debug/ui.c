@@ -137,12 +137,12 @@ static int cmd_d(char *args){
 static void read_ebp (swaddr_t addr , PartOfStackFrame *ebp)
 {
 	
-	ebp -> prev_ebp = swaddr_read (addr , 4);
-	ebp -> ret_addr = swaddr_read (addr + 4 , 4);
+	ebp -> prev_ebp = swaddr_read (addr , 4, 3);
+	ebp -> ret_addr = swaddr_read (addr + 4 , 4, 3);
 	int i;
 	for (i = 0;i < 4;i ++)
 	{
-		ebp -> args [i] = swaddr_read (addr + 8 + 4 * i , 4);
+		ebp -> args [i] = swaddr_read (addr + 8 + 4 * i , 4, 3);
 	}
 }
 static int cmd_bt(char *args){
@@ -205,7 +205,7 @@ static int cmd_x(char *args){
 	int digit;
 	int i = 0;
 	for (; num > 0; num--){
-		digit = swaddr_read(result+i, 4);
+		digit = swaddr_read(result+i, 4, 3);
 		printf("address:0x%x  \t%08x\n",result+i,digit);
 		i+=4;
 	}	

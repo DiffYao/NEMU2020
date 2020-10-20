@@ -11,7 +11,7 @@ static void do_execute() {
 
 	MEM_W(dest, MEM_R(src));
 	*/
-	swaddr_write (reg_l(R_EDI),4,swaddr_read (reg_l(R_ESI),4));
+	MEM_W(reg_l(R_EDI), MEM_R(reg_l(R_ESI), 3), 0);
 	
 	
 	if (cpu.DF == 0)	{reg_l (R_EDI) += DATA_BYTE; reg_l (R_ESI) += DATA_BYTE;}

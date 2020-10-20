@@ -230,7 +230,7 @@ uint32_t eval (int p, int q)
 			uint32_t val = eval(p+1, q);
 			switch (tokens[op].type) {
 				case MINUS : return -val;
-				case STAR  : return swaddr_read(val, 4);
+				case STAR  : return swaddr_read(val, 4, 3);
 				case '!'   : return !val;
 				default:  Assert(0, "Wrong Token Type\n"); 
 			} 

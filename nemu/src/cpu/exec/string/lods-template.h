@@ -9,17 +9,17 @@ static void do_execute() {
 
 	if (DATA_BYTE == 1) {
 
-		reg_b(R_AL) = MEM_R(src);
+		reg_b(R_AL) = MEM_R(src, 3);
 
 	}
 	else if (DATA_BYTE == 2)
 	{
 		
-		reg_w(R_AX) = MEM_R(src);
+		reg_w(R_AX) = MEM_R(src, 3);
 	}
 	else
 	{	
-		reg_l(R_EAX) = MEM_R (src);
+		reg_l(R_EAX) = MEM_R (src, 3);
 
 	}
 

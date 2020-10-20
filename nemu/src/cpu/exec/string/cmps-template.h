@@ -16,9 +16,9 @@ static void do_execute() {
 	else
 	{*/
 		
-	src = swaddr_read (reg_l (R_ESI),DATA_BYTE);
+	src = swaddr_read (reg_l (R_ESI),DATA_BYTE, 3);
 		
-	dest = swaddr_read (reg_l (R_EDI),DATA_BYTE);
+	dest = swaddr_read (reg_l (R_EDI),DATA_BYTE, 0);
 	
 	DATA_TYPE result = dest - src;
 
