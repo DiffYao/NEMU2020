@@ -51,4 +51,25 @@ make_helper(mov_r2cr){
 }
 
 #endif
+
+#if DATA_BYTE == 2
+make_helper(movrm2s) {
+	int len = decode_r2rm_w(eip + 1);
+	cpu.sreg[op_src->reg].selector = op_dest->val & 0xffff;
+	cpu.sreg[op_src->reg].cache.base_15_0 = lnaddr_read(cpu.gdtr.base + 8 * cpu.sreg[op_src->reg].INDEX + 2, 2);
+	cpu.sreg[op_src->reg].cache.base_23_16 = lnaddr_read(cpu.gdtr.base + 8 * cpu.sreg[op_src->reg].INDEX + 4, 1);
+	cpu.sreg[op_src->reg].cache.base_31_24 = lnaddr_read(cpu.gdtr.base + 8 * cpu.sreg[op_src->reg].INDEX + 7, 1);
+	cpu.sreg[op_src->reg].cache.limit_15_0 = lnaddr_read(cpu.gdtr.base + 8 * cpu.sreg[op_src->reg].INDEX, 2);
+	cpu.sreg[op_src->reg].cache.limit_19_16 = lnaddr_read(cpu.gdtr.base + 8 * cpu.sreg[op_src->reg].INDEX + 6, 1) & 0xf;
+	switch (op_src->reg) {
+		case 0: print_asm("mov %s,%%es", op_dest->str); break;
+		case 1: print_asm("mov %s,%%cs", op_dest->str); break;
+		case 2: print_asm("mov %s,%%ss", op_dest->str); break;
+		case 3: print_asm("mov %s,%%ds", op_dest->str); break;
+		default: assert(0);
+	}
+	return len + 1;
+}
+#endif
+
 #include "cpu/exec/template-end.h"
