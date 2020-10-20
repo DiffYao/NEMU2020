@@ -32,11 +32,12 @@ make_helper(concat(jmp_l_, SUFFIX)) {
 #endif
 	cpu.sreg[1].selector = cs_new;
 	cpu.sreg[1].cache.base_15_0 = lnaddr_read(cpu.gdtr.base + 8 * cpu.sreg[1].INDEX + 2, 2);
+/*	
 	cpu.sreg[1].cache.base_23_16 = lnaddr_read(cpu.gdtr.base + 8 * cpu.sreg[1].INDEX + 4, 1);
 	cpu.sreg[1].cache.base_31_24 = lnaddr_read(cpu.gdtr.base + 8 * cpu.sreg[1].INDEX + 7, 1);
 	cpu.sreg[1].cache.limit_15_0 = lnaddr_read(cpu.gdtr.base + 8 * cpu.sreg[1].INDEX, 2);
 	cpu.sreg[1].cache.limit_19_16 = lnaddr_read(cpu.gdtr.base + 8 * cpu.sreg[1].INDEX + 6, 1) & 0xf;
-
+*/
 	print_asm("ljmp $%hx,$%x", cs_new, offset);
 	return DATA_BYTE + 3;
 
