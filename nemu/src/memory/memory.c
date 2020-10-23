@@ -32,12 +32,12 @@ hwaddr_t page_translate(lnaddr_t addr) {
 			page_directory = (page_directory << 12) | (dir << 2);
 			PDE pde;
 			pde.val = hwaddr_read(page_directory, 4);
-			assert(pde.present == 1);
+			//assert(pde.present == 1);
 			hwaddr_t page_entry = pde.page_frame;
 			page_entry = (page_entry << 12) | (page << 2);
 			PTE pte;
 			pte.val = hwaddr_read(page_entry, 4);
-			assert(pte.present == 1);
+			//assert(pte.present == 1);
 			hwaddr = offset | (pte.page_frame << 12);
 		}
 		else
