@@ -37,7 +37,12 @@ make_helper(mov_cr2r){
 		reg_l(r_num & 0x7) = cpu.cr0.val;
 		print_asm("mov %%cr0,%s", REG_NAME(r_num & 0x7));
 	}
-
+	else
+	{
+		reg_l(r_num & 0x7) = cpu.cr0.val;
+		print_asm("mov %%cr0,%s", REG_NAME(r_num & 0x7));
+	}
+	
 	return 2;
 }
 
@@ -46,6 +51,11 @@ make_helper(mov_r2cr){
 	if (((r_num >> 3) & 0x7) == 0){
 		cpu.cr0.val = reg_l(r_num & 0x7);
 		print_asm("mov %s,%%cr0", REG_NAME(r_num & 0x7));
+	}
+	else
+	{
+		cpu.cr3.val = reg_l(r_num & 0x7);
+		print_asm("mov %s,%%cr3", REG_NAME(r_num & 0x7));
 	}
 	return 2;
 }
