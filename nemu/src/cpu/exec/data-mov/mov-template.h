@@ -39,7 +39,7 @@ make_helper(mov_cr2r){
 	}
 
 	return 2;
-}	
+}
 
 make_helper(mov_r2cr){
 	int r_num = instr_fetch(eip + 1, 1);
