@@ -11,6 +11,7 @@
 
 #include "debug.h"
 #include "macro.h"
+#include "../../lib-common/x86-inc/mmu.h"
 
 #include <stdint.h>
 #include <assert.h>

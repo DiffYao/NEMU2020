@@ -8,16 +8,16 @@ static void do_execute() {
 	
 	if (DATA_BYTE == 1) {
 		
-		MEM_W (dest, reg_b(R_AL));
+		MEM_W (dest, reg_b(R_AL), 0);
 
 	}
 	else if (DATA_BYTE == 2)
 	{
-		MEM_W (dest, reg_w(R_AX));
+		MEM_W (dest, reg_w(R_AX), 0);
 	}
 	else
 	{
-		MEM_W (dest, reg_l(R_EAX));
+		MEM_W (dest, reg_l(R_EAX), 0);
 		
 	}
 

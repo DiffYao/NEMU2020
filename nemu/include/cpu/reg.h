@@ -2,11 +2,13 @@
 #define __REG_H__
 
 #include "common.h"
+#include "../../lib-common/x86-inc/mmu.h"
+#include "../../lib-common/x86-inc/cpu.h"
 
 enum { R_EAX, R_ECX, R_EDX, R_EBX, R_ESP, R_EBP, R_ESI, R_EDI };
 enum { R_AX, R_CX, R_DX, R_BX, R_SP, R_BP, R_SI, R_DI };
 enum { R_AL, R_CL, R_DL, R_BL, R_AH, R_CH, R_DH, R_BH };
-
+enum { es, cs, ss, ds, fs, gs};
 /* TODO: Re-organize the `CPU_state' structure to match the register
  * encoding scheme in i386 instruction format. For example, if we
  * access cpu.gpr[3]._16, we will get the `bx' register; if we access
@@ -29,6 +31,7 @@ typedef struct {
       		};
 		
 	};
+
 	union {
 		struct {
 			uint32_t CF   : 1;
@@ -55,6 +58,32 @@ typedef struct {
 
 	swaddr_t eip;
 
+	struct 
+	{
+		uint16_t limit;
+		uint32_t base;
+	}gdtr;
+	
+	struct 
+	{
+		union 
+		{
+			struct 
+			{	
+				uint16_t RPL   :  2;
+				uint16_t TI	   :  1;
+				uint16_t INDEX : 13;
+			};
+			uint16_t selector;
+		};
+		SegDesc cache;
+	}sreg[6];
+	
+	
+	CR0 cr0;
+	CR3 cr3;	
+	
+	
 } CPU_state;
 
 extern CPU_state cpu;

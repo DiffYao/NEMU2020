@@ -6,7 +6,7 @@ static void do_execute() {
 
 	uint32_t src,dest;
 	
-	dest = MEM_R (reg_l (R_EDI));
+	dest = MEM_R (reg_l (R_EDI), 0);
 	if (DATA_BYTE == 1) {
 
 		src = reg_b(R_AL);

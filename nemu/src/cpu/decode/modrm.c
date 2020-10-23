@@ -89,6 +89,9 @@ int read_ModR_M(swaddr_t eip, Operand *rm, Operand *reg) {
 	reg->type = OP_TYPE_REG;
 	reg->reg = m.reg;
 
+	if (reg->reg == 5 || reg->reg == 4) rm->sreg = 2;
+	else rm->sreg = 3;
+
 	if(m.mod == 3) {
 		rm->type = OP_TYPE_REG;
 		rm->reg = m.R_M;
@@ -109,7 +112,7 @@ int read_ModR_M(swaddr_t eip, Operand *rm, Operand *reg) {
 	}
 	else {
 		int instr_len = load_addr(eip, &m, rm);
-		rm->val = swaddr_read(rm->addr, rm->size);
+		rm->val = swaddr_read(rm->addr, rm->size, rm->sreg);
 		return instr_len;
 	}
 }
