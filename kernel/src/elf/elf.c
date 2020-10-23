@@ -86,4 +86,5 @@ uint32_t loader() {
 #endif
 
 	return entry;
+	set_bp();
 }
