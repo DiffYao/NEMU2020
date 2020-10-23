@@ -59,6 +59,8 @@ static int cmd_d(char *args);
 
 static int cmd_bt(char *args);
 
+static int cmd_page(char *args);
+
 static struct {
 	char *name;
 	char *description;
@@ -74,7 +76,8 @@ static struct {
 	{ "w", "Set watchpoint for EXPR", cmd_w},
 	{ "d", "Delete No.N watchpoint", cmd_d},
 	{ "bt", "Print stack frame chain",cmd_bt},
-	
+	{ "page", "Show page translate", cmd_page}
+
 	/* TODO: Add more commands */
 
 };
@@ -215,6 +218,23 @@ static int cmd_x(char *args){
 		printf("address:0x%x  \t%08x\n",result+i,digit);
 		i+=4;
 	}	
+	return 0;
+}
+static int cmd_page(char *args){
+	if (args == NULL){
+		printf("Invalid Input\n");
+		return 0;
+	}
+	char *str = strtok(NULL, " ");
+	uint32_t result;
+	bool is;
+	result = expr(str, &is);
+	if (!is) {printf("EXPR WRONG\n"); return 0;}
+	int digit;
+	result = page_translate(result);
+	digit = hwaddr_read(result, 4);
+	printf("page address:0x%x  \t%08x\n",result,digit);
+
 	return 0;
 }
 static int cmd_si(char *args){
