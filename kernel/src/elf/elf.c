@@ -18,7 +18,6 @@ void create_video_mapping();
 uint32_t get_ucr3();
 
 uint32_t loader() {
-	set_bp();
 	Elf32_Ehdr *elf;
 	Elf32_Phdr *ph = NULL;
 
@@ -38,8 +37,6 @@ uint32_t loader() {
 	nemu_assert(*p_magic == elf_magic);
 
 	/* Load each program segment */
-	
-
 	int i;
 	ph = (void *)(buf+elf->e_phoff) ;
 	for(i = 0; i < elf->e_phnum ; ++i, ++ph) {
@@ -49,17 +46,15 @@ uint32_t loader() {
 			/* TODO: read the content of the segment from the ELF file 
 			 * to the memory region [VirtAddr, VirtAddr + FileSiz)
 			 */
-			
 #ifdef HAS_DEVICE
 			ide_read((void *)ph->p_vaddr,ph->p_offset,ph->p_filesz);
 #else	
 			ramdisk_read ((void *)ph->p_vaddr,ph->p_offset,ph->p_filesz);
-#endif				 
-			 
+#endif
 			/* TODO: zero the memory region 
 			 * [VirtAddr + FileSiz, VirtAddr + MemSiz)
 			 */
-			 
+
 			 memset ((void *)(ph->p_vaddr + ph->p_filesz),0,ph->p_memsz -ph->p_filesz);
 
 
