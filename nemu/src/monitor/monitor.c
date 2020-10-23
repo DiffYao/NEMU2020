@@ -99,7 +99,6 @@ void restart() {
 
 	cpu.eip = ENTRY_START;
 	cpu.eflags = EFLAGS_INITIAL_VALUE;
-	printf("wrong\n");
 	/* Initialize DRAM. */
 	init_ddr3();
 }
