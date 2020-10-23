@@ -63,7 +63,9 @@ void init_page(void) {
 	/* set PG bit in CR0 to enable paging */
 	cr0.val = read_cr0();
 	cr0.paging = 1;
+	set_bp();
 	write_cr0(cr0.val);
+	set_bp();
 }
 
 /* GDT in the kernel's memory, whose virtual memory is greater than 0xC0000000. */
