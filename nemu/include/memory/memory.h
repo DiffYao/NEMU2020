@@ -19,10 +19,13 @@ extern uint8_t *hw_mem;
 	hwa_to_va(addr); \
 })
 void init_cache();
+void init_TLB();
 uint32_t swaddr_read(swaddr_t, size_t, uint8_t);
 uint32_t lnaddr_read(lnaddr_t, size_t);
 uint32_t hwaddr_read(hwaddr_t, size_t);
 hwaddr_t page_translate(lnaddr_t);
+uint32_t TLB_translate(lnaddr_t);
+void TLB_update(lnaddr_t, hwaddr_t);
 void swaddr_write(swaddr_t, size_t, uint32_t, uint8_t);
 void lnaddr_write(lnaddr_t, size_t, uint32_t);
 void hwaddr_write(hwaddr_t, size_t, uint32_t);
