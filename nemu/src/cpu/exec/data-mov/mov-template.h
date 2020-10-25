@@ -55,6 +55,7 @@ make_helper(mov_r2cr){
 	else
 	{
 		cpu.cr3.val = reg_l(r_num & 0x7);
+		init_TLB();
 		print_asm("mov %s,%%cr3", REG_NAME(r_num & 0x7));
 	}
 	return 2;

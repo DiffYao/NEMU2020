@@ -53,7 +53,7 @@ uint32_t TLB_translate(lnaddr_t addr){
 
 void TLB_update(lnaddr_t addr, hwaddr_t hwaddr){
 
-	
+	//uint32_t tag = addr >> 12;
 	int i;
 	for (i = 0; i < 64; i++)
 		if (!tlb[i].valid)
