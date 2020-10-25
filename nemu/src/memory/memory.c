@@ -10,6 +10,9 @@ void cache1_write(hwaddr_t, size_t, uint32_t);
 uint32_t dram_read(hwaddr_t, size_t);
 void dram_write(hwaddr_t, size_t, uint32_t);
 
+/* TLB accessing interfaces*/
+uint32_t TLB_translate(lnaddr_t);
+void TLB_update(lnaddr_t, hwaddr_t);
 
 uint32_t hwaddr_read(hwaddr_t addr, size_t len) {
 	return cache1_read(addr, len) & (~0u >> ((4 - len) << 3));
@@ -22,7 +25,7 @@ void hwaddr_write(hwaddr_t addr, size_t len, uint32_t data) {
 hwaddr_t page_translate(lnaddr_t addr) {
 	hwaddr_t hwaddr = addr;
 	if (cpu.cr0.paging == 1 && cpu.cr0.protect_enable == 1) {
-		hwaddr = 0xffffffff;
+		hwaddr = TLB_translate(addr);
 		if (!(~hwaddr))
 		{
 			uint32_t dir = addr >> 22;
@@ -39,6 +42,7 @@ hwaddr_t page_translate(lnaddr_t addr) {
 			pte.val = hwaddr_read(page_entry, 4);
 			assert(pte.present == 1);
 			hwaddr = offset | (pte.page_frame << 12);
+			TLB_update(addr, hwaddr);
 		}
 		else
 		{

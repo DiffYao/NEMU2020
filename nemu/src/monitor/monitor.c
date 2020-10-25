@@ -87,6 +87,7 @@ void restart() {
 
 	/* INIT cache.*/
 	init_cache();
+	init_TLB();
 	/* Set the initial instruction pointer. */
 	cpu.cr0.protect_enable = 0;
 	cpu.cr0.paging = 0;
