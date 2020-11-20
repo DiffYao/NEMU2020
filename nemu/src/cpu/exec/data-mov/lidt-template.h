@@ -4,13 +4,13 @@
 
 make_helper(concat(lidt_, SUFFIX)) {
 	int len = decode_rm2r_l(eip + 1);
-	cpu.ldtr.limit = lnaddr_read(op_src->addr, 2);
+	cpu.idtr.limit = lnaddr_read(op_src->addr, 2);
 	if (DATA_BYTE == 2) 
-		cpu.ldtr.base = lnaddr_read(op_src->addr + 2, 3);
+		cpu.idtr.base = lnaddr_read(op_src->addr + 2, 3);
 	else 
-		cpu.ldtr.base = lnaddr_read(op_src->addr + 2, 4);
+		cpu.idtr.base = lnaddr_read(op_src->addr + 2, 4);
 
-	print_asm("lidt 0x%hx 0x%x", cpu.ldtr.limit, cpu.ldtr.base);
+	print_asm("lidt 0x%hx 0x%x", cpu.idtr.limit, cpu.idtr.base);
 	return len + 1;
 }
 

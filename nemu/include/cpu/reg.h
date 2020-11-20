@@ -58,17 +58,17 @@ typedef struct {
 
 	swaddr_t eip;
 
-	struct 
+	struct GDTR
 	{
 		uint16_t limit;
 		uint32_t base;
 	}gdtr;
 	
-	struct 
+	struct IDTR
 	{
 		uint16_t limit;
 		uint32_t base;
-	}ldtr;
+	}idtr;
 	struct 
 	{
 		union 
