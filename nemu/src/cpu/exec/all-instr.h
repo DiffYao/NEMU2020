@@ -66,6 +66,8 @@
 #include "string/movs.h"
 #include "string/scas.h"
 
+#include "system/int.h"
+
 #include "misc/misc.h"
 
 #include "special/special.h"
