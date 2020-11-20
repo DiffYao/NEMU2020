@@ -66,6 +66,11 @@ typedef struct {
 	
 	struct 
 	{
+		uint16_t limit;
+		uint32_t base;
+	}ldtr;
+	struct 
+	{
 		union 
 		{
 			struct 
