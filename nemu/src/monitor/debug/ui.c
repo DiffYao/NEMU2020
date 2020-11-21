@@ -278,7 +278,7 @@ void ui_mainloop() {
 	while(1) {
 		char *str = rl_gets();
 		char *str_end = str + strlen(str);
-
+		assert(0);
 		/* extract the first token as the command */
 		char *cmd = strtok(str, " ");
 		if(cmd == NULL) { continue; }
@@ -303,7 +303,7 @@ void ui_mainloop() {
 				break;
 			}
 		}
-		assert(0);
+		
 		if(i == NR_CMD) { printf("Unknown command '%s'\n", cmd); }
 	}
 }
