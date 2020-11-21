@@ -71,6 +71,9 @@
 #include "system/iret.h"
 #include "system/cli.h"
 
+#include "io/in.h"
+#include "io/out.h"
+
 #include "misc/misc.h"
 
 #include "special/special.h"
