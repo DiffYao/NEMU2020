@@ -29,7 +29,17 @@ make_helper(nemu_trap) {
 
 	switch(cpu.eax) {
 		case 2:
-		   	break;
+		{
+			int len = cpu.edx;
+			swaddr_t addr = (swaddr_t)cpu.ecx;
+			int i;
+			for (i = 0; i < len; i++)
+			{
+				printf("%c", (char)swaddr_read(addr+i, 1, 3));
+			}
+			break;
+		}
+
 
 		default:
 			printf("\33[1;31mnemu: HIT %s TRAP\33[0m at eip = 0x%08x\n\n",
