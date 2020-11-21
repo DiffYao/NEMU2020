@@ -73,6 +73,7 @@
 
 #include "io/in.h"
 #include "io/out.h"
+#include "io/hlt.h"
 
 #include "misc/misc.h"
 
