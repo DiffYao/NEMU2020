@@ -3,6 +3,7 @@
 
 #include "nemu.h"
 #include "cpu/decode/operand.h"
+#include "cpu/exec/intr.h"
 
 /* All function defined with 'make_helper' return the length of the operation. */
 #define make_helper(name) int name(swaddr_t eip)
