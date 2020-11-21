@@ -69,6 +69,7 @@
 
 #include "system/int.h"
 #include "system/iret.h"
+#include "system/cli.h"
 
 #include "misc/misc.h"
 
