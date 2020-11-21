@@ -74,7 +74,7 @@ void sdl_clear_event_queue() {
 void init_sdl() {
 	int ret = SDL_Init(SDL_INIT_VIDEO | SDL_INIT_NOPARACHUTE);
 	Assert(ret == 0, "SDL_Init failed");
-
+	assert(0);
 	real_screen = SDL_SetVideoMode(640, 400, 8, 
 			SDL_HWSURFACE | SDL_HWPALETTE | SDL_HWACCEL | SDL_ASYNCBLIT);
 
