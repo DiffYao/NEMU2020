@@ -21,7 +21,6 @@ uint32_t loader() {
 	set_bp();
 	Elf32_Ehdr *elf;
 	Elf32_Phdr *ph = NULL;
-
 	uint8_t buf[4096];
 
 #ifdef HAS_DEVICE
