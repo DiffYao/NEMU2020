@@ -278,7 +278,7 @@ void ui_mainloop() {
 	while(1) {
 		char *str = rl_gets();
 		char *str_end = str + strlen(str);
-		assert(0);
+		
 		/* extract the first token as the command */
 		char *cmd = strtok(str, " ");
 		if(cmd == NULL) { continue; }
@@ -290,7 +290,7 @@ void ui_mainloop() {
 		if(args >= str_end) {
 			args = NULL;
 		}
-
+		assert(0);
 #ifdef HAS_DEVICE
 		extern void sdl_clear_event_queue(void);
 		sdl_clear_event_queue();
