@@ -109,4 +109,5 @@ void restart() {
 
 	/* Initialize DRAM. */
 	init_ddr3();
+	assert(0);
 }
