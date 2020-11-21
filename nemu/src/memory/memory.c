@@ -1,4 +1,5 @@
 #include "common.h"
+#include "device/mmio.h"
 #include "cpu/reg.h"
 #include <stdlib.h>
 
@@ -15,11 +16,28 @@ uint32_t TLB_translate(lnaddr_t);
 void TLB_update(lnaddr_t, hwaddr_t);
 
 uint32_t hwaddr_read(hwaddr_t addr, size_t len) {
-	return cache1_read(addr, len) & (~0u >> ((4 - len) << 3));
+
+	if (is_mmio(addr) == -1)
+	{
+		return cache1_read(addr, len) & (~0u >> ((4 - len) << 3));
+	}
+	else 
+	{
+		return mmio_read(addr, len, is_mmio(addr)) & (~0u >> ((4 - len) << 3));
+	}
 }
 
 void hwaddr_write(hwaddr_t addr, size_t len, uint32_t data) {
-	return cache1_write(addr, len, data);
+	
+	if (is_mmio(addr) == -1)
+	{
+		return cache1_write(addr, len, data);
+	}
+	else 
+	{
+		return mmio_write(addr, len, data, is_mmio(addr));
+	}
+		
 }
 
 hwaddr_t page_translate(lnaddr_t addr) {
@@ -103,6 +121,6 @@ void swaddr_write(swaddr_t addr, size_t len, uint32_t data, uint8_t sreg) {
 	assert(len == 1 || len == 2 || len == 4);
 #endif
 	lnaddr_t lnaddr = seg_translate(addr, len, sreg);
-	lnaddr_write(lnaddr, len, data);
+	lnaddr_write(lnaddr, len, data);	
 }
 
