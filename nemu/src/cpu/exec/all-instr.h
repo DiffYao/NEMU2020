@@ -6,6 +6,7 @@
 #include "data-mov/push.h"
 #include "data-mov/pusha.h"
 #include "data-mov/pop.h"
+#include "data-mov/popa.h"
 #include "data-mov/cltd.h"
 #include "data-mov/leave.h"
 #include "data-mov/lgdt.h"
@@ -67,6 +68,7 @@
 #include "string/scas.h"
 
 #include "system/int.h"
+#include "system/iret.h"
 
 #include "misc/misc.h"
 
