@@ -303,7 +303,7 @@ void ui_mainloop() {
 				break;
 			}
 		}
-
+		assert(0);
 		if(i == NR_CMD) { printf("Unknown command '%s'\n", cmd); }
 	}
 }
