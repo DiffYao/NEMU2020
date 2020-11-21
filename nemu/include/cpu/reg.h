@@ -84,7 +84,7 @@ typedef struct {
 		SegDesc cache;
 	}sreg[6];
 	
-	
+	bool INTR;
 	CR0 cr0;
 	CR3 cr3;
 	

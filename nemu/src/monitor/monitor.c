@@ -11,6 +11,8 @@ void load_elf_tables(int, char *[]);
 void init_regex();
 void init_wp_pool();
 void init_ddr3();
+void init_device();
+void init_sdl();
 
 FILE *log_fp = NULL;
 
@@ -85,7 +87,7 @@ void restart() {
 	/* Read the entry code into memory. */
 	load_entry();
 
-	/* INIT cache.*/
+	/* Init cache.*/
 	init_cache();
 	init_TLB();
 	/* Set the initial instruction pointer. */
@@ -97,9 +99,14 @@ void restart() {
     cpu.sreg[cs].cache.base_31_24 = 0;
     cpu.sreg[cs].cache.limit_15_0 = 0xffff;
     cpu.sreg[cs].cache.limit_19_16 = 0xf;
-
 	cpu.eip = ENTRY_START;
 	cpu.eflags = EFLAGS_INITIAL_VALUE;
+
+	/* Init device and */
+
+	init_device();
+	init_sdl();
+
 	/* Initialize DRAM. */
 	init_ddr3();
 }
