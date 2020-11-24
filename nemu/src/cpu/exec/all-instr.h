@@ -70,6 +70,7 @@
 #include "system/int.h"
 #include "system/iret.h"
 #include "system/cli.h"
+#include "system/sti.h"
 
 #include "io/in.h"
 #include "io/out.h"
