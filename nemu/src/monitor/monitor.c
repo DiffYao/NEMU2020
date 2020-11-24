@@ -102,7 +102,7 @@ void restart() {
 	cpu.eip = ENTRY_START;
 	cpu.eflags = EFLAGS_INITIAL_VALUE;
 
-	/* Init device and */
+	/* Init device and sdl*/
 
 	init_device();
 	init_sdl();
