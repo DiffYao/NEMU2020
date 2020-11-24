@@ -28,7 +28,7 @@ uint32_t loader() {
 #else
 	ramdisk_read(buf, ELF_OFFSET_IN_DISK, 4096);
 #endif
-	//set_bp();
+	
 	elf = (void*)buf;
 	nemu_assert(0);
 	/* TODO: fix the magic number with the correct one */
@@ -49,6 +49,7 @@ uint32_t loader() {
 			ph->p_vaddr = mm_malloc(ph->p_vaddr, ph->p_memsz);
 #ifdef HAS_DEVICE
 			ide_read((void *)ph->p_vaddr,ph->p_offset,ph->p_filesz);
+			set_bp();
 #else	
 			ramdisk_read ((void *)ph->p_vaddr,ph->p_offset,ph->p_filesz);
 #endif
