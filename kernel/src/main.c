@@ -78,7 +78,6 @@ void init_cond() {
 	video_mapping_write_test();
 #endif
 	/* Load the program. */
-	set_bp();
 	uint32_t eip = loader();
 	Log("eip is %x\n", eip);
 #if defined(IA32_PAGE) && defined(HAS_DEVICE)
@@ -91,7 +90,7 @@ void init_cond() {
 	video_mapping_clear();
 
 #endif
-
+	set_bp();
 #ifdef IA32_PAGE
 	/* Set the %esp for user program, which is one of the
 	 * convention of the "advanced" runtime environment. */
