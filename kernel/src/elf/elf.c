@@ -29,7 +29,7 @@ uint32_t loader() {
 #else
 	ramdisk_read(buf, ELF_OFFSET_IN_DISK, 4096);
 #endif
-
+	Log("bug");
 	elf = (void*)buf;
 
 	/* TODO: fix the magic number with the correct one */
