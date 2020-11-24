@@ -58,7 +58,7 @@ hwaddr_t page_translate(lnaddr_t addr) {
 			page_entry = (page_entry << 12) | (page << 2);
 			PTE pte;
 			pte.val = hwaddr_read(page_entry, 4);
-			assert(pte.present == 1);
+			//assert(pte.present == 1);
 			hwaddr = offset | (pte.page_frame << 12);
 			TLB_update(addr, hwaddr);
 		}
