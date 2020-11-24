@@ -77,18 +77,18 @@ void init_cond() {
 	/* Write some test data to the video memory. */
 	video_mapping_write_test();
 #endif
-
 	/* Load the program. */
 	uint32_t eip = loader();
-	//Log("eip is %x", eip);
+	Log("eip is %x\n", eip);
 #if defined(IA32_PAGE) && defined(HAS_DEVICE)
 	/* Read data in the video memory to check whether 
 	 * the test data is written sucessfully.
 	 */
 	video_mapping_read_test();
-
+	set_bp();
 	/* Clear the test data we just written in the video memory. */
 	video_mapping_clear();
+	set_bp();
 #endif
 
 #ifdef IA32_PAGE
