@@ -18,14 +18,12 @@ void create_video_mapping();
 uint32_t get_ucr3();
 
 uint32_t loader() {
-	set_bp();
 	Elf32_Ehdr *elf;
 	Elf32_Phdr *ph = NULL;
 	uint8_t buf[4096];
 
 #ifdef HAS_DEVICE
 	ide_read(buf, ELF_OFFSET_IN_DISK, 4096);
-	set_bp();
 #else
 	ramdisk_read(buf, ELF_OFFSET_IN_DISK, 4096);
 #endif
