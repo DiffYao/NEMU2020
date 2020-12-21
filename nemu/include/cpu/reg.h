@@ -56,7 +56,7 @@ typedef struct {
 		uint32_t eflags;
 	};
 
-	swaddr_t eip;
+	uint32_t eip;
 
 	struct GDTR
 	{
