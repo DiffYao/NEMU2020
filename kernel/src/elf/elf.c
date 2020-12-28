@@ -58,15 +58,15 @@ uint32_t loader() {
 			/* TODO: zero the memory region 
 			 * [VirtAddr + FileSiz, VirtAddr + MemSiz)
 			 */
-
-			 memset((void *)addr+ ph->p_filesz, 0, ph->p_memsz - ph->p_filesz);
-
+			Log("elf->e_entry is 0x%x\n", elf->e_entry);
+			set_bp();
+			memset((void *)addr+ ph->p_filesz, 0, ph->p_memsz - ph->p_filesz);
 
 #ifdef IA32_PAGE
 			/* Record the program break for future use. */
 			extern uint32_t cur_brk, max_brk;
 			uint32_t new_brk = ph->p_vaddr + ph->p_memsz - 1;
-			if(cur_brk < new_brk) { cur_brk = new_brk; max_brk = new_brk; }
+			if(cur_brk < new_brk) { max_brk = cur_brk = new_brk; }
 #endif
 		}
 	}
