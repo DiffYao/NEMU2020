@@ -24,17 +24,17 @@ uint32_t loader() {
 	uint8_t buf[4096];
 	Log("buf addr is %x \n", (void*) buf);
 	Log("%x \n", (void *)buf);
-	set_bp();
+	
 #ifdef HAS_DEVICE
 	ide_read(buf, ELF_OFFSET_IN_DISK, 4096);
 #else
 	ramdisk_read(buf, ELF_OFFSET_IN_DISK, 4096);
 	panic("error!!");
 #endif
-	set_bp();
+	
 	elf = (void*)buf;
 	Log("e_entry is %x\n", elf->e_entry);
-	set_bp();
+	
 	/* TODO: fix the magic number with the correct one */
 	const uint32_t elf_magic = 0x464c457f;
 	uint32_t *p_magic = (void *)buf;
@@ -45,7 +45,7 @@ uint32_t loader() {
 	ph = (void *)((uint8_t *)buf + elf->e_phoff);
 	Log("e_phnum is 0x %x\n", elf->e_phnum);
 	
-	set_bp();
+	
 	for(; loop_var < elf->e_phnum ; loop_var++) {
 		/* Scan the program header table, load each segment into memory */
 		ph = ph + loop_var;
@@ -55,11 +55,10 @@ uint32_t loader() {
 			 * to the memory region [VirtAddr, VirtAddr + FileSiz)
 			 */
 			Log("e_entry is %x\n", elf->e_entry);
-			set_bp();
+			
 			uint32_t addr = mm_malloc(ph->p_vaddr, ph->p_memsz);
 			Log("e_entry is %x\n", elf->e_entry);
-			set_bp();
-
+			
 #ifdef HAS_DEVICE
 			ide_read((void *)addr, ELF_OFFSET_IN_DISK + ph->p_offset,ph->p_filesz);
 #else	
@@ -69,7 +68,7 @@ uint32_t loader() {
 			 * [VirtAddr + FileSiz, VirtAddr + MemSiz)
 			 */
 			Log("e_entry is %x\n", elf->e_entry);
-			set_bp();
+			;
 			memset((void *)addr+ ph->p_filesz, 0, ph->p_memsz - ph->p_filesz);
 
 #ifdef IA32_PAGE
@@ -83,7 +82,7 @@ uint32_t loader() {
 
 	volatile uint32_t entry = elf->e_entry;
 	Log("e_entry is 0x%x\n", entry);
-	set_bp();
+	
 #ifdef IA32_PAGE
 	mm_malloc(KOFFSET - STACK_SIZE, STACK_SIZE);
 
