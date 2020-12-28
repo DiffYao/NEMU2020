@@ -58,7 +58,7 @@ uint32_t loader() {
 			/* TODO: zero the memory region 
 			 * [VirtAddr + FileSiz, VirtAddr + MemSiz)
 			 */
-			Log("e_entry is 0x %x \n", elf->e_entry);
+			Log("e_entry is 0x %xzzzzz\n", elf->e_entry);
 			set_bp();
 			memset((void *)addr+ ph->p_filesz, 0, ph->p_memsz - ph->p_filesz);
 
