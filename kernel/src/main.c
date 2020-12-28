@@ -78,7 +78,7 @@ void init_cond() {
 	video_mapping_write_test();
 #endif
 	/* Load the program. */
-	
+	set_bp();
 	uint32_t eip = loader();
 	Log("eip is 0x%x\n", eip);
 	set_bp();
