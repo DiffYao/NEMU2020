@@ -3,8 +3,12 @@
 
 
 static void do_execute() {
-	OPERAND_W(op_dest, (uint32_t)op_src->val);
 	printf("val = 0x%x, su is %d\n", op_src->val, DATA_BYTE);
+	printf("str = %s", op_src->str);
+	printf("type = %d", op_src->type);
+	printf("sreg = %d", op_src->sreg);
+	OPERAND_W(op_dest, (uint32_t)op_src->val);
+	
 	print_asm_template2();
 }
 
