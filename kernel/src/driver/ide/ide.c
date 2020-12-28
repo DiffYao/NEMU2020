@@ -16,9 +16,13 @@ void add_irq_handle(int, void (*)(void));
  */
 void ide_read(uint8_t *buf, uint32_t offset, uint32_t len) {
 	uint32_t i;
+	
 	for (i = 0; i < len; i ++) {
 		buf[i] = read_byte(offset + i);
-		if (i > 4090) set_bp();
+		if (i % 100 == 0) {
+			Log("i=%d", i);
+			set_bp();
+			}
 	}
 	set_bp();
 }
