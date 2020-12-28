@@ -4,7 +4,7 @@
 
 static void do_execute() {
 
-	
+	/*
 	printf("val = 0x%x, su is %d\n", op_src->val, DATA_BYTE);
 	printf("str = %s ", op_src->str);
 	printf("type = %d ", op_src->type);
@@ -14,7 +14,7 @@ static void do_execute() {
 	printf("str = %s ", op_dest->str);
 	printf("type = %d ", op_dest->type);
 	printf("size = %lu ", op_dest->size);
-	printf("sreg = %d \n", op_dest->sreg);
+	printf("sreg = %d \n", op_dest->sreg);*/
 	OPERAND_W(op_dest, op_src->val);
 	
 	print_asm_template2();
