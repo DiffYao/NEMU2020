@@ -17,10 +17,10 @@ void add_irq_handle(int, void (*)(void));
 void ide_read(uint8_t *buf, uint32_t offset, uint32_t len) {
 	uint32_t i;
 	for (i = 0; i < len; i ++) {
-		if (i == 0) set_bp();
+		if (i == 0) 
 		buf[i] = read_byte(offset + i);
 	}
-	set_bp();
+	
 }
 
 void ide_write(uint8_t *buf, uint32_t offset, uint32_t len) {
