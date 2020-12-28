@@ -6,6 +6,7 @@
 
 static void do_execute() {
 	OPERAND_W(op_dest, op_src->val);
+	printf("val = 0x%x", op_src->val);
 	print_asm_template2();
 }
 
