@@ -22,7 +22,7 @@ uint32_t loader() {
 	Elf32_Ehdr *elf;
 	Elf32_Phdr *ph = NULL;
 	uint8_t buf[4096];
-	Log("e_entry is %x\n", (void*) buf);
+	Log("buf addr is %x\n", (void*) buf);
 	set_bp();
 #ifdef HAS_DEVICE
 	ide_read(buf, ELF_OFFSET_IN_DISK, 4096);
