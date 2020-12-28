@@ -50,6 +50,8 @@ uint32_t loader() {
 			 * to the memory region [VirtAddr, VirtAddr + FileSiz)
 			 */
 			uint32_t addr = mm_malloc(ph->p_vaddr, ph->p_memsz);
+			Log("e_entry is %x\n", elf->e_entry);
+			set_bp();
 			
 #ifdef HAS_DEVICE
 			ide_read((void *)addr, ELF_OFFSET_IN_DISK + ph->p_offset,ph->p_filesz);
@@ -60,7 +62,6 @@ uint32_t loader() {
 			 * [VirtAddr + FileSiz, VirtAddr + MemSiz)
 			 */
 			Log("e_entry is %x\n", elf->e_entry);
-			panic("%x",  elf->e_entry);
 			set_bp();
 			memset((void *)addr+ ph->p_filesz, 0, ph->p_memsz - ph->p_filesz);
 
