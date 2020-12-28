@@ -30,10 +30,6 @@ static void sys_write(TrapFrame *tf) {
 		}
 		tf->eax = len;
 	}
-	else
-	{
-		tf->eax = fs_write(fd, buf, len);
-	}
 } 
 
 void do_syscall(TrapFrame *tf) {
