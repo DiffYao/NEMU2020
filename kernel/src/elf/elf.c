@@ -33,7 +33,6 @@ uint32_t loader() {
 #endif
 	
 	elf = (void*)buf;
-	Log("e_entry is %x\n", elf->e_entry);
 	
 	/* TODO: fix the magic number with the correct one */
 	const uint32_t elf_magic = 0x464c457f;
