@@ -38,7 +38,7 @@ uint32_t loader() {
 	/* Load each program segment */
 	int loop_var = 0;
 	ph = (void *)((uint8_t *)buf + elf->e_phoff);
-	Log("elf->e_phnum is 0x %x \n", elf->e_phnum);
+	Log("e_phnum is 0x %x \n", elf->e_phnum);
 	set_bp();
 	for(; loop_var < elf->e_phnum ; loop_var++) {
 		/* Scan the program header table, load each segment into memory */
@@ -58,7 +58,7 @@ uint32_t loader() {
 			/* TODO: zero the memory region 
 			 * [VirtAddr + FileSiz, VirtAddr + MemSiz)
 			 */
-			Log("elf->e_entry is 0x %x \n", elf->e_entry);
+			Log("e_entry is 0x %x \n", elf->e_entry);
 			set_bp();
 			memset((void *)addr+ ph->p_filesz, 0, ph->p_memsz - ph->p_filesz);
 
