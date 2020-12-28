@@ -2,11 +2,9 @@
 #define instr mov
 
 
-
-
 static void do_execute() {
 	OPERAND_W(op_dest, op_src->val);
-	printf("val = 0x%x", op_src->val);
+	printf("val = 0x%x, su is %d\n", op_src->val, DATA_BYTE);
 	print_asm_template2();
 }
 
@@ -14,6 +12,8 @@ make_instr_helper(i2r)
 make_instr_helper(i2rm)
 make_instr_helper(r2rm)
 make_instr_helper(rm2r)
+
+//make_helper(mov_r2rm)
 
 make_helper(concat(mov_a2moffs_, SUFFIX)) {
 	swaddr_t addr = instr_fetch(eip + 1, 4);
