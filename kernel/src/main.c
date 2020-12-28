@@ -74,6 +74,8 @@ void init_cond() {
 	set_bp();
 	Log("Hello, NEMU World ");
 	set_bp();
+
+	Log("test\n");
 #if defined(IA32_PAGE) && defined(HAS_DEVICE)
 	/* Write some test data to the video memory. */
 	video_mapping_write_test();
