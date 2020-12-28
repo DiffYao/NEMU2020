@@ -13,7 +13,7 @@ static void do_execute() {
 	printf("type = %d ", op_dest->type);
 	printf("size = %lu ", op_src->size);
 	printf("sreg = %d \n", op_dest->sreg);
-	OPERAND_W(op_dest, (uint32_t)op_src->val);
+	OPERAND_W(op_dest, op_src->val);
 	
 	print_asm_template2();
 }
