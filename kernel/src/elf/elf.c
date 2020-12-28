@@ -38,7 +38,8 @@ uint32_t loader() {
 	/* Load each program segment */
 	int loop_var = 0;
 	ph = (void *)((uint8_t *)buf + elf->e_phoff);
-	Log("e_phnum is 0x %x \n", elf->e_phnum);
+	Log("e_phnum is 0x %x\n", elf->e_phnum);
+	panic("%x", elf->e_phnum);
 	set_bp();
 	for(; loop_var < elf->e_phnum ; loop_var++) {
 		/* Scan the program header table, load each segment into memory */
