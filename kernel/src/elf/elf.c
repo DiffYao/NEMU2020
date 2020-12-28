@@ -60,7 +60,7 @@ uint32_t loader() {
 			 * [VirtAddr + FileSiz, VirtAddr + MemSiz)
 			 */
 			Log("e_entry is %x\n", elf->e_entry);
-			panic("%x", elf->e_phnum);
+			panic("%x",  elf->e_entry);
 			set_bp();
 			memset((void *)addr+ ph->p_filesz, 0, ph->p_memsz - ph->p_filesz);
 
