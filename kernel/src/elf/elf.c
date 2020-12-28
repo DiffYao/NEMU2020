@@ -71,7 +71,8 @@ uint32_t loader() {
 	}
 
 	volatile uint32_t entry = elf->e_entry;
-
+	Log("e_entry is 0x%x\n", entry);
+	set_bp();
 #ifdef IA32_PAGE
 	mm_malloc(KOFFSET - STACK_SIZE, STACK_SIZE);
 
