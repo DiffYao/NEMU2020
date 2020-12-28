@@ -49,10 +49,12 @@ uint32_t loader() {
 			/* TODO: read the content of the segment from the ELF file 
 			 * to the memory region [VirtAddr, VirtAddr + FileSiz)
 			 */
+			Log("e_entry is %x\n", elf->e_entry);
+			set_bp();
 			uint32_t addr = mm_malloc(ph->p_vaddr, ph->p_memsz);
 			Log("e_entry is %x\n", elf->e_entry);
 			set_bp();
-			
+
 #ifdef HAS_DEVICE
 			ide_read((void *)addr, ELF_OFFSET_IN_DISK + ph->p_offset,ph->p_filesz);
 #else	
