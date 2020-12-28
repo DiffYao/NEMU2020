@@ -3,6 +3,8 @@
 
 
 static void do_execute() {
+
+	
 	printf("val = 0x%x, su is %d\n", op_src->val, DATA_BYTE);
 	printf("str = %s ", op_src->str);
 	printf("type = %d ", op_src->type);
