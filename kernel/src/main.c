@@ -38,6 +38,8 @@ void init() {
 
 /* Initialization phase 2 */
 void init_cond() {
+
+
 #ifdef IA32_INTR
 	/* Reset the GDT, since the old GDT in start.S cannot be used in the future. */
 	init_segment();
@@ -71,11 +73,7 @@ void init_cond() {
 	 * Note that the output is actually performed only when
 	 * the serial port is available in NEMU.
 	 */
-	//set_bp();
 	Log("Hello, NEMU World ");
-	//set_bp();
-
-	Log("test\n");
 #if defined(IA32_PAGE) && defined(HAS_DEVICE)
 	/* Write some test data to the video memory. */
 	video_mapping_write_test();
