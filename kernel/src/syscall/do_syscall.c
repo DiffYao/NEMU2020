@@ -7,6 +7,9 @@ uint32_t mm_brk(uint32_t);
 int fs_ioctl(int, uint32_t, void *);
 void serial_printc(char);
 
+int fs_write(int, const void*, size_t);
+
+
 static void sys_brk(TrapFrame *tf) {
 	tf->eax = mm_brk(tf->ebx);
 }
@@ -26,6 +29,10 @@ static void sys_write(TrapFrame *tf) {
 			serial_printc(buf[i]);
 		}
 		tf->eax = len;
+	}
+	else
+	{
+		tf->eax = fs_write(fd, buf, len);
 	}
 } 
 
