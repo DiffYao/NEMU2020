@@ -11,7 +11,7 @@ static void do_execute() {
 
 	printf("str = %s ", op_dest->str);
 	printf("type = %d ", op_dest->type);
-	printf("size = %lu ", op_src->size);
+	printf("size = %lu ", op_dest->size);
 	printf("sreg = %d \n", op_dest->sreg);
 	OPERAND_W(op_dest, op_src->val);
 	
