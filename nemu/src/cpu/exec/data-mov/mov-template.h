@@ -18,7 +18,7 @@ static void do_execute() {
 	
 	if (op_src->val == 0x80480c0)	
 	{
-
+		
 		uint32_t ad = 0xc012813e;
 		printf("value = 0x%x \n", swaddr_read(ad, 4, 3));
 	}

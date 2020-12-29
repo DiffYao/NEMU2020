@@ -132,6 +132,11 @@ void swaddr_write(swaddr_t addr, size_t len, uint32_t data, uint8_t sreg) {
 #ifdef DEBUG
 	assert(len == 1 || len == 2 || len == 4);
 #endif
+	if (addr == 0xc012813e)
+	{
+
+		printf("\naddr is %x, len is %lu, data is %x, sreg is %x", addr, len, data, sreg);
+	}
 	lnaddr_t lnaddr = seg_translate(addr, len, sreg);
 	lnaddr_write(lnaddr, len, data);	
 }
