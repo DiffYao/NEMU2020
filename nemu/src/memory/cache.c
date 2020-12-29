@@ -1,257 +1,307 @@
 #include "common.h"
 #include <stdlib.h>
 
-/*Cache L1*/
-#define way 8
-#define BLOCK_SIZE 64
-#define STORE_SIZE_L1 64*1024
-#define COUNT_CACHE_L1 1024
 #define BLOCK_BIT 6
+#define BLOCK_SIZE 64
 #define GROUP_BIT 7
-#define TAG_BIT (32 - BLOCK_BIT - GROUP_BIT) //19
-
-/*Lache L2*/
-#define way_2 16
-#define STORE_SIZE_L2 4*1024*1024
-#define COUNT_CACHE_L2 64*1024
+#define GROUP_NUM 128
+#define WAY_NUM 8
+#define TAG_BIT (32 - BLOCK_BIT - GROUP_BIT)
 #define BLOCK_BIT_2 6
-//group num = 1024*64 / 16 = 4096
+#define BLOCK_SIZE_2 64
 #define GROUP_BIT_2 12
-#define TAG_BIT_2 (32 - BLOCK_BIT_2 - GROUP_BIT_2) //14
+#define GROUP_NUM_2 4096
+#define WAY_NUM_2 16
+#define TAG_BIT_2 (32 - BLOCK_BIT_2 - GROUP_BIT_2)
 
 
-/* Memory accessing interfaces */
+
+
 uint32_t dram_read(hwaddr_t, size_t);
 void dram_write(hwaddr_t, size_t, uint32_t);
 
+/* DECLARATION------------------------------------------------------------------------  */
+uint32_t Cache_1_read(hwaddr_t, size_t);
+void Cache_1_write(hwaddr_t, size_t, uint32_t);
+static uint32_t Cache_2_read(hwaddr_t, size_t);
+static void Cache_2_write(hwaddr_t, size_t, uint32_t);
 
-/* Cache accessing interfaces */
-uint32_t cache1_read(hwaddr_t, size_t);
-void cache1_write(hwaddr_t, size_t, uint32_t);
-
-
-struct Cache1
-{
+/* DEFINITION-------------------------------------------------------------------------  */
+//The cache struct is not the simpliest. It contains extra contents, offset and group.
+typedef struct {
 	bool valid;
-	union 
-	{
-		struct 
-		{
+	union {
+		struct {
 			uint32_t offset : BLOCK_BIT;
-			uint32_t group  : GROUP_BIT;
-			uint32_t tag 	: TAG_BIT;
+			uint32_t group : GROUP_BIT;
+			uint32_t tag : TAG_BIT;
 		};
 		uint32_t addr;
 	};
-
 	uint8_t data[BLOCK_SIZE];
+} Cache_1;
 
-}cache1[COUNT_CACHE_L1];
+typedef struct {
+	Cache_1 cache[WAY_NUM];
+} Cache_1_group;
 
-struct Cache2
-{
+typedef struct {
 	bool valid;
 	bool dirty;
-	union 
-	{
-		struct 
-		{
+	union {
+		struct {
 			uint32_t offset : BLOCK_BIT_2;
-			uint32_t group  : GROUP_BIT_2;
-			uint32_t tag 	: TAG_BIT_2;
+			uint32_t group : GROUP_BIT_2;
+			uint32_t tag : TAG_BIT_2;
 		};
 		uint32_t addr;
 	};
+	uint8_t data[BLOCK_SIZE_2];
+} Cache_2;
 
-	uint8_t data[BLOCK_SIZE];
+typedef struct {
+	Cache_2 cache[WAY_NUM_2];
+} Cache_2_group;
+/* ----------------------------------------------------------------------------------  */
 
-}cache2[COUNT_CACHE_L2];
+Cache_1_group L1[GROUP_NUM];
+Cache_2_group L2[GROUP_NUM_2];
 
-
-void init_cache( ){
-	int i;
-	for (i = 0; i < COUNT_CACHE_L1; i++)
-	{
-		cache1[i].valid = false;
-		cache1[i].addr = 0;
-		memset(cache1[i].data, 0, BLOCK_SIZE);
-	}
-
-	for (i = 0; i < COUNT_CACHE_L2; i++)
-	{
-		cache2[i].valid = false;
-		cache2[i].dirty = false;
-		cache2[i].addr = 0;
-		memset(cache2[i].data, 0, BLOCK_SIZE);
-	}
-
-}
-
-uint32_t cache2_read(hwaddr_t addr, size_t len){
-	struct Cache2 mirror;
-
-	mirror.addr = addr;
-	uint32_t group_num = mirror.group;
-	uint32_t tag = mirror.tag;
-	uint32_t offset = mirror.offset;
-	uint32_t addr_block = (addr >> BLOCK_BIT_2) << BLOCK_BIT_2;
-
-	int i;
-	bool is = false;
-	uint8_t temp[BLOCK_SIZE*2];
-	for (i = group_num * way_2 ; i < (group_num + 1) * way_2 ; i++)
-	{
-		if (cache2[i].valid && cache2[i].tag == tag)
-			{
-				is = true;
-				break;
-			}
-	}
-	//If Not Hit
-	if (!is){
-		for (i = group_num * way_2 ; i < (group_num + 1) * way_2 ; i++)
-		{
-			if (!cache2[i].valid)	break;
-		}
-		if (i == (group_num+1) * way_2){
-			srand(0);
-			i = group_num * way_2 + rand() % way;
-		}
-		cache2[i].valid = true;
-		cache2[i].dirty = false;
-		cache2[i].tag = tag;
-		int j;
-		for(j = 0; j < BLOCK_SIZE; j++)
-			cache2[i].data[j] = dram_read(addr_block+j, 1) & (~0u >> ((4 - 1) << 3));		
-	}
-	memcpy(temp, cache2[i].data, BLOCK_SIZE);
-	
-	if (len + offset > BLOCK_SIZE) 
-		 *(uint32_t*)(temp + BLOCK_SIZE) = cache2_read(addr_block + BLOCK_SIZE, len);
-	
-	return unalign_rw(temp + offset, 4);
-}
-
-void cache2_write(hwaddr_t addr, size_t len, uint32_t data){
-
-	struct Cache2 mirror;
-	mirror.addr = addr;
-	uint32_t group_num = mirror.group;
-	uint32_t offset = mirror.offset;
-	uint32_t tag = mirror.tag;
-	uint32_t addr_block = (addr >> BLOCK_BIT) << BLOCK_BIT;
-
+/* ----------------------------------------------------------------------------------  */
+static void init_cache1()
+{
 	int i, j;
-	bool is = false;
-	for (i = group_num * way_2 ; i < (group_num + 1) * way_2 ; i++)
-	{
-		if (cache2[i].valid && cache2[i].tag == tag)
-			{
-				is = true;
-				break;
-			}
-	}
-	//write allocate and write bakck 
-	if (is){
-		uint8_t* data_byte = (uint8_t *)(&data);
-		
-		for (j = 0; j < len; j++)
-		{
-			cache2[i].data[offset+j] = *(data_byte+j);
-		}
-		cache2[i].dirty = true;	
-	}
-	else {
-		// update memory
-		dram_write(addr, len, data);
-		for (i = group_num * way_2 ; i < (group_num + 1) * way_2 ; i++)
-		{
-			if (!cache2[i].valid)	break;
-		}
-		if (i == (group_num+1) * way_2){
-			srand(0);
-			i = group_num * way_2 + rand() % way;
-		}
-		if (cache2[i].dirty == true){
-			for (j = 0; j < BLOCK_SIZE; j++)
-			{
-				dram_write(addr_block+j, 1, cache2[i].data[j]);
-			}
-		}
-		cache2[i].valid = true;
-		cache2[i].dirty = false;
-		cache2[i].tag = tag;
-		int j;
-		for(j = 0; j < BLOCK_SIZE; j++)
-			cache2[i].data[j] = dram_read(addr_block+j, 1) & (~0u >> ((4 - len) << 3));	
-			
-	}
-
+	memset(L1, 0, sizeof L1);
+	for (i = 0; i < GROUP_NUM; i++)
+		for (j = 0; j < WAY_NUM; j++)
+			L1[i].cache[j].group = (uint32_t)j;
 }
 
-uint32_t cache1_read(hwaddr_t addr, size_t len){
-	uint32_t group_num = (addr >> 6) & 0x7f;
-	uint32_t addr_block = (addr >> BLOCK_BIT << BLOCK_BIT);
-	uint32_t offset = addr & 0x3f;
+static void init_cache2()
+{
+	int i, j;
+	memset(L2, 0, sizeof L2);
+	for (i = 0; i < GROUP_NUM_2; i++)
+		for (j = 0; j < WAY_NUM_2; j++)
+			L2[i].cache[j].group = (uint32_t)j;
+}
+
+void init_cache()
+{
+	init_cache1();
+	init_cache2();
+}
+/* ---------------------------------------------------------------------------------- */
+
+inline static void memcpy_cache (void *dest, void *src, size_t len)
+{
 	int i;
-	bool is = false;
-	uint8_t temp[BLOCK_SIZE*2];
-	for (i = group_num * way ; i < (group_num + 1) * way ; i++)
-	{
-		if (cache1[i].valid && cache1[i].tag == (addr >> 13))
-			{
-				is = true;
-				break;
-			}
-	}
-	if (!is){
-		for (i = group_num * way ; i < (group_num + 1) * way ; i++)
-		{
-			if (!cache1[i].valid)	break;
-		}
-		if (i == (group_num+1) * way){
-			srand(0);
-			i = group_num * way + rand() % way;
-		}
-		cache1[i].valid = true;
-		cache1[i].tag = addr >> 13;
-		int j;
-		for(j = 0; j < BLOCK_SIZE; j++)
-			cache1[i].data[j] = cache2_read(addr_block+j, 1) & (~0u >> ((4 - 1) << 3));		
-	}
-	memcpy(temp, cache1[i].data, BLOCK_SIZE);
-	if (len + offset > BLOCK_SIZE) 
-		 *(uint32_t*)(temp + BLOCK_SIZE) = cache1_read(addr_block + BLOCK_SIZE, len);
-	
-	return unalign_rw(temp + offset, 4);
-
+	for (i = 0; i < len; i++)
+		((uint8_t*)dest)[i] = ((uint8_t*)src)[i];
 }
 
-void cache1_write(hwaddr_t addr, size_t len, uint32_t data){
 
-	//update the cache2
-	cache2_write(addr, len, data);
-	
-	struct Cache1 mirror;
+/* ---------------------------------------------------------------------------------- */
+
+uint32_t Cache_1_read(hwaddr_t addr, size_t len) 
+{
+	Cache_1 mirror;
 	mirror.addr = addr;
-	uint32_t group_num = mirror.group;
+	uint32_t offset = mirror.offset;
+	uint32_t group = mirror.group;
 	uint32_t tag = mirror.tag;
-	uint32_t addr_block = (addr >> BLOCK_BIT << BLOCK_BIT);
+	hwaddr_t addr_block = addr & (~0u << BLOCK_BIT);
 
-	int i;
-	bool is = false;
-	for (i = group_num * way ; i < (group_num + 1) * way ; i++)
+	uint8_t temp[2 * BLOCK_SIZE];
+
+	int Hit = 0, x = 0;
+	int i = 0;
+	for (i = 0; i < WAY_NUM; i++)
+		if (L1[group].cache[i].valid && L1[group].cache[i].tag == tag)
+		{
+			Hit = 1;
+			x = i;
+			break;
+		}
+
+	/* If it doesn't hit, then we should allocate a new cache. The default value is 0. */
+	if (!Hit)
 	{
-		if (cache1[i].valid && cache1[i].tag == tag)
+		for (i = 0; i < WAY_NUM; i++)
+			if (!L1[group].cache[i].valid)
 			{
-				is = true;
+				x = i;
 				break;
 			}
+		if (i == WAY_NUM) {
+			x = rand() % WAY_NUM;
+		}
+		L1[group].cache[x].valid = true;
+		L1[group].cache[x].tag = tag;
+		for (i = 0; i < BLOCK_SIZE; i++) 
+			L1[group].cache[x].data[i] = Cache_2_read(addr_block + i, 1) & (~0u >> ((4 - 1) << 3));	//read into cache one byte by one
+	}
+
+	/* To generate the output and deal with the situation when it crosses caches. */
+	memcpy_cache (temp, L1[group].cache[x].data, BLOCK_SIZE);
+	if (offset + len > BLOCK_SIZE) *(uint32_t*)(temp + BLOCK_SIZE) = Cache_1_read(addr_block + BLOCK_SIZE, len);
+
+	return unalign_rw(temp + offset, 4);
+}
+
+
+
+void Cache_1_write(hwaddr_t addr, size_t len, uint32_t data) 
+{
+	Cache_1 mirror;
+	mirror.addr = addr;
+	uint32_t offset = mirror.offset;
+	uint32_t group = mirror.group;
+	uint32_t tag = mirror.tag;
+	hwaddr_t addr_block = addr & (~0u << BLOCK_BIT);
+
+	if (offset + len - 1 > 0x3f) {
+		int front = 0x3f - offset + 1;
+		int back = len - front;
+		uint32_t high = data >> (8 * front);
+		uint32_t low = data & ((1 << (front * 8)) - 1);
+		Cache_1_write(addr, front, low);
+		Cache_1_write(addr + front, back, high);
+		return;
+	}
+
+	int Hit = 0, x = 0;
+	int i = 0;
+	for (i = 0; i < WAY_NUM; i++)
+		if (L1[group].cache[i].valid && L1[group].cache[i].tag == tag)
+		{
+			Hit = 1;
+			x = i;
+			break;
+		}
+	
+
+
+	Cache_2_write(addr, len, data);	//update the memory
+	if (Hit)
+		for (i = 0; i < BLOCK_SIZE; i++)
+			L1[group].cache[x].data[i] = Cache_2_read(addr_block + i, 1) & (~0u >> ((4 - 1) << 3));	//read into cache one byte by one
+
+}
+
+
+/* ---------------------------------------------------------------------------------- */
+
+static uint32_t Cache_2_read(hwaddr_t addr, size_t len) 
+{
+	Cache_2 mirror;
+	mirror.addr = addr;
+	uint32_t offset = mirror.offset;
+	uint32_t group = mirror.group;
+	uint32_t tag = mirror.tag;
+	hwaddr_t addr_block = addr & (~0u << BLOCK_BIT_2);
+	uint8_t temp[2 * BLOCK_SIZE_2];
+
+	int Hit = 0, x = 0;
+	int i = 0;
+	for (i = 0; i < WAY_NUM_2; i++)
+		if (L2[group].cache[i].valid && L2[group].cache[i].tag == tag)
+		{
+			Hit = 1;
+			x = i;
+			break;
+		}
+
+	//if (addr == 0x15d47e) printf("%x, %d, %d\n", addr, len, Hit);	
+	
+	if (!Hit)
+	{
+		for (i = 0; i < WAY_NUM_2; i++)
+			if (!L2[group].cache[i].valid)
+			{
+				x = i;
+				break;
+			}
+		if (i == WAY_NUM_2) {
+			x = rand() % WAY_NUM_2;
+		}
+		if (L2[group].cache[x].dirty)	//If the substituted cache is dirty, then we should update the memory one byte by one.
+			for (i = 0; i < BLOCK_SIZE_2; i++)
+				dram_write(addr_block + i, 1, L1[group].cache[x].data[i]);
+		L2[group].cache[x].valid = true;
+		L2[group].cache[x].tag = tag;
+		L2[group].cache[x].dirty = false;
+		for (i = 0; i < BLOCK_SIZE_2; i++) 
+			L2[group].cache[x].data[i] = dram_read(addr_block + i, 1) & (~0u >> ((4 - 1) << 3));
 	}
 	
-	if (is){
-		int j;
-		for(j = 0; j < BLOCK_SIZE; j++)
-			cache1[i].data[j] = cache2_read(addr_block+j, 1) & (~0u >> ((4 - 1) << 3));		
+	memcpy_cache (temp, L2[group].cache[x].data, BLOCK_SIZE_2);
+	if (offset + len > BLOCK_SIZE_2) *(uint32_t*)(temp + BLOCK_SIZE_2) = Cache_2_read(addr_block + BLOCK_SIZE_2, len);
+
+	return unalign_rw(temp + offset, 4);
+}
+
+
+static void Cache_2_write(hwaddr_t addr, size_t len, uint32_t data) 
+{
+	Cache_2 mirror;
+	mirror.addr = addr;
+	uint32_t offset = mirror.offset;
+	uint32_t group = mirror.group;
+	uint32_t tag = mirror.tag;
+	hwaddr_t addr_block = addr & (~0u << BLOCK_BIT_2);
+
+	if (offset + len - 1 > 0x3f) {
+		int front = 0x3f - offset + 1;
+		int back = len - front;
+		uint32_t high = data >> (8 * front);
+		uint32_t low = data & ((1 << (front * 8)) - 1);
+		Cache_2_write(addr, front, low);
+		Cache_2_write(addr + front, back, high);
+		return;
+	}
+
+	int Hit = 0, x = 0;
+	int i = 0;
+	for (i = 0; i < WAY_NUM_2; i++)
+		if (L2[group].cache[i].valid && L2[group].cache[i].tag == tag)
+		{
+			Hit = 1;
+			x = i;
+			break;
+		}
+		
+	if (Hit)
+	{
+		uint8_t* datap = (uint8_t *)(&data);	//If it hits, then only the cache is updated, and the dirty byte is set.
+		for (i = 0; i < len; i++)
+			L2[group].cache[x].data[offset + i] = *(datap + i);
+		L2[group].cache[x].dirty = true;
+		/*if (addr == 0x15d47e) 
+		{
+			for (i = 0; i < len; i++)
+			printf("%hx\n", L2[group].cache[x].data[offset+i]);
+		}*/
+	}
+	else
+	{
+		dram_write(addr, len, data);	//Otherwise, the memory is updated first and then a cache is allocated for it.
+		for (i = 0; i < WAY_NUM_2; i++)
+			if (!L2[group].cache[i].valid)
+			{
+				x = i;
+				break;
+			}
+		if (i == WAY_NUM_2) {
+			x = rand() % WAY_NUM_2;
+		}
+		if (L2[group].cache[x].dirty)
+			for (i = 0; i < BLOCK_SIZE_2; i++)
+				dram_write(addr_block + i, 1, L1[group].cache[x].data[i]);
+		L2[group].cache[x].valid = true;
+		L2[group].cache[x].tag = tag;
+		L2[group].cache[x].dirty = false;
+		for (i = 0; i < BLOCK_SIZE_2; i++) 
+			L2[group].cache[x].data[i] = dram_read(addr_block + i, 1) & (~0u >> ((4 - 1) << 3));
 	}
 }

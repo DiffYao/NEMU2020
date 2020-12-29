@@ -1,69 +1,52 @@
 #include "common.h"
 #include <stdlib.h>
 
-#define PAGE_BIT 12
-#define TAG_BIT 20
-#define	COUNT_ITEM 64
-
-struct TLB
-{
+typedef struct {
 	bool valid;
-	union
-	{
-		struct 
-		{
-			uint32_t offset : PAGE_BIT;
-			uint32_t tag 	: TAG_BIT;
+	union {
+		struct {
+			uint32_t offset : 12;
+			uint32_t tag : 20;
 		};
 		uint32_t addr;
-		
 	};
-	uint32_t result;
-	
-}tlb[COUNT_ITEM];
+	uint32_t hwaddr_result;
+} Tlb;
 
-void init_TLB(){
+Tlb TLB[64];
 
-	int i;
-	for (i = 0; i < COUNT_ITEM; i++)
-	{
-		tlb[i].valid = 0;
-		tlb[i].addr = 0;
-		tlb[i].result = 0;
-	}
-	
+void TLB_flush() 
+{
+	memset(TLB, 0, sizeof TLB);
 }
 
-uint32_t TLB_translate(lnaddr_t addr){
-
+hwaddr_t TLB_translate(lnaddr_t addr)
+{
 	uint32_t tag = addr >> 12;
-	int HIT = 0, i;
-	for (i = 0; i < COUNT_ITEM; i++)
-	{
-		if (tlb[i].valid && tlb[i].tag == tag)
+	int Hit = 0, x = 0, i;
+	for (i = 0; i < 64; i++)
+		if (TLB[i].valid && TLB[i].tag == tag)
 		{
-			HIT = 1;
+			Hit = 1;
+			x = i;
 			break;
 		}
-
-	}
-	if (HIT) return tlb[i].result;
-	else 	return 0xffffffff;
+	if (Hit) return TLB[x].hwaddr_result;
+	else return 0xffffffff;
 }
 
-void TLB_update(lnaddr_t addr, hwaddr_t hwaddr){
-
-	//uint32_t tag = addr >> 12;
-	int i;
+void TLB_update(lnaddr_t addr, hwaddr_t hwaddr)
+{
+	uint32_t tag = addr >> 12;
+	int x = 0, i;
 	for (i = 0; i < 64; i++)
-		if (!tlb[i].valid)
+		if (!TLB[i].valid)
 		{
+			x = i;
 			break;
 		}
-
-	srand(0);
-	if (i == 64) i = rand() % 64;
-	tlb[i].valid = 1;
-	tlb[i].addr = addr;
-	tlb[i].result = hwaddr;
+	if (i == 64) x = rand() % 64; 
+	TLB[x].tag = tag;
+	TLB[x].valid = 1;
+	TLB[x].hwaddr_result = hwaddr;
 }
