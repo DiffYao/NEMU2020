@@ -16,8 +16,8 @@ static void do_execute() {
 	printf("sreg = %d \n", op_dest->sreg);
 	OPERAND_W(op_dest, op_src->val);
 	uint32_t ad = 0xc012183e;
-	if ( ad < (1 << (10 + 10 + 3 + (27 - 10 - 10 - 3))) )
-		printf("value = 0x%x ", swaddr_read(ad, 4, 3));
+	
+	printf("value = 0x%x \n", swaddr_read(ad, 4, 3));
 	print_asm_template2();
 }
 
