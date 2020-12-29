@@ -85,7 +85,7 @@ void init_cond() {
 	/* Load the program. */
 	//set_bp();
 	uint32_t eip = loader();
-	set_bp();
+	
 #if defined(IA32_PAGE) && defined(HAS_DEVICE)
 	/* Read data in the video memory to check whether 
 	 * the test data is written sucessfully.
@@ -107,6 +107,9 @@ void init_cond() {
 	asm volatile("movl $0, %ebp");
 	asm volatile("subl $16, %esp");
 	/* Here we go! */
+
+	set_bp();
+	Log("eip is 0x%x\n", eip);
 	((void(*)(void))eip)();
 
 	HIT_GOOD_TRAP;
