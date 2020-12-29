@@ -4,8 +4,8 @@
 #include <stdlib.h>
 
 /* Cache accessing interfaces */
-uint32_t cache1_read(hwaddr_t, size_t);
-void cache1_write(hwaddr_t, size_t, uint32_t);
+uint32_t Cache_1_read(hwaddr_t, size_t);
+void Cache_1_write(hwaddr_t, size_t, uint32_t);
 
 /* Memory accessing interfaces */
 uint32_t dram_read(hwaddr_t, size_t);
@@ -20,7 +20,7 @@ uint32_t hwaddr_read(hwaddr_t addr, size_t len) {
 	int map_NO = is_mmio(addr);
 	if (map_NO == -1)
 	{
-		return cache1_read(addr, len) & (~0u >> ((4 - len) << 3));
+		return Cache_1_read(addr, len) & (~0u >> ((4 - len) << 3));
 	}
 	else 
 	{
@@ -35,7 +35,7 @@ void hwaddr_write(hwaddr_t addr, size_t len, uint32_t data) {
 	int map_NO = is_mmio(addr);
 	if (map_NO == -1)
 	{
-		return cache1_write(addr, len, data);
+		return Cache_1_write(addr, len, data);
 	}
 	else 
 	{
