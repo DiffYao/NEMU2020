@@ -73,7 +73,11 @@ void init_cond() {
 	 * Note that the output is actually performed only when
 	 * the serial port is available in NEMU.
 	 */
+	//asm volatile("movl $0, %ebp");
+
+	//set_bp();
 	Log("Hello, NEMU World ");
+	//set_bp();
 #if defined(IA32_PAGE) && defined(HAS_DEVICE)
 	/* Write some test data to the video memory. */
 	video_mapping_write_test();
@@ -81,7 +85,6 @@ void init_cond() {
 	/* Load the program. */
 	//set_bp();
 	uint32_t eip = loader();
-	Log("eip is 0x%x\n", eip);
 	//set_bp();
 #if defined(IA32_PAGE) && defined(HAS_DEVICE)
 	/* Read data in the video memory to check whether 
