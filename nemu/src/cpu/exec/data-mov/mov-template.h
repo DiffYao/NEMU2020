@@ -15,10 +15,13 @@ static void do_execute() {
 	printf("size = %lu ", op_dest->size);
 	printf("sreg = %d \n", op_dest->sreg);
 	OPERAND_W(op_dest, op_src->val);
-	/*
-	if (op_src->val == 0x)	
+	
+	if (op_src->val == 0x80480c0)	
+	{
+
 		uint32_t ad = 0xc012813e;
-		printf("value = 0x%x \n", swaddr_read(ad, 4, 3));*/
+		printf("value = 0x%x \n", swaddr_read(ad, 4, 3));
+	}
 	print_asm_template2();
 }
 
