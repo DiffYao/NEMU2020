@@ -107,9 +107,9 @@ void init_cond() {
 	asm volatile("movl $0, %ebp");
 	asm volatile("subl $16, %esp");
 	/* Here we go! */
-
-	set_bp();
 	Log("eip is 0x%x\n", eip);
+	set_bp();
+	
 	((void(*)(void))eip)();
 
 	HIT_GOOD_TRAP;
