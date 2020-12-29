@@ -30,7 +30,7 @@ uint32_t hwaddr_read(hwaddr_t addr, size_t len) {
 
 void hwaddr_write(hwaddr_t addr, size_t len, uint32_t data) {
 	
-	printf("data is %x\n", data);
+	//printf("data is %x\n", data);
 	if (addr == 0)return;
 	int map_NO = is_mmio(addr);
 	if (map_NO == -1)
@@ -133,11 +133,12 @@ void swaddr_write(swaddr_t addr, size_t len, uint32_t data, uint8_t sreg) {
 #ifdef DEBUG
 	assert(len == 1 || len == 2 || len == 4);
 #endif
+	/*
 	if (addr == 0xc012813e)
 	{
 
 		printf("\nswaddr addr is %x, len is %lu, data is %x, sreg is %x\n", addr, len, data, sreg);
-	}
+	}*/
 	lnaddr_t lnaddr = seg_translate(addr, len, sreg);
 	//printf("Segaddr is %x\n", lnaddr);
 	lnaddr_write(lnaddr, len, data);	
