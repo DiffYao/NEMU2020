@@ -193,7 +193,6 @@ helper_fun _2byte_opcode_table [256] = {
 /* 0x74 */	inv, inv, inv, inv,
 /* 0x78 */	inv, inv, inv, inv, 
 /* 0x7c */	inv, inv, inv, inv, 
-/* 0x80 */	inv, inv, inv, inv,
 /* 0x80 */	jcc_o_v, jcc_no_v, jcc_b_v, jcc_ae_v,
 /* 0x84 */	jcc_e_v, jcc_ne_v, jcc_be_v, jcc_a_v,
 /* 0x88 */	jcc_s_v, jcc_ns_v, jcc_p_v, jcc_np_v, 
@@ -224,8 +223,8 @@ helper_fun _2byte_opcode_table [256] = {
 /* 0xec */	inv, inv, inv, inv,
 /* 0xf0 */	inv, inv, inv, inv,
 /* 0xf4 */	inv, inv, inv, inv,
-/* 0xf8 */	inv, inv, inv, inv
-
+/* 0xf8 */	inv, inv, inv, inv,
+/* 0xfc */	inv, inv, inv, inv
 };
 
 make_helper(exec) {
