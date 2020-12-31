@@ -1,10 +1,11 @@
 #include "common.h"
+#include "device/mmio.h"
 #include "cpu/reg.h"
 #include <stdlib.h>
 
 /* Cache accessing interfaces */
-uint32_t cache1_read(hwaddr_t, size_t);
-void cache1_write(hwaddr_t, size_t, uint32_t);
+uint32_t Cache_1_read(hwaddr_t, size_t);
+void Cache_1_write(hwaddr_t, size_t, uint32_t);
 
 /* Memory accessing interfaces */
 uint32_t dram_read(hwaddr_t, size_t);
@@ -15,11 +16,32 @@ uint32_t TLB_translate(lnaddr_t);
 void TLB_update(lnaddr_t, hwaddr_t);
 
 uint32_t hwaddr_read(hwaddr_t addr, size_t len) {
-	return cache1_read(addr, len) & (~0u >> ((4 - len) << 3));
+
+	int map_NO = is_mmio(addr);
+	if (map_NO == -1)
+	{
+		return Cache_1_read(addr, len) & (~0u >> ((4 - len) << 3));
+	}
+	else 
+	{
+		return mmio_read(addr, len, map_NO) & (~0u >> ((4 - len) << 3));
+	}
 }
 
 void hwaddr_write(hwaddr_t addr, size_t len, uint32_t data) {
-	return cache1_write(addr, len, data);
+	
+	//printf("data is %x\n", data);
+	if (addr == 0)return;
+	int map_NO = is_mmio(addr);
+	if (map_NO == -1)
+	{
+		return Cache_1_write(addr, len, data);
+	}
+	else 
+	{
+		return mmio_write(addr, len, data, map_NO);
+	}
+		
 }
 
 hwaddr_t page_translate(lnaddr_t addr) {
@@ -57,7 +79,11 @@ uint32_t lnaddr_read(lnaddr_t addr, size_t len) {
 
 	assert(len == 1 || len == 2 || len == 4);
 	if ((addr & 0xfff) + len - 1 > 0xfff) {
-		assert(0);
+		int front = 0xfff - (addr & 0xfff) + 1;
+		int back = len - front;
+		uint32_t low = hwaddr_read(page_translate(addr), front);
+		uint32_t high = hwaddr_read(page_translate(addr + front), back);
+		return (high << (front * 8)) | low;
 	}
 	else {
 		hwaddr_t hwaddr = page_translate(addr);
@@ -68,7 +94,12 @@ uint32_t lnaddr_read(lnaddr_t addr, size_t len) {
 void lnaddr_write(lnaddr_t addr, size_t len, uint32_t data) {
 
 	if ((addr & 0xfff) + len - 1 > 0xfff) {
-		assert(0);
+		int front = 0xfff - (addr & 0xfff) + 1;
+		int back = len - front;
+		uint32_t high = data >> (8 * front);
+		uint32_t low = data & ((1 << (front * 8)) - 1);
+		hwaddr_write(page_translate(addr), front, low);
+		hwaddr_write(page_translate(addr + front), back, high);
 	}
 	else {
 		hwaddr_t hwaddr = page_translate(addr);
@@ -102,7 +133,14 @@ void swaddr_write(swaddr_t addr, size_t len, uint32_t data, uint8_t sreg) {
 #ifdef DEBUG
 	assert(len == 1 || len == 2 || len == 4);
 #endif
+	/*
+	if (addr == 0xc012813e)
+	{
+
+		printf("\nswaddr addr is %x, len is %lu, data is %x, sreg is %x\n", addr, len, data, sreg);
+	}*/
 	lnaddr_t lnaddr = seg_translate(addr, len, sreg);
-	lnaddr_write(lnaddr, len, data);
+	//printf("Segaddr is %x\n", lnaddr);
+	lnaddr_write(lnaddr, len, data);	
 }
 

@@ -13,9 +13,12 @@ void add_irq_handle(int irq, void *handler) {
 
 int
 main(void) {
+
 	init_timer();
 
 	add_irq_handle(0, timer_event);
+
+	add_irq_handle(1, keyboard_event);
 
 	init_FLOAT_vfprintf();
 

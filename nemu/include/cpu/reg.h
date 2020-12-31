@@ -56,14 +56,19 @@ typedef struct {
 		uint32_t eflags;
 	};
 
-	swaddr_t eip;
+	uint32_t eip;
 
-	struct 
+	struct GDTR
 	{
 		uint16_t limit;
 		uint32_t base;
 	}gdtr;
 	
+	struct IDTR
+	{
+		uint16_t limit;
+		uint32_t base;
+	}idtr;
 	struct 
 	{
 		union 
@@ -79,7 +84,7 @@ typedef struct {
 		SegDesc cache;
 	}sreg[6];
 	
-	
+	bool INTR;
 	CR0 cr0;
 	CR3 cr3;
 	

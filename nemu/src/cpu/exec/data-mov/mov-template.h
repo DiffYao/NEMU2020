@@ -1,6 +1,6 @@
 #include "cpu/exec/template-start.h"
-
 #define instr mov
+
 
 static void do_execute() {
 	OPERAND_W(op_dest, op_src->val);
@@ -12,6 +12,7 @@ make_instr_helper(i2rm)
 make_instr_helper(r2rm)
 make_instr_helper(rm2r)
 
+//make_helper(mov_r2rm)
 
 make_helper(concat(mov_a2moffs_, SUFFIX)) {
 	swaddr_t addr = instr_fetch(eip + 1, 4);

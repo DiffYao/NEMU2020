@@ -1,10 +1,10 @@
 #ifndef __COMMON_H__
 #define __COMMON_H__
 
-#define USE_RAMDISK
+//#define USE_RAMDISK
 
 /* You will define this macro in PA4 */
-//#define HAS_DEVICE
+#define HAS_DEVICE
 
 #define DEBUG
 #define LOG_FILE
@@ -21,7 +21,6 @@ typedef uint8_t bool;
 typedef uint32_t hwaddr_t;
 typedef uint32_t lnaddr_t;
 typedef uint32_t swaddr_t;
-
 typedef uint16_t ioaddr_t;
 
 #pragma pack (1)

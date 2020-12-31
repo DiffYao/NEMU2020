@@ -38,6 +38,8 @@ void init() {
 
 /* Initialization phase 2 */
 void init_cond() {
+
+
 #ifdef IA32_INTR
 	/* Reset the GDT, since the old GDT in start.S cannot be used in the future. */
 	init_segment();
@@ -71,14 +73,17 @@ void init_cond() {
 	 * Note that the output is actually performed only when
 	 * the serial port is available in NEMU.
 	 */
-	Log("Hello, NEMU world!");
+	//asm volatile("movl $0, %ebp");
 
+	//set_bp();
+	Log("Hello, NEMU World ");
+	//set_bp();
 #if defined(IA32_PAGE) && defined(HAS_DEVICE)
 	/* Write some test data to the video memory. */
 	video_mapping_write_test();
 #endif
-
 	/* Load the program. */
+	//set_bp();
 	uint32_t eip = loader();
 	
 #if defined(IA32_PAGE) && defined(HAS_DEVICE)
@@ -89,8 +94,9 @@ void init_cond() {
 
 	/* Clear the test data we just written in the video memory. */
 	video_mapping_clear();
-#endif
 
+#endif
+	
 #ifdef IA32_PAGE
 	/* Set the %esp for user program, which is one of the
 	 * convention of the "advanced" runtime environment. */
@@ -100,8 +106,9 @@ void init_cond() {
 	/* Keep the `bt' command happy. */
 	asm volatile("movl $0, %ebp");
 	asm volatile("subl $16, %esp");
-
 	/* Here we go! */
+	//Log("eip is 0x%x\n", eip);
+	
 	((void(*)(void))eip)();
 
 	HIT_GOOD_TRAP;
